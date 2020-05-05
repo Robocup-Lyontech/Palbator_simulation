@@ -1,0 +1,10 @@
+controller_list:
+  - name: fake_pm2b_arm_group_controller
+    joints:
+      - palbator_arm_column_joint
+      - palbator_arm_shoulder_1_joint
+      - palbator_arm_shoulder_2_joint
+      - palbator_arm_shoulder_3_joint
+      - palbator_arm_wrist_1_joint
+      - palbator_arm_wrist_2_joint
+      - palbator_arm_wrist_3_joint
