@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
-     Commit Version: 1.5.1-0-g916b5db  Build Version: 1.5.7152.31018
-     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
-<robot
-  name="gripper">
-  <link
-    name="gripper_base_link">
+<robot name="gripper">
+  <link name="base_link">
     <inertial>
       <origin
         xyz="-9.6291E-09 -0.00038057 -0.015989"
@@ -91,7 +86,7 @@
       xyz="0.0448 0.025822 -0.022247"
       rpy="0 0 0" />
     <parent
-      link="gripper_base_link" />
+      link="base_link" />
     <child
       link="motor1_link" />
     <axis
@@ -101,7 +96,7 @@
     name="hand1_link">
     <inertial>
       <origin
-        xyz="0.022 0.014965 -0.021264"
+        xyz="0.020 0.014965 -0.021264"
         rpy="0 0 0" />
       <mass
         value="0.034799" />
@@ -115,8 +110,8 @@
     </inertial>
     <visual>
       <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
+        xyz="-0.013 0.03 0.022"
+        rpy="1.5707 1.5707 0" />
       <geometry>
         <mesh
           filename="package://gripper/meshes/hand1_link.STL" />
@@ -141,19 +136,19 @@
     name="motor1_hand_joint"
     type="revolute">
     <origin
-      xyz="-0.013151 0.029934 0.02235"
-      rpy="1.5658 1.5708 0" />
+      xyz="0 0 0"
+      rpy="0 0 0" />
     <parent
       link="motor1_link" />
     <child
       link="hand1_link" />
     <axis
-      xyz="0 0 0" />
+      xyz="0 0 1" />
     <limit
-      lower="0"
-      upper="0"
-      effort="0"
-      velocity="0" />
+      lower="-1"
+      upper="1"
+      effort="10"
+      velocity="0.5" />
   </joint>
   <link
     name="fingertip1_1_link">
@@ -174,7 +169,7 @@
     <visual>
       <origin
         xyz="0 0 0"
-        rpy="0 0 0" />
+        rpy="1.5708 0 3.141592" />
       <geometry>
         <mesh
           filename="package://gripper/meshes/fingertip1_1_link.STL" />
@@ -199,19 +194,19 @@
     name="hand1_fingertip1_joint"
     type="revolute">
     <origin
-      xyz="0.006 0.0072045 -0.057631"
-      rpy="0 0.00089873 -1.5708" />
+      xyz="-0.0056 0.0877 0.0055"
+      rpy="0 0 0" />
     <parent
       link="hand1_link" />
     <child
       link="fingertip1_1_link" />
     <axis
-      xyz="0 0 0" />
+      xyz="0 0 1" />
     <limit
-      lower="0"
-      upper="0"
-      effort="0"
-      velocity="0" />
+      lower="-1"
+      upper="1"
+      effort="10"
+      velocity="0.5" />
   </joint>
   <link
     name="fingertip1_2_link">
@@ -232,7 +227,7 @@
     <visual>
       <origin
         xyz="0 0 0"
-        rpy="0 0 0" />
+        rpy="-1.5708 0 3.141592" />
       <geometry>
         <mesh
           filename="package://gripper/meshes/fingertip1_2_link.STL" />
@@ -257,20 +252,21 @@
     name="hand1_fingertip2_joint"
     type="revolute">
     <origin
-      xyz="0.038 0.0072769 -0.057346"
-      rpy="3.1416 -0.4981 -1.5708" />
+      xyz="-0.0056 0.0877 -0.0055"
+      rpy="0 0 0" />
     <parent
       link="hand1_link" />
     <child
       link="fingertip1_2_link" />
     <axis
-      xyz="0 0 0" />
+      xyz="0 0 1" />
     <limit
-      lower="0"
-      upper="0"
-      effort="0"
-      velocity="0" />
+      lower="-1"
+      upper="1"
+      effort="10"
+      velocity="0.5" />
   </joint>
+
   <link
     name="motor2_link">
     <inertial>
@@ -318,7 +314,7 @@
       xyz="-0.0448 0.021922 -0.022197"
       rpy="-3.1416 0 3.1416" />
     <parent
-      link="gripper_base_link" />
+      link="base_link" />
     <child
       link="motor2_link" />
     <axis
@@ -342,8 +338,8 @@
     </inertial>
     <visual>
       <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
+        xyz="-0.013 0.03 0.022"
+        rpy="1.5707 1.5707 0" />
       <geometry>
         <mesh
           filename="package://gripper/meshes/hand2_link.STL" />
@@ -368,19 +364,19 @@
     name="motor2_hand_joint"
     type="revolute">
     <origin
-      xyz="-0.013151 0.029934 0.02235"
-      rpy="1.5658 1.5708 0" />
+      xyz="0 0 0"
+      rpy="0 0 0" />
     <parent
       link="motor2_link" />
     <child
       link="hand2_link" />
     <axis
-      xyz="0 0 0" />
+      xyz="0 0 1" />
     <limit
-      lower="0"
-      upper="0"
-      effort="0"
-      velocity="0" />
+      lower="-1"
+      upper="1"
+      effort="10"
+      velocity="0.5" />
   </joint>
   <link
     name="fingertip2_1_link">
@@ -401,7 +397,7 @@
     <visual>
       <origin
         xyz="0 0 0"
-        rpy="0 0 0" />
+        rpy="1.5708 0 3.141592" />
       <geometry>
         <mesh
           filename="package://gripper/meshes/fingertip2_1_link.STL" />
@@ -426,19 +422,20 @@
     name="hand2_fingertip1_joint"
     type="revolute">
     <origin
-      xyz="0.006 0.0072118 -0.057537"
-      rpy="0 -0.15638 -1.5708" />
+      xyz="-0.0056 0.0877 0.0055"
+      rpy="0 0 0" />
+      
     <parent
       link="hand2_link" />
     <child
       link="fingertip2_1_link" />
     <axis
-      xyz="0 0 0" />
+      xyz="0 0 1" />
     <limit
-      lower="0"
-      upper="0"
-      effort="0"
-      velocity="0" />
+      lower="-1"
+      upper="1"
+      effort="10"
+      velocity="0.5" />
   </joint>
   <link
     name="fingertip2_2_link">
@@ -459,7 +456,7 @@
     <visual>
       <origin
         xyz="0 0 0"
-        rpy="0 0 0" />
+        rpy="-1.5708 0 3.141592" />
       <geometry>
         <mesh
           filename="package://gripper/meshes/fingertip2_2_link.STL" />
@@ -484,18 +481,18 @@
     name="hand2_fingertip2_joint"
     type="revolute">
     <origin
-      xyz="0.038 0.0072072 -0.057573"
-      rpy="3.1416 -0.095497 -1.5708" />
+      xyz="-0.0056 0.0877 -0.0055"
+      rpy="0 0 0" />
     <parent
       link="hand2_link" />
     <child
       link="fingertip2_2_link" />
     <axis
-      xyz="0 0 0" />
+      xyz="0 0 1" />
     <limit
-      lower="0"
-      upper="0"
-      effort="0"
-      velocity="0" />
+      lower="-1"
+      upper="1"
+      effort="10"
+      velocity="0.5" />
   </joint>
 </robot>
