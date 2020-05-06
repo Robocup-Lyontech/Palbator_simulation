@@ -290,7 +290,7 @@
     </joint> 
 
     <joint name="gripper_motor1_joint" type="fixed">
-      <origin xyz="0.0448 0.025822 -0.022247" rpy="0 0 0" />
+      <origin xyz="0.0448 0.053322 -0.010247" rpy="0 0 0" />
       <parent link="gripper_base_link" />
       <child link="motor1_link" />
       <axis xyz="0 0 0" />
@@ -322,7 +322,7 @@
     </joint>
 
     <joint name="gripper_motor2_joint" type="fixed">
-      <origin xyz="-0.0448 0.021922 -0.022197" rpy="-3.1416 0 3.1416" />
+      <origin xyz="-0.0448 0.053322 -0.010247" rpy="-3.1416 0 3.1416" />
       <parent link="gripper_base_link" />
       <child link="motor2_link" />
       <axis xyz="0 0 0" />

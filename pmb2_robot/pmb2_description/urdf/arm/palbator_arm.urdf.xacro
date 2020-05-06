@@ -51,8 +51,8 @@
             <box size="0.05 .2 .05"/>
         </geometry>
           <origin xyz="0 0 0" rpy="0 0 0"/>
-        <material name="Cyan">
-          <color rgba="0 1.0 1.0 1.0"/>
+        <material name="Black">
+          <color rgba="0 0 0 1.0"/>
         </material>          
       </visual>
     </link>  
@@ -113,7 +113,7 @@
         <geometry>
             <box size="0.05 ${Joint_Y_4_5} 0.05"/>
         </geometry>
-        <material name="Cyan">
+      <material name="Cyan">
         <color rgba="0 1.0 1.0 1.0"/>
       </material>
       </visual>
@@ -191,6 +191,9 @@
             <geometry>
               <box size="0.03 0.18 0.02"/>
           </geometry>
+          <material name="Black">
+            <color rgba="0 0 0 1.0"/>
+          </material>
             <origin xyz="0 0 0" rpy="0 0 0"/>
         </visual>
     </link>    
