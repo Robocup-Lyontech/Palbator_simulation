@@ -8,7 +8,7 @@
 
     <link name="gripper_base_link">
       <inertial>
-        <origin xyz="-9.6291E-09 -0.00038057 -0.015989" rpy="0 0 0" />
+        <origin xyz="0 0 0" rpy="0 0 0" />
         <mass value="0.080698" />
         <inertia
           ixx="3.1972E-05"
@@ -354,6 +354,18 @@
 
 
     <!-- TRANSMISSIONS -->
+
+    <transmission name="tran7">
+      <type>SimpleTransmission</type>
+      <joint name="palbator_arm_wrist_3_joint">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="motor7">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+
 
     <transmission name="left_finger_transmission">
       <type>SimpleTransmission</type>
