@@ -38,6 +38,16 @@
       <name>ycb-bleach</name>
       <pose>0.5 0.5 0 0 0 0</pose>
     </include>
+    <include>
+      <uri>model://ycb-mustard</uri>
+      <name>ycb-mustard</name>
+      <pose>-1.00422 5.50495 0.30154 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://ycb-windex</uri>
+      <name>ycb-windex</name>
+      <pose>3.51273 3.49556 0.656992 0 0 0</pose>
+    </include>
     <!-- Double Bed Room -->
     <!-- Bed -->
     <include>
