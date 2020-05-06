@@ -17,6 +17,8 @@
   <xacro:property name="Joint_Y_6_7" value="0.057" />
   <xacro:property name="PI" value="3.14159"/>
 
+  <xacro:include filename="$(find pmb2_description)/urdf/gripper/gripper.urdf.xacro"/>
+
   <xacro:macro name="palbator_arm" params="parent">
 
     <!-- <xacro:include filename="$(find cob_description)/gazebo/gazebo.urdf.xacro" /> -->
@@ -147,7 +149,7 @@
       </material>
       </visual>
     </link>
-
+<!--
     <link name="palbator_arm_wrist_link3" >
       <inertial>
           <origin xyz="0 0.0275 0.012" rpy="0 0 0" />
@@ -164,6 +166,7 @@
         </material>
       </visual>
     </link>
+    -->
   <!--
     <link name="grip_link" >
       <visual>
@@ -192,8 +195,8 @@
         </visual>
     </link>    
 
-    <link name="palbator_arm_end_link" />
 
+    <!-- JOINTS -->
 
 
     <joint name="palbator_arm_to_${parent}_joint" type="fixed">
@@ -258,6 +261,8 @@
       <axis xyz="-1 0 0" />
     </joint>
 
+
+<!--
     <joint name="palbator_arm_wrist_3_joint" type="revolute">
       <parent link="palbator_arm_wrist_link2"/>
       <child link="palbator_arm_wrist_link3"/>
@@ -265,6 +270,7 @@
       <limit effort="100" velocity="0.3" lower="-3.14" upper="3.14" />
       <axis xyz="0 1 0" />
     </joint> 
+-->
 
   <!--
     <joint name="grip_left_joint" type="fixed">
@@ -281,20 +287,27 @@
       <axis xyz="0 0 0" />
     </joint>   
   --> 
-
+<!--
     <joint name="palbator_arm_end_joint" type="fixed">
       <parent link="palbator_arm_wrist_link3"/>
       <child link="palbator_arm_end_link"/>
       <origin xyz="0 0.075 0" rpy="0 0 0" />
       <axis xyz="0 0 0" />
     </joint>
-
+-->
     <joint name="palbator_arm_camera_joint" type="fixed">
       <parent link="palbator_arm_shoulder_link2"/>
       <child link="palbator_arm_camera_link"/>
       <origin xyz="0.0 -0.05 0.20" rpy="0 0.5 1.57" />
       <axis xyz="0 0 0" />
     </joint>
+
+<!-- GRIPPER INCLUDE -->
+
+    <xacro:gripper parent="${name}_link"> 
+      <origin xyz="0 0.0275 0.012" rpy="0 0 0" />
+    </xacro:gripper>
+
 
     <transmission name="tran1">
       <type>SimpleTransmission</type>
@@ -373,6 +386,8 @@
       </actuator>
     </transmission>
 
+
+
 <!-- GAZEBO MATERIALS -->
     <gazebo reference="palbator_arm_kinect_link">
       <material>Gazebo/Black</material>
@@ -380,6 +395,8 @@
     <gazebo reference="palbator_arm_camera_link">
       <material>Gazebo/Black</material>
     </gazebo>
+
+
 <!-- GAZEBO PLUGINS -->
 
   <gazebo reference="palbator_arm_camera_link">
