@@ -1,1 +1,12 @@
 gripper.tar.gz
+gazebo_ros_pkgs/gazebo_ros/src/gazebo_ros/gazebo_interface.pyc
+pal_python/src/pal_python/pal_common.pyc
+pal_python/src/pal_python/pal_diagnostics.pyc
+pal_python/src/pal_python/pal_environ.pyc
+pal_python/src/pal_python/pal_hci.pyc
+pal_python/src/pal_python/pal_launch.pyc
+pal_python/src/pal_python/pal_path.pyc
+pal_python/src/pal_python/pal_publishers.pyc
+pal_python/src/pal_python/pal_rpc.pyc
+pal_python/src/pal_python/pal_thread.pyc
+pal_python/src/pal_python/shell_cmd.pyc
