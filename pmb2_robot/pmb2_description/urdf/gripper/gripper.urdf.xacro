@@ -390,6 +390,55 @@
       </actuator>
     </transmission>
 
+    <!-- TRANSMISSIONS FOR FINGERTIPS-->
+
+    <!-- <transmission name="right_finger_fingertip1_transmission">
+      <type>SimpleTransmission</type>
+      <joint name="hand2_fingertip1_joint">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="right_finger1">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+
+    <transmission name="right_finger_fingertip2_transmission">
+      <type>SimpleTransmission</type>
+      <joint name="hand2_fingertip2_joint">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="right_finger2">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+
+    <transmission name="left_finger_fingertip1_transmission">
+      <type>SimpleTransmission</type>
+      <joint name="hand1_fingertip1_joint">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="left_finger1">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+
+    <transmission name="left_finger_fingertip2_transmission">
+      <type>SimpleTransmission</type>
+      <joint name="hand1_fingertip2_joint">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="left_finger2">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission> -->
+
+
+
+
 
 
     <!-- GAZEBO MATERIAL PARAMS -->
