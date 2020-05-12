@@ -149,7 +149,7 @@ pmb2_arm:
   projection_evaluator: joints(palbator_arm_column_joint,palbator_arm_shoulder_1_joint)
   longest_valid_segment_fraction: 0.005
 pmb2_gripper:
-  default_planner_config: None
+  default_planner_config: ""
   planner_configs:
     - SBL
     - EST
