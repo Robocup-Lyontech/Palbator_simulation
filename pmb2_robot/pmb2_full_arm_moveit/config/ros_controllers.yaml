@@ -1,7 +1,7 @@
 # Simulation settings for using moveit_sim_controllers
 moveit_sim_hw_interface:
   joint_model_group: pmb2_arm
-  joint_model_group_pose: todo_no_pose_selected
+  joint_model_group_pose: travelling_pose
 # Settings for ros_control_boilerplate control loop
 generic_hw_control_loop:
   loop_hz: 300
@@ -24,12 +24,6 @@ hardware_interface:
     - palbator_arm_wrist_1_joint
     - palbator_arm_wrist_2_joint
     - palbator_arm_wrist_3_joint
-    - motor1_hand_joint
-    - hand1_fingertip1_joint
-    - hand1_fingertip2_joint
-    - motor2_hand_joint
-    - hand2_fingertip1_joint
-    - hand2_fingertip2_joint
     - suspension_left_joint
     - wheel_left_joint
     - suspension_right_joint

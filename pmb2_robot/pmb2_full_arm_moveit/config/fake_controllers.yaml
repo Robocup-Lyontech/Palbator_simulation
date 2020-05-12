@@ -11,9 +11,3 @@ controller_list:
   - name: fake_pmb2_gripper_controller
     joints:
       - palbator_arm_wrist_3_joint
-      - motor1_hand_joint
-      - hand1_fingertip1_joint
-      - hand1_fingertip2_joint
-      - motor2_hand_joint
-      - hand2_fingertip1_joint
-      - hand2_fingertip2_joint
