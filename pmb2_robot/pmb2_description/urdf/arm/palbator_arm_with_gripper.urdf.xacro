@@ -17,7 +17,7 @@
   <xacro:property name="Joint_Y_6_7" value="0.057" />
   <xacro:property name="PI" value="3.14159"/>
 
-  <!-- <xacro:include filename="$(find pmb2_description)/urdf/gripper/gripper.urdf.xacro"/> -->
+  <xacro:include filename="$(find pmb2_description)/urdf/gripper/gripper.urdf.xacro"/>
 
   <xacro:macro name="palbator_arm" params="parent">
 
@@ -149,7 +149,7 @@
       </material>
       </visual>
     </link>
-
+<!--
     <link name="palbator_arm_wrist_link3" >
       <inertial>
           <origin xyz="0 0.0275 0.012" rpy="0 0 0" />
@@ -166,9 +166,7 @@
         </material>
       </visual>
     </link>
-
-    <link name="palbator_arm_end_link" />
-   
+    -->
   <!--
     <link name="grip_link" >
       <visual>
@@ -230,7 +228,7 @@
       <parent link="palbator_arm_column_link"/>
       <child link="palbator_arm_shoulder_link1"/>
       <origin xyz="0 0 0" rpy="0 0 0" />
-      <limit effort="100" velocity="0.3" lower="-1.22" upper="1.22" />
+      <limit effort="1000" velocity="0.3" lower="-1.22" upper="1.22" />
       <axis xyz="0 0 1" />
     </joint>
 
@@ -246,7 +244,7 @@
       <parent link="palbator_arm_shoulder_link2"/>
       <child link="palbator_arm_shoulder_link3"/>
       <origin xyz="0 ${Joint_Y_3_4} 0" rpy="0 0 0" />
-      <limit effort="100" velocity="0.3" lower="-1.17" upper="1.6" />
+      <limit effort="1000" velocity="0.3" lower="-1.17" upper="1.6" />
       <axis xyz="-1 0 0" />
     </joint>
 
@@ -254,7 +252,7 @@
       <parent link="palbator_arm_shoulder_link3"/>
       <child link="palbator_arm_wrist_link1"/>
       <origin xyz="0 ${Joint_Y_4_5} 0" rpy="0 0 0" />
-      <limit effort="100" velocity="0.3" lower="-3.14" upper="3.14" />
+      <limit effort="1000" velocity="0.3" lower="-3.14" upper="3.14" />
       <axis xyz="0 1 0" />
     </joint>
 
@@ -262,11 +260,12 @@
       <parent link="palbator_arm_wrist_link1"/>
       <child link="palbator_arm_wrist_link2"/>
       <origin xyz="0 ${Joint_Y_5_6} 0" rpy="0 0 0" />
-      <limit effort="100" velocity="0.3" lower="-1.5" upper="2.0" />
+      <limit effort="1000" velocity="0.3" lower="-1.5" upper="2.0" />
       <axis xyz="-1 0 0" />
     </joint>
 
 
+<!--
     <joint name="palbator_arm_wrist_3_joint" type="revolute">
       <parent link="palbator_arm_wrist_link2"/>
       <child link="palbator_arm_wrist_link3"/>
@@ -274,6 +273,7 @@
       <limit effort="100" velocity="0.3" lower="-3.14" upper="3.14" />
       <axis xyz="0 1 0" />
     </joint> 
+-->
 
   <!--
     <joint name="grip_left_joint" type="fixed">
@@ -290,14 +290,14 @@
       <axis xyz="0 0 0" />
     </joint>   
   --> 
-
+<!--
     <joint name="palbator_arm_end_joint" type="fixed">
       <parent link="palbator_arm_wrist_link3"/>
       <child link="palbator_arm_end_link"/>
       <origin xyz="0 0.075 0" rpy="0 0 0" />
       <axis xyz="0 0 0" />
     </joint>
-
+-->
     <joint name="palbator_arm_camera_joint" type="fixed">
       <parent link="palbator_arm_shoulder_link2"/>
       <child link="palbator_arm_camera_link"/>
@@ -305,11 +305,30 @@
       <axis xyz="0 0 0" />
     </joint>
 
+
+  <!-- Empty camera joint for fixing wrong depth sensor orientation -->
+
+  <joint name="camera_depth_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="${-PI/2} 0 ${-PI/2} "/>
+    <parent link="palbator_arm_camera_link"/>
+    <child link="camera_depth_link"/>
+  </joint>
+
+  <link name="camera_depth_link"></link>
+
+  <joint name="kinect_depth_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="${-PI/2} 0 ${-PI/2} "/>
+    <parent link="palbator_arm_kinect_link"/>
+    <child link="kinect_depth_link"/>
+  </joint>
+
+  <link name="kinect_depth_link"></link>
+
 <!-- GRIPPER INCLUDE -->
 
-    <!-- <xacro:gripper parent="${name}_link"> 
+    <xacro:gripper parent="${name}_link"> 
       <origin xyz="0 0.0275 0.012" rpy="0 0 0" />
-    </xacro:gripper> -->
+    </xacro:gripper>
 
 
     <transmission name="tran1">
@@ -378,17 +397,6 @@
       </actuator>
     </transmission>
 
-    <transmission name="tran7">
-      <type>SimpleTransmission</type>
-      <joint name="palbator_arm_wrist_3_joint">
-        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-      </joint>
-      <actuator name="motor7">
-        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-        <mechanicalReduction>1</mechanicalReduction>
-      </actuator>
-    </transmission>
-
 
 
 
@@ -430,7 +438,7 @@
       <depthImageTopicName>/camera/depth/image_raw</depthImageTopicName>
       <depthImageCameraInfoTopicName>/camera/depth/camera_info</depthImageCameraInfoTopicName>
       <pointCloudTopicName>/camera/depth/points</pointCloudTopicName>
-      <frameName>palbator_arm_camera_link</frameName>
+      <frameName>camera_depth_link</frameName>
       <pointCloudCutoff>0.5</pointCloudCutoff>
       <pointCloudCutoffMax>3.0</pointCloudCutoffMax>
       <distortionK1>0</distortionK1>
@@ -472,7 +480,7 @@
       <depthImageTopicName>/kinect/depth/image_raw</depthImageTopicName>
       <depthImageCameraInfoTopicName>/kinect/depth/camera_info</depthImageCameraInfoTopicName>
       <pointCloudTopicName>/kinect/depth/points</pointCloudTopicName>
-      <frameName>palbator_arm_kinect_link</frameName>
+      <frameName>kinect_depth_link</frameName>
       <pointCloudCutoff>0.5</pointCloudCutoff>
       <pointCloudCutoffMax>3.0</pointCloudCutoffMax>
       <distortionK1>0</distortionK1>

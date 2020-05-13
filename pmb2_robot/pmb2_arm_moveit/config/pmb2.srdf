@@ -9,7 +9,7 @@
     <!--JOINTS: When a joint is specified, the child link of that joint (which will always exist) is automatically included-->
     <!--CHAINS: When a chain is specified, all the links along the chain (including endpoints) are included in the group. Additionally, all the joints that are parents to included links are also included. This means that joints along the chain and the parent joint of the base link are included in the group-->
     <!--SUBGROUPS: Groups can also be formed by referencing to already defined group names-->
-    <group name="pm2b_arm_group">
+    <group name="pmb2_arm_group">
         <link name="palbator_arm_column" />
         <link name="palbator_arm_column_link" />
         <link name="palbator_arm_shoulder_link1" />
@@ -30,17 +30,17 @@
         <chain base_link="palbator_arm_column" tip_link="palbator_arm_end_link" />
     </group>
     <!--GROUP STATES: Purpose: Define a named state for a particular group, in terms of joint values. This is useful to define states like 'folded arms'-->
-    <group_state name="default_pose" group="pm2b_arm_group">
+    <group_state name="travelling_pose" group="pmb2_arm_group">
         <joint name="palbator_arm_column_joint" value="0.9599" />
-        <joint name="palbator_arm_shoulder_1_joint" value="0.4558" />
-        <joint name="palbator_arm_shoulder_2_joint" value="-1.6351" />
-        <joint name="palbator_arm_shoulder_3_joint" value="0.2759" />
-        <joint name="palbator_arm_wrist_1_joint" value="-0.138" />
-        <joint name="palbator_arm_wrist_2_joint" value="-0.5192" />
+        <joint name="palbator_arm_shoulder_1_joint" value="0.6971" />
+        <joint name="palbator_arm_shoulder_2_joint" value="-0.9275" />
+        <joint name="palbator_arm_shoulder_3_joint" value="1.4935" />
+        <joint name="palbator_arm_wrist_1_joint" value="-0.0345" />
+        <joint name="palbator_arm_wrist_2_joint" value="0.0577" />
         <joint name="palbator_arm_wrist_3_joint" value="0" />
     </group_state>
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
-    <end_effector name="end_effector_arm" parent_link="palbator_arm_end_link" group="pm2b_arm_group" />
+    <end_effector name="end_effector_arm" parent_link="palbator_arm_end_link" group="pmb2_arm_group" />
     <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
     <disable_collisions link1="base_antenna_left_link" link2="base_antenna_right_link" reason="Never" />
     <disable_collisions link1="base_antenna_left_link" link2="base_cover_link" reason="Never" />
@@ -60,9 +60,12 @@
     <disable_collisions link1="base_antenna_left_link" link2="palbator_arm_camera_link" reason="Never" />
     <disable_collisions link1="base_antenna_left_link" link2="palbator_arm_column" reason="Never" />
     <disable_collisions link1="base_antenna_left_link" link2="palbator_arm_column_link" reason="Never" />
-    <disable_collisions link1="base_antenna_left_link" link2="palbator_arm_kinect" reason="Never" />
+    <disable_collisions link1="base_antenna_left_link" link2="palbator_arm_kinect_link" reason="Never" />
     <disable_collisions link1="base_antenna_left_link" link2="palbator_arm_shoulder_link1" reason="Never" />
     <disable_collisions link1="base_antenna_left_link" link2="palbator_arm_shoulder_link2" reason="Never" />
+    <disable_collisions link1="base_antenna_left_link" link2="palbator_arm_shoulder_link3" reason="Never" />
+    <disable_collisions link1="base_antenna_left_link" link2="palbator_arm_wrist_link1" reason="Never" />
+    <disable_collisions link1="base_antenna_left_link" link2="palbator_arm_wrist_link2" reason="Never" />
     <disable_collisions link1="base_antenna_left_link" link2="wheel_left_link" reason="Never" />
     <disable_collisions link1="base_antenna_left_link" link2="wheel_right_link" reason="Never" />
     <disable_collisions link1="base_antenna_right_link" link2="base_cover_link" reason="Never" />
@@ -82,7 +85,7 @@
     <disable_collisions link1="base_antenna_right_link" link2="palbator_arm_camera_link" reason="Never" />
     <disable_collisions link1="base_antenna_right_link" link2="palbator_arm_column" reason="Never" />
     <disable_collisions link1="base_antenna_right_link" link2="palbator_arm_column_link" reason="Never" />
-    <disable_collisions link1="base_antenna_right_link" link2="palbator_arm_kinect" reason="Never" />
+    <disable_collisions link1="base_antenna_right_link" link2="palbator_arm_kinect_link" reason="Never" />
     <disable_collisions link1="base_antenna_right_link" link2="palbator_arm_shoulder_link1" reason="Never" />
     <disable_collisions link1="base_antenna_right_link" link2="palbator_arm_shoulder_link2" reason="Never" />
     <disable_collisions link1="base_antenna_right_link" link2="wheel_left_link" reason="Never" />
@@ -103,11 +106,12 @@
     <disable_collisions link1="base_cover_link" link2="palbator_arm_camera_link" reason="Never" />
     <disable_collisions link1="base_cover_link" link2="palbator_arm_column" reason="Never" />
     <disable_collisions link1="base_cover_link" link2="palbator_arm_column_link" reason="Never" />
-    <disable_collisions link1="base_cover_link" link2="palbator_arm_kinect" reason="Never" />
+    <disable_collisions link1="base_cover_link" link2="palbator_arm_kinect_link" reason="Never" />
     <disable_collisions link1="base_cover_link" link2="palbator_arm_shoulder_link1" reason="Never" />
     <disable_collisions link1="base_cover_link" link2="palbator_arm_shoulder_link2" reason="Never" />
     <disable_collisions link1="base_cover_link" link2="palbator_arm_shoulder_link3" reason="Never" />
     <disable_collisions link1="base_cover_link" link2="palbator_arm_wrist_link1" reason="Never" />
+    <disable_collisions link1="base_cover_link" link2="palbator_arm_wrist_link2" reason="Never" />
     <disable_collisions link1="base_cover_link" link2="wheel_left_link" reason="Never" />
     <disable_collisions link1="base_cover_link" link2="wheel_right_link" reason="Never" />
     <disable_collisions link1="base_laser_link" link2="base_link" reason="Adjacent" />
@@ -125,7 +129,7 @@
     <disable_collisions link1="base_laser_link" link2="palbator_arm_camera_link" reason="Never" />
     <disable_collisions link1="base_laser_link" link2="palbator_arm_column" reason="Never" />
     <disable_collisions link1="base_laser_link" link2="palbator_arm_column_link" reason="Never" />
-    <disable_collisions link1="base_laser_link" link2="palbator_arm_kinect" reason="Never" />
+    <disable_collisions link1="base_laser_link" link2="palbator_arm_kinect_link" reason="Never" />
     <disable_collisions link1="base_laser_link" link2="palbator_arm_shoulder_link1" reason="Never" />
     <disable_collisions link1="base_laser_link" link2="palbator_arm_shoulder_link2" reason="Never" />
     <disable_collisions link1="base_laser_link" link2="palbator_arm_shoulder_link3" reason="Never" />
@@ -148,7 +152,7 @@
     <disable_collisions link1="base_link" link2="palbator_arm_camera_link" reason="Never" />
     <disable_collisions link1="base_link" link2="palbator_arm_column" reason="Adjacent" />
     <disable_collisions link1="base_link" link2="palbator_arm_column_link" reason="Never" />
-    <disable_collisions link1="base_link" link2="palbator_arm_kinect" reason="Never" />
+    <disable_collisions link1="base_link" link2="palbator_arm_kinect_link" reason="Never" />
     <disable_collisions link1="base_link" link2="palbator_arm_shoulder_link1" reason="Never" />
     <disable_collisions link1="base_link" link2="palbator_arm_shoulder_link2" reason="Never" />
     <disable_collisions link1="base_link" link2="palbator_arm_shoulder_link3" reason="Never" />
@@ -167,10 +171,11 @@
     <disable_collisions link1="base_sonar_01_link" link2="palbator_arm_camera_link" reason="Never" />
     <disable_collisions link1="base_sonar_01_link" link2="palbator_arm_column" reason="Never" />
     <disable_collisions link1="base_sonar_01_link" link2="palbator_arm_column_link" reason="Never" />
-    <disable_collisions link1="base_sonar_01_link" link2="palbator_arm_kinect" reason="Never" />
+    <disable_collisions link1="base_sonar_01_link" link2="palbator_arm_kinect_link" reason="Never" />
     <disable_collisions link1="base_sonar_01_link" link2="palbator_arm_shoulder_link1" reason="Never" />
     <disable_collisions link1="base_sonar_01_link" link2="palbator_arm_shoulder_link2" reason="Never" />
     <disable_collisions link1="base_sonar_01_link" link2="palbator_arm_shoulder_link3" reason="Never" />
+    <disable_collisions link1="base_sonar_01_link" link2="palbator_arm_wrist_link1" reason="Never" />
     <disable_collisions link1="base_sonar_01_link" link2="wheel_left_link" reason="Never" />
     <disable_collisions link1="base_sonar_01_link" link2="wheel_right_link" reason="Never" />
     <disable_collisions link1="base_sonar_02_link" link2="base_sonar_03_link" reason="Never" />
@@ -185,13 +190,12 @@
     <disable_collisions link1="base_sonar_02_link" link2="palbator_arm_camera_link" reason="Never" />
     <disable_collisions link1="base_sonar_02_link" link2="palbator_arm_column" reason="Never" />
     <disable_collisions link1="base_sonar_02_link" link2="palbator_arm_column_link" reason="Never" />
-    <disable_collisions link1="base_sonar_02_link" link2="palbator_arm_kinect" reason="Never" />
+    <disable_collisions link1="base_sonar_02_link" link2="palbator_arm_kinect_link" reason="Never" />
     <disable_collisions link1="base_sonar_02_link" link2="palbator_arm_shoulder_link1" reason="Never" />
     <disable_collisions link1="base_sonar_02_link" link2="palbator_arm_shoulder_link2" reason="Never" />
     <disable_collisions link1="base_sonar_02_link" link2="palbator_arm_shoulder_link3" reason="Never" />
     <disable_collisions link1="base_sonar_02_link" link2="palbator_arm_wrist_link1" reason="Never" />
     <disable_collisions link1="base_sonar_02_link" link2="palbator_arm_wrist_link2" reason="Never" />
-    <disable_collisions link1="base_sonar_02_link" link2="palbator_arm_wrist_link3" reason="Never" />
     <disable_collisions link1="base_sonar_02_link" link2="wheel_left_link" reason="Never" />
     <disable_collisions link1="base_sonar_02_link" link2="wheel_right_link" reason="Never" />
     <disable_collisions link1="base_sonar_03_link" link2="caster_back_left_1_link" reason="Never" />
@@ -205,7 +209,7 @@
     <disable_collisions link1="base_sonar_03_link" link2="palbator_arm_camera_link" reason="Never" />
     <disable_collisions link1="base_sonar_03_link" link2="palbator_arm_column" reason="Never" />
     <disable_collisions link1="base_sonar_03_link" link2="palbator_arm_column_link" reason="Never" />
-    <disable_collisions link1="base_sonar_03_link" link2="palbator_arm_kinect" reason="Never" />
+    <disable_collisions link1="base_sonar_03_link" link2="palbator_arm_kinect_link" reason="Never" />
     <disable_collisions link1="base_sonar_03_link" link2="palbator_arm_shoulder_link1" reason="Never" />
     <disable_collisions link1="base_sonar_03_link" link2="palbator_arm_shoulder_link2" reason="Never" />
     <disable_collisions link1="base_sonar_03_link" link2="palbator_arm_shoulder_link3" reason="Never" />
@@ -224,7 +228,7 @@
     <disable_collisions link1="caster_back_left_1_link" link2="palbator_arm_camera_link" reason="Never" />
     <disable_collisions link1="caster_back_left_1_link" link2="palbator_arm_column" reason="Never" />
     <disable_collisions link1="caster_back_left_1_link" link2="palbator_arm_column_link" reason="Never" />
-    <disable_collisions link1="caster_back_left_1_link" link2="palbator_arm_kinect" reason="Never" />
+    <disable_collisions link1="caster_back_left_1_link" link2="palbator_arm_kinect_link" reason="Never" />
     <disable_collisions link1="caster_back_left_1_link" link2="palbator_arm_shoulder_link1" reason="Never" />
     <disable_collisions link1="caster_back_left_1_link" link2="palbator_arm_shoulder_link2" reason="Never" />
     <disable_collisions link1="caster_back_left_1_link" link2="palbator_arm_shoulder_link3" reason="Never" />
@@ -242,7 +246,7 @@
     <disable_collisions link1="caster_back_left_2_link" link2="palbator_arm_camera_link" reason="Never" />
     <disable_collisions link1="caster_back_left_2_link" link2="palbator_arm_column" reason="Never" />
     <disable_collisions link1="caster_back_left_2_link" link2="palbator_arm_column_link" reason="Never" />
-    <disable_collisions link1="caster_back_left_2_link" link2="palbator_arm_kinect" reason="Never" />
+    <disable_collisions link1="caster_back_left_2_link" link2="palbator_arm_kinect_link" reason="Never" />
     <disable_collisions link1="caster_back_left_2_link" link2="palbator_arm_shoulder_link1" reason="Never" />
     <disable_collisions link1="caster_back_left_2_link" link2="palbator_arm_shoulder_link2" reason="Never" />
     <disable_collisions link1="caster_back_left_2_link" link2="palbator_arm_shoulder_link3" reason="Never" />
@@ -259,7 +263,7 @@
     <disable_collisions link1="caster_back_right_1_link" link2="palbator_arm_camera_link" reason="Never" />
     <disable_collisions link1="caster_back_right_1_link" link2="palbator_arm_column" reason="Never" />
     <disable_collisions link1="caster_back_right_1_link" link2="palbator_arm_column_link" reason="Never" />
-    <disable_collisions link1="caster_back_right_1_link" link2="palbator_arm_kinect" reason="Never" />
+    <disable_collisions link1="caster_back_right_1_link" link2="palbator_arm_kinect_link" reason="Never" />
     <disable_collisions link1="caster_back_right_1_link" link2="palbator_arm_shoulder_link1" reason="Never" />
     <disable_collisions link1="caster_back_right_1_link" link2="palbator_arm_shoulder_link2" reason="Never" />
     <disable_collisions link1="caster_back_right_1_link" link2="palbator_arm_shoulder_link3" reason="Never" />
@@ -275,7 +279,7 @@
     <disable_collisions link1="caster_back_right_2_link" link2="palbator_arm_camera_link" reason="Never" />
     <disable_collisions link1="caster_back_right_2_link" link2="palbator_arm_column" reason="Never" />
     <disable_collisions link1="caster_back_right_2_link" link2="palbator_arm_column_link" reason="Never" />
-    <disable_collisions link1="caster_back_right_2_link" link2="palbator_arm_kinect" reason="Never" />
+    <disable_collisions link1="caster_back_right_2_link" link2="palbator_arm_kinect_link" reason="Never" />
     <disable_collisions link1="caster_back_right_2_link" link2="palbator_arm_shoulder_link1" reason="Never" />
     <disable_collisions link1="caster_back_right_2_link" link2="palbator_arm_shoulder_link2" reason="Never" />
     <disable_collisions link1="caster_back_right_2_link" link2="palbator_arm_shoulder_link3" reason="Never" />
@@ -290,7 +294,7 @@
     <disable_collisions link1="caster_front_left_1_link" link2="palbator_arm_camera_link" reason="Never" />
     <disable_collisions link1="caster_front_left_1_link" link2="palbator_arm_column" reason="Never" />
     <disable_collisions link1="caster_front_left_1_link" link2="palbator_arm_column_link" reason="Never" />
-    <disable_collisions link1="caster_front_left_1_link" link2="palbator_arm_kinect" reason="Never" />
+    <disable_collisions link1="caster_front_left_1_link" link2="palbator_arm_kinect_link" reason="Never" />
     <disable_collisions link1="caster_front_left_1_link" link2="palbator_arm_shoulder_link1" reason="Never" />
     <disable_collisions link1="caster_front_left_1_link" link2="palbator_arm_shoulder_link2" reason="Never" />
     <disable_collisions link1="caster_front_left_1_link" link2="palbator_arm_shoulder_link3" reason="Never" />
@@ -304,7 +308,7 @@
     <disable_collisions link1="caster_front_left_2_link" link2="palbator_arm_camera_link" reason="Never" />
     <disable_collisions link1="caster_front_left_2_link" link2="palbator_arm_column" reason="Never" />
     <disable_collisions link1="caster_front_left_2_link" link2="palbator_arm_column_link" reason="Never" />
-    <disable_collisions link1="caster_front_left_2_link" link2="palbator_arm_kinect" reason="Never" />
+    <disable_collisions link1="caster_front_left_2_link" link2="palbator_arm_kinect_link" reason="Never" />
     <disable_collisions link1="caster_front_left_2_link" link2="palbator_arm_shoulder_link1" reason="Never" />
     <disable_collisions link1="caster_front_left_2_link" link2="palbator_arm_shoulder_link2" reason="Never" />
     <disable_collisions link1="caster_front_left_2_link" link2="palbator_arm_shoulder_link3" reason="Never" />
@@ -317,7 +321,7 @@
     <disable_collisions link1="caster_front_right_1_link" link2="palbator_arm_camera_link" reason="Never" />
     <disable_collisions link1="caster_front_right_1_link" link2="palbator_arm_column" reason="Never" />
     <disable_collisions link1="caster_front_right_1_link" link2="palbator_arm_column_link" reason="Never" />
-    <disable_collisions link1="caster_front_right_1_link" link2="palbator_arm_kinect" reason="Never" />
+    <disable_collisions link1="caster_front_right_1_link" link2="palbator_arm_kinect_link" reason="Never" />
     <disable_collisions link1="caster_front_right_1_link" link2="palbator_arm_shoulder_link1" reason="Never" />
     <disable_collisions link1="caster_front_right_1_link" link2="palbator_arm_shoulder_link2" reason="Never" />
     <disable_collisions link1="caster_front_right_1_link" link2="palbator_arm_shoulder_link3" reason="Never" />
@@ -329,7 +333,7 @@
     <disable_collisions link1="caster_front_right_2_link" link2="palbator_arm_camera_link" reason="Never" />
     <disable_collisions link1="caster_front_right_2_link" link2="palbator_arm_column" reason="Never" />
     <disable_collisions link1="caster_front_right_2_link" link2="palbator_arm_column_link" reason="Never" />
-    <disable_collisions link1="caster_front_right_2_link" link2="palbator_arm_kinect" reason="Never" />
+    <disable_collisions link1="caster_front_right_2_link" link2="palbator_arm_kinect_link" reason="Never" />
     <disable_collisions link1="caster_front_right_2_link" link2="palbator_arm_shoulder_link1" reason="Never" />
     <disable_collisions link1="caster_front_right_2_link" link2="palbator_arm_shoulder_link2" reason="Never" />
     <disable_collisions link1="caster_front_right_2_link" link2="palbator_arm_shoulder_link3" reason="Never" />
@@ -340,7 +344,7 @@
     <disable_collisions link1="caster_front_right_2_link" link2="wheel_right_link" reason="Never" />
     <disable_collisions link1="palbator_arm_camera_link" link2="palbator_arm_column" reason="Never" />
     <disable_collisions link1="palbator_arm_camera_link" link2="palbator_arm_column_link" reason="Never" />
-    <disable_collisions link1="palbator_arm_camera_link" link2="palbator_arm_kinect" reason="Never" />
+    <disable_collisions link1="palbator_arm_camera_link" link2="palbator_arm_kinect_link" reason="Never" />
     <disable_collisions link1="palbator_arm_camera_link" link2="palbator_arm_shoulder_link1" reason="Never" />
     <disable_collisions link1="palbator_arm_camera_link" link2="palbator_arm_shoulder_link2" reason="Adjacent" />
     <disable_collisions link1="palbator_arm_camera_link" link2="palbator_arm_shoulder_link3" reason="Never" />
@@ -350,13 +354,13 @@
     <disable_collisions link1="palbator_arm_camera_link" link2="wheel_left_link" reason="Never" />
     <disable_collisions link1="palbator_arm_camera_link" link2="wheel_right_link" reason="Never" />
     <disable_collisions link1="palbator_arm_column" link2="palbator_arm_column_link" reason="Adjacent" />
-    <disable_collisions link1="palbator_arm_column" link2="palbator_arm_kinect" reason="Adjacent" />
+    <disable_collisions link1="palbator_arm_column" link2="palbator_arm_kinect_link" reason="Adjacent" />
     <disable_collisions link1="palbator_arm_column" link2="palbator_arm_shoulder_link1" reason="Never" />
     <disable_collisions link1="palbator_arm_column" link2="palbator_arm_shoulder_link2" reason="Never" />
     <disable_collisions link1="palbator_arm_column" link2="palbator_arm_wrist_link1" reason="Never" />
     <disable_collisions link1="palbator_arm_column" link2="wheel_left_link" reason="Never" />
     <disable_collisions link1="palbator_arm_column" link2="wheel_right_link" reason="Never" />
-    <disable_collisions link1="palbator_arm_column_link" link2="palbator_arm_kinect" reason="Never" />
+    <disable_collisions link1="palbator_arm_column_link" link2="palbator_arm_kinect_link" reason="Never" />
     <disable_collisions link1="palbator_arm_column_link" link2="palbator_arm_shoulder_link1" reason="Adjacent" />
     <disable_collisions link1="palbator_arm_column_link" link2="palbator_arm_shoulder_link2" reason="Never" />
     <disable_collisions link1="palbator_arm_column_link" link2="palbator_arm_shoulder_link3" reason="Never" />
@@ -365,14 +369,14 @@
     <disable_collisions link1="palbator_arm_column_link" link2="palbator_arm_wrist_link3" reason="Never" />
     <disable_collisions link1="palbator_arm_column_link" link2="wheel_left_link" reason="Never" />
     <disable_collisions link1="palbator_arm_column_link" link2="wheel_right_link" reason="Never" />
-    <disable_collisions link1="palbator_arm_kinect" link2="palbator_arm_shoulder_link1" reason="Never" />
-    <disable_collisions link1="palbator_arm_kinect" link2="palbator_arm_shoulder_link2" reason="Never" />
-    <disable_collisions link1="palbator_arm_kinect" link2="palbator_arm_shoulder_link3" reason="Never" />
-    <disable_collisions link1="palbator_arm_kinect" link2="palbator_arm_wrist_link1" reason="Never" />
-    <disable_collisions link1="palbator_arm_kinect" link2="palbator_arm_wrist_link2" reason="Never" />
-    <disable_collisions link1="palbator_arm_kinect" link2="palbator_arm_wrist_link3" reason="Never" />
-    <disable_collisions link1="palbator_arm_kinect" link2="wheel_left_link" reason="Never" />
-    <disable_collisions link1="palbator_arm_kinect" link2="wheel_right_link" reason="Never" />
+    <disable_collisions link1="palbator_arm_kinect_link" link2="palbator_arm_shoulder_link1" reason="Never" />
+    <disable_collisions link1="palbator_arm_kinect_link" link2="palbator_arm_shoulder_link2" reason="Never" />
+    <disable_collisions link1="palbator_arm_kinect_link" link2="palbator_arm_shoulder_link3" reason="Never" />
+    <disable_collisions link1="palbator_arm_kinect_link" link2="palbator_arm_wrist_link1" reason="Never" />
+    <disable_collisions link1="palbator_arm_kinect_link" link2="palbator_arm_wrist_link2" reason="Never" />
+    <disable_collisions link1="palbator_arm_kinect_link" link2="palbator_arm_wrist_link3" reason="Never" />
+    <disable_collisions link1="palbator_arm_kinect_link" link2="wheel_left_link" reason="Never" />
+    <disable_collisions link1="palbator_arm_kinect_link" link2="wheel_right_link" reason="Never" />
     <disable_collisions link1="palbator_arm_shoulder_link1" link2="palbator_arm_shoulder_link2" reason="Adjacent" />
     <disable_collisions link1="palbator_arm_shoulder_link1" link2="palbator_arm_wrist_link1" reason="Never" />
     <disable_collisions link1="palbator_arm_shoulder_link1" link2="palbator_arm_wrist_link2" reason="Never" />

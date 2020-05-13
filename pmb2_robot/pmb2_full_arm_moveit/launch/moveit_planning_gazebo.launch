@@ -17,8 +17,8 @@
   </include>
 
   <!-- Run Rviz -->
-  <include file="$(find pmb2_full_arm_moveit)/launch/moveit_rviz.launch">
+  <!-- <include file="$(find pmb2_full_arm_moveit)/launch/moveit_rviz.launch">
     <arg name="config" value="true"/>
-  </include>
+  </include> -->
 
 </launch>

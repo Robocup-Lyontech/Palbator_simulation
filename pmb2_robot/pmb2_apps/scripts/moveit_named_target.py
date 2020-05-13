@@ -14,7 +14,7 @@ class MoveitArmControl:
         rospy.init_node('move_group_python_interface_tutorial', anonymous=True)
         self.robot = moveit_commander.RobotCommander()
         self.scene = moveit_commander.PlanningSceneInterface()
-        self.group = moveit_commander.MoveGroupCommander("pmb2_arm")
+        self.group = moveit_commander.MoveGroupCommander("pmb2_arm_group")
         self.display_trajectory_publisher = rospy.Publisher('/move_group/display_planned_path',
                                                             moveit_msgs.msg.DisplayTrajectory,queue_size=10)
         print "============ Waiting for RVIZ..."
@@ -34,12 +34,6 @@ class MoveitArmControl:
         # rospy.sleep(5)
         self.group.go(wait=True)
 
-    def change_target_name(self, nameTarget):
-        if nameTarget == "B":
-            nameTarget = "D"
-        elif nameTarget == "D":
-            nameTarget = "B"
-        return nameTarget
 
 if __name__ == '__main__':
 

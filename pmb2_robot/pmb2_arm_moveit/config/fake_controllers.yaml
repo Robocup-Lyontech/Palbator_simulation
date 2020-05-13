@@ -1,5 +1,5 @@
 controller_list:
-  - name: fake_pm2b_arm_group_controller
+  - name: fake_pmb2_arm_group_controller
     joints:
       - palbator_arm_column_joint
       - palbator_arm_shoulder_1_joint
