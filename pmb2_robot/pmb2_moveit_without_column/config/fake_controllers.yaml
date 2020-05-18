@@ -1,5 +1,5 @@
 controller_list:
-  - name: fake_group_without_column_controller
+  - name: fake_pmb2_arm_controller
     joints:
       - palbator_arm_shoulder_1_joint
       - palbator_arm_shoulder_2_joint
@@ -7,3 +7,6 @@ controller_list:
       - palbator_arm_wrist_1_joint
       - palbator_arm_wrist_2_joint
       - palbator_arm_wrist_3_joint
+  - name: fake_pmb2_column_controller
+    joints:
+      - palbator_arm_column_joint

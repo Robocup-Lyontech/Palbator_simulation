@@ -12,3 +12,10 @@ controller_list:
           - palbator_arm_wrist_2_joint
           - palbator_arm_wrist_3_joint
           - palbator_arm_end_joint
+
+    - name: pmb2_arm_controller/column_trajectory_controller
+      action_ns: follow_joint_trajectory
+      type: FollowJointTrajectory
+      default: true
+      joints:
+          - palbator_arm_column_joint

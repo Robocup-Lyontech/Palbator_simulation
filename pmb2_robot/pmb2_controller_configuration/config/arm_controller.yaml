@@ -75,22 +75,38 @@ pmb2_arm_controller:
 
 # Trajectory Controllers --------------------------------------
 
-  arm_trajectory_controller:
+  column_trajectory_controller:
     type: "effort_controllers/JointTrajectoryController"
     joints:
       - palbator_arm_column_joint
+    constraints:
+      goal_time: 0.6
+      # vel_tolerance is 0 for due to the movegroup/follow_joint_trajectory/goal tolerance is empty
+      stopped_velocity_tolerance: 0.05
+      palbator_arm_column_joint: {trajectory: 0.1, goal: 0.1}
+
+    gains: # Required because we're controlling an effort interface
+      palbator_arm_column_joint: {p: 100,  d: 5, i: 2, i_clamp: 2}
+
+    stop_trajectory_duration: 0.5
+    state_publish_rate:  25
+    action_monitor_rate: 10
+
+  arm_trajectory_controller:
+    type: "effort_controllers/JointTrajectoryController"
+    joints:
+      
       - palbator_arm_shoulder_1_joint
       - palbator_arm_shoulder_2_joint
       - palbator_arm_shoulder_3_joint
       - palbator_arm_wrist_1_joint
       - palbator_arm_wrist_2_joint
       - palbator_arm_wrist_3_joint
-      # - palbator_arm_end_link
+
     constraints:
       goal_time: 0.6
       # vel_tolerance is 0 for due to the movegroup/follow_joint_trajectory/goal tolerance is empty
       stopped_velocity_tolerance: 0
-      palbator_arm_column_joint: {trajectory: 0.1, goal: 0.1}
       palbator_arm_shoulder_1_joint: {trajectory: 0.1, goal: 0.1}
       palbator_arm_shoulder_2_joint: {trajectory: 0.1, goal: 0.1}
       palbator_arm_shoulder_3_joint: {trajectory: 0.1, goal: 0.1}
@@ -101,7 +117,6 @@ pmb2_arm_controller:
     gains: # Required because we're controlling an effort interface
       # shoulder_1_joint: {p: 10,  d: 0.1, i: 0, i_clamp: 0}
       # shoulder_2_joint: {p: 10,  d: 0.1, i: 0, i_clamp: 0}
-      palbator_arm_column_joint: {p: 100,  d: 5, i: 2, i_clamp: 2}
       palbator_arm_shoulder_1_joint: {p: 100,  d: 5, i: 2, i_clamp: 2}
       palbator_arm_shoulder_2_joint: {p: 100,  d: 5, i: 2, i_clamp: 2}
       palbator_arm_shoulder_3_joint: {p: 100,  d: 5, i: 2, i_clamp: 2}

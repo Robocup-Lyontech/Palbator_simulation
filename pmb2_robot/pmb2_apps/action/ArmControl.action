@@ -1,0 +1,9 @@
+#goal
+string action
+string object_label
+---
+#result
+string action_output
+---
+#feedback
+string action_feedback
