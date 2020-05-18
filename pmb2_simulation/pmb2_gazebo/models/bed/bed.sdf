@@ -1,6 +1,6 @@
 <sdf version="1.4">
   <model name="bed">
-    <static>0</static>
+    <static>1</static>
     <link name="link">
       <collision name="colision1">
         <pose>0 0 0 0 0 0</pose>
