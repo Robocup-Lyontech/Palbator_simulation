@@ -11,8 +11,9 @@ from pmb2_apps.msg import ArmControlAction, ArmControlResult
 
 from tf import TransformListener
 from geometry_msgs.msg import PointStamped
-
-
+import json
+import numpy as np
+import math
 
 class MoveitGlobalController:
 
@@ -49,20 +50,70 @@ class MoveitGlobalController:
 
             rospy.loginfo("Object coords in map : %s",str(object_point))
 
+            target = listener.transformPoint("base_footprint",object_point)
 
-            # rospy.sleep(5)
+            rospy.loginfo("Object coords in base_footprint : %s",str(target))
 
-            p = listener.transformPoint("base_footprint",object_point)
+            target_x = target.point.x
+            target_y = target.point.y
+            target_z = target.point.z
 
-            rospy.loginfo("Object coords in base_footprint : %s",str(p))
+            if target_x > 0:
 
-            if self.first_move == True:
-                self.first_move = False
-                self._arm_controller.move_arm_to_pose("pointing_pose")
+                alpha = np.arctan(target_y/target_x) 
 
-            self._arm_controller.move_arm(p.point.x,p.point.y)
+            else:
+                if target_y > 0:
+                    alpha = math.pi + np.arctan(target_y/target_x) 
+                else:
+                    alpha = -math.pi + np.arctan(target_y/target_x) 
 
-            # self._column_controller.move_column(req.z)
+            rospy.logwarn("ANGLE PAR RAPPORT A BASE_FOOTPRINT %s radians %s degres",str(alpha),str((alpha*360)/(2*math.pi)))
+
+            rotation_need = False
+
+            radians_needed_for_rotation = 0.0
+            if alpha < 0 and alpha > -math.pi/2:
+                rospy.logwarn("NO ROTATION NEEDED")
+                
+            elif alpha > 0 and alpha < math.pi/2:
+                rospy.logwarn("PI/2 ROTATION NEEDED")
+                rotation_need = True
+                radians_needed_for_rotation = math.pi/2
+
+            elif alpha > -math.pi and alpha < -math.pi/2:
+                rospy.logwarn("-PI/2 ROTATION NEEDED")
+                rotation_need = True
+                radians_needed_for_rotation = -math.pi/2
+
+            
+            elif alpha > math.pi/2 and alpha < math.pi:
+                rospy.logwarn("PI ROTATION NEEDED")
+                rotation_need = True
+                radians_needed_for_rotation = math.pi
+
+
+            if rotation_need:
+                json_result = {
+                    "action": goal.action,
+                    "rotationNeed": radians_needed_for_rotation
+                }
+                action_result.action_output = json.dumps(json_result)
+            else:
+
+                if self.first_move == True:
+                    self.first_move = False
+                    self._arm_controller.move_arm_to_pose("pointing_pose")
+
+                self._arm_controller.move_arm(target_x,target_y)
+
+                self._column_controller.move_column(req.z)
+
+                json_result = {
+                    "action": goal.action,
+                    "status": 'OK'
+                }
+                action_result.action_output = json.dumps(json_result)
 
             isActionSucceed = True
 
@@ -71,7 +122,6 @@ class MoveitGlobalController:
 
         if isActionSucceed:
             rospy.loginfo("Action %s succeeded",goal.action)
-            action_result.action_output = 'OK'
             self._arm_control_server.set_succeeded(action_result)
         else:
             rospy.loginfo("Action %s aborted",goal.action)

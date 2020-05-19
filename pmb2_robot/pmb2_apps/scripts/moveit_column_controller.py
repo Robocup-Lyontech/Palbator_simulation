@@ -22,35 +22,41 @@ class MoveitColumnController:
         self.group = moveit_commander.MoveGroupCommander("pmb2_column")
 
         self.display_trajectory_publisher = rospy.Publisher('/move_group_column/display_planned_path', moveit_msgs.msg.DisplayTrajectory,queue_size=10)
-
-
-        self.sub = rospy.Subscriber("/colonne_pose",Float32,self.move_column_sub)
-
+        self.minimum_column = 0.35 + 0.06 #offset for gazebo
+        self.maximum_column = 1.35
         rospy.logwarn("COLUMN CONTROLLER ON")
 
-    def move_column_sub(self,req):
+    # def move_column_sub(self,req):
 
-        column_pose_target = Pose()
+    #     column_pose_target = Pose()
 
-        column_pose_target.position.z = req.data
-        column_pose_target.orientation.w = 1.0
-        self.group.set_pose_reference_frame("base_footprint")
-        self.group.set_joint_value_target(column_pose_target,True)
+    #     column_pose_target.position.z = req.data
+    #     column_pose_target.orientation.w = 1.0
+    #     self.group.set_pose_reference_frame("base_footprint")
+    #     self.group.set_joint_value_target(column_pose_target,True)
 
-        plan1 = self.group.plan()
-        self.display_trajectory = moveit_msgs.msg.DisplayTrajectory()
+    #     plan1 = self.group.plan()
+    #     self.display_trajectory = moveit_msgs.msg.DisplayTrajectory()
 
-        self.display_trajectory.trajectory_start = self.robot.get_current_state()
-        self.display_trajectory.trajectory.append(plan1)
-        self.display_trajectory_publisher.publish(self.display_trajectory)
-        print "============ Waiting while RVIZ displays plan1..."
-        rospy.sleep(5)
-        self.group.go(wait=True)
+    #     self.display_trajectory.trajectory_start = self.robot.get_current_state()
+    #     self.display_trajectory.trajectory.append(plan1)
+    #     self.display_trajectory_publisher.publish(self.display_trajectory)
+    #     print "============ Waiting while RVIZ displays plan1..."
+    #     rospy.sleep(5)
+    #     self.group.go(wait=True)
 
     def move_column(self,z_target):
         column_pose_target = Pose()
+        if z_target < self.minimum_column:
+            column_pose_target.position.z = self.minimum_column
 
-        column_pose_target.position.z = z_target
+        elif z_target > self.maximum_column:
+            column_pose_target.position.z = self.maximum_column
+
+        else:
+            column_pose_target.position.z = z_target
+        
+
         column_pose_target.orientation.w = 1.0
         self.group.set_pose_reference_frame("base_footprint")
         self.group.set_joint_value_target(column_pose_target,True)
