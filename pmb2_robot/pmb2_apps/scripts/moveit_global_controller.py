@@ -27,6 +27,10 @@ class MoveitGlobalController:
         self.first_move = True
         self.sub = rospy.Subscriber("/global_point",Point,self.handle_new_point)
 
+        self._column_controller.move_column_to_pose("travelling_pose")
+        self._arm_controller.move_arm_to_pose("travelling_pose")
+
+
         self._arm_control_server = actionlib.SimpleActionServer("arm_control_action",ArmControlAction,self.executeActionServer, False)
         self._arm_control_server.start()
 

@@ -26,24 +26,18 @@ class MoveitColumnController:
         self.maximum_column = 1.35
         rospy.logwarn("COLUMN CONTROLLER ON")
 
-    # def move_column_sub(self,req):
+    def move_column_to_pose(self,pose_name):
+        self.group.set_named_target(pose_name)
 
-    #     column_pose_target = Pose()
+        plan1 = self.group.plan()
+        self.display_trajectory = moveit_msgs.msg.DisplayTrajectory()
 
-    #     column_pose_target.position.z = req.data
-    #     column_pose_target.orientation.w = 1.0
-    #     self.group.set_pose_reference_frame("base_footprint")
-    #     self.group.set_joint_value_target(column_pose_target,True)
-
-    #     plan1 = self.group.plan()
-    #     self.display_trajectory = moveit_msgs.msg.DisplayTrajectory()
-
-    #     self.display_trajectory.trajectory_start = self.robot.get_current_state()
-    #     self.display_trajectory.trajectory.append(plan1)
-    #     self.display_trajectory_publisher.publish(self.display_trajectory)
-    #     print "============ Waiting while RVIZ displays plan1..."
-    #     rospy.sleep(5)
-    #     self.group.go(wait=True)
+        self.display_trajectory.trajectory_start = self.robot.get_current_state()
+        self.display_trajectory.trajectory.append(plan1)
+        self.display_trajectory_publisher.publish(self.display_trajectory)
+        print "============ Waiting while RVIZ displays move_column_to_pose_plan..."
+        # rospy.sleep(5)
+        self.group.go(wait=True)
 
     def move_column(self,z_target):
         column_pose_target = Pose()
