@@ -1,0 +1,6 @@
+<launch>    
+    <include file="$(find pmb2_moveit_without_column)/launch/moveit_planning_gazebo.launch" />
+
+    <node name="moveit_global_controller" pkg="pmb2_apps" type="moveit_global_controller.py" output="screen" />
+
+</launch>
