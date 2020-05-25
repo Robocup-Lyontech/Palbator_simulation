@@ -3053,16 +3053,6 @@
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
-      <model name='ycb-tuna'>
-        <pose frame=''>2.82333 2.08808 0 0 -0 0</pose>
-        <scale>1 1 1</scale>
-        <link name='link_3'>
-          <pose frame=''>2.82333 2.08808 0 0 -0 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model>
       <model name='ycb-windex'>
         <pose frame=''>3.51273 3.49556 0.656992 0 -0 0</pose>
         <scale>1 1 1</scale>
