@@ -42,18 +42,18 @@ class MoveitGlobalController:
             listener = TransformListener()
             object_name_TF = goal.object_label
             now = rospy.Time(0)
-            listener.waitForTransform("/map", object_name_TF, now, rospy.Duration(2))
-            (trans, rot) = listener.lookupTransform("/map", object_name_TF, now)
+            listener.waitForTransform("map", object_name_TF, now, rospy.Duration(20))
+            (trans, rot) = listener.lookupTransform("map", object_name_TF, now)
 
             object_point = PointStamped()
             object_point.header.frame_id = "map"
-            object_point.header.stamp = rospy.Time(0)
+            object_point.header.stamp = now
             object_point.point.x = trans[0]
             object_point.point.y = trans[1]
             object_point.point.z = trans[2]
 
             rospy.loginfo("Object coords in map : %s",str(object_point))
-
+            listener.waitForTransform("/map", "/base_footprint", now, rospy.Duration(20))
             target = listener.transformPoint("base_footprint",object_point)
 
             rospy.loginfo("Object coords in base_footprint : %s",str(target))
@@ -111,7 +111,7 @@ class MoveitGlobalController:
 
                 self._arm_controller.move_arm(target_x,target_y)
 
-                self._column_controller.move_column(req.z)
+                self._column_controller.move_column(target_z)
 
                 json_result = {
                     "action": goal.action,
