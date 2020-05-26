@@ -62,7 +62,7 @@ class MoveitColumnController:
         self.display_trajectory.trajectory.append(plan1)
         self.display_trajectory_publisher.publish(self.display_trajectory)
         print "============ Waiting while RVIZ displays move_column_plan..."
-        rospy.sleep(5)
+        # rospy.sleep(5)
         self.group.go(wait=True)
 
 

@@ -41,91 +41,103 @@ class MoveitGlobalController:
     def executeActionServer(self,goal):
         isActionSucceed = False
         action_result = ArmControlResult()
-        try:
-            listener = TransformListener()
-            object_name_TF = goal.object_label
-            now = rospy.Time(0)
-            listener.waitForTransform("map", object_name_TF, now, rospy.Duration(20))
-            (trans, rot) = listener.lookupTransform("map", object_name_TF, now)
+        if goal.action == 'Pointing':
+            try:
+                listener = TransformListener()
+                object_name_TF = goal.object_label
+                now = rospy.Time(0)
+                listener.waitForTransform("map", object_name_TF, now, rospy.Duration(20))
+                (trans, rot) = listener.lookupTransform("map", object_name_TF, now)
 
-            object_point = PointStamped()
-            object_point.header.frame_id = "map"
-            object_point.header.stamp = now
-            object_point.point.x = trans[0]
-            object_point.point.y = trans[1]
-            object_point.point.z = trans[2]
+                object_point = PointStamped()
+                object_point.header.frame_id = "map"
+                object_point.header.stamp = now
+                object_point.point.x = trans[0]
+                object_point.point.y = trans[1]
+                object_point.point.z = trans[2]
 
-            rospy.loginfo("Object coords in map : %s",str(object_point))
-            listener.waitForTransform("/map", "/base_footprint", now, rospy.Duration(20))
-            target = listener.transformPoint("base_footprint",object_point)
+                rospy.loginfo("Object coords in map : %s",str(object_point))
+                listener.waitForTransform("/map", "/base_footprint", now, rospy.Duration(20))
+                target = listener.transformPoint("base_footprint",object_point)
 
-            rospy.loginfo("Object coords in base_footprint : %s",str(target))
+                rospy.loginfo("Object coords in base_footprint : %s",str(target))
 
-            target_x = target.point.x
-            target_y = target.point.y
-            target_z = target.point.z
+                target_x = target.point.x
+                target_y = target.point.y
+                target_z = target.point.z
 
-            if target_x > 0:
+                if target_x > 0:
 
-                alpha = np.arctan(target_y/target_x) 
+                    alpha = np.arctan(target_y/target_x) 
 
-            else:
-                if target_y > 0:
-                    alpha = math.pi + np.arctan(target_y/target_x) 
                 else:
-                    alpha = -math.pi + np.arctan(target_y/target_x) 
+                    if target_y > 0:
+                        alpha = math.pi + np.arctan(target_y/target_x) 
+                    else:
+                        alpha = -math.pi + np.arctan(target_y/target_x) 
 
-            rospy.logwarn("ANGLE PAR RAPPORT A BASE_FOOTPRINT %s radians %s degres",str(alpha),str((alpha*360)/(2*math.pi)))
+                rospy.logwarn("ANGLE PAR RAPPORT A BASE_FOOTPRINT %s radians %s degres",str(alpha),str((alpha*360)/(2*math.pi)))
 
-            rotation_need = False
+                rotation_need = False
 
-            radians_needed_for_rotation = 0.0
-            if alpha < 0 and alpha > -math.pi/2:
-                rospy.logwarn("NO ROTATION NEEDED")
+                radians_needed_for_rotation = 0.0
+                if alpha < 0 and alpha > -math.pi/2:
+                    rospy.logwarn("NO ROTATION NEEDED")
+                    
+                elif alpha > 0 and alpha < math.pi/2:
+                    rospy.logwarn("PI/2 ROTATION NEEDED")
+                    rotation_need = True
+                    radians_needed_for_rotation = math.pi/2
+
+                elif alpha > -math.pi and alpha < -math.pi/2:
+                    rospy.logwarn("-PI/2 ROTATION NEEDED")
+                    rotation_need = True
+                    radians_needed_for_rotation = -math.pi/2
+
                 
-            elif alpha > 0 and alpha < math.pi/2:
-                rospy.logwarn("PI/2 ROTATION NEEDED")
-                rotation_need = True
-                radians_needed_for_rotation = math.pi/2
-
-            elif alpha > -math.pi and alpha < -math.pi/2:
-                rospy.logwarn("-PI/2 ROTATION NEEDED")
-                rotation_need = True
-                radians_needed_for_rotation = -math.pi/2
-
-            
-            elif alpha > math.pi/2 and alpha < math.pi:
-                rospy.logwarn("PI ROTATION NEEDED")
-                rotation_need = True
-                radians_needed_for_rotation = math.pi
+                elif alpha > math.pi/2 and alpha < math.pi:
+                    rospy.logwarn("PI ROTATION NEEDED")
+                    rotation_need = True
+                    radians_needed_for_rotation = math.pi
 
 
-            if rotation_need:
-                json_result = {
-                    "action": goal.action,
-                    "rotationNeed": radians_needed_for_rotation
-                }
-                action_result.action_output = json.dumps(json_result)
-            else:
+                if rotation_need:
+                    json_result = {
+                        "action": goal.action,
+                        "rotationNeed": radians_needed_for_rotation
+                    }
+                    action_result.action_output = json.dumps(json_result)
+                else:
 
-                if self.first_move == True:
-                    self.first_move = False
-                    self._arm_controller.move_arm_to_pose("pointing_pose")
+                    if self.first_move == True:
+                        self.first_move = False
+                        self._arm_controller.move_arm_to_pose("pointing_pose")
 
-                self._arm_controller.move_arm(target_x,target_y)
+                    self._arm_controller.move_arm(target_x,target_y)
 
-                self._column_controller.move_column(target_z)
+                    self._column_controller.move_column(target_z)
 
-                json_result = {
-                    "action": goal.action,
-                    "status": 'OK'
-                }
-                action_result.action_output = json.dumps(json_result)
+                    json_result = {
+                        "action": goal.action,
+                        "status": 'OK'
+                    }
+                    action_result.action_output = json.dumps(json_result)
 
+                isActionSucceed = True
+
+            except Exception as e:
+                rospy.logwarn("unable to find or launch function corresponding to the action %s:, error:[%s]",str(goal.action), str(e))
+
+
+        elif goal.action == 'Travelling':
+            self._column_controller.move_column_to_pose("travelling_pose")
+            self._arm_controller.move_arm_to_pose("travelling_pose")
+            json_result = {
+                "action": goal.action,
+                "status": 'OK'
+            }
+            action_result.action_output = json.dumps(json_result)
             isActionSucceed = True
-
-        except Exception as e:
-            rospy.logwarn("unable to find or launch function corresponding to the action %s:, error:[%s]",str(goal.action), str(e))
 
         if isActionSucceed:
             rospy.loginfo("Action %s succeeded",goal.action)
