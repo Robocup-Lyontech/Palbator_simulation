@@ -22,8 +22,11 @@ class MoveitGlobalController:
         rospy.init_node('moveit_global_controller',anonymous=True)
         self.scene = moveit_commander.PlanningSceneInterface()
 
-        self._arm_controller = MoveitArmController()
+       
         self._column_controller = MoveitColumnController()
+
+        self._arm_controller = MoveitArmController()
+        
         self.first_move = True
         self.sub = rospy.Subscriber("/global_point",Point,self.handle_new_point)
 

@@ -24,7 +24,7 @@ class MoveitArmController:
 
         self.display_trajectory_publisher = rospy.Publisher('/move_group_arm/display_planned_path', moveit_msgs.msg.DisplayTrajectory,queue_size=10)
         self._tflistener = TransformListener()
-        self.arm_length = 0.608
+        self.arm_length = 0.758
         
 
         rospy.logwarn("ARM CONTROLLER ON")
