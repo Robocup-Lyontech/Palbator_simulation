@@ -1,0 +1,18 @@
+#PARAMETERS FOR GLOBAL CONTROLLER:
+Moveit_global_controller_action_name: "Moveit_Palbator_global_action"
+
+#PARAMETERS FOR ARM CONTROLLER:
+Palbator_arm_parameters: {
+  "Palbator_arm_length": 0.608,
+  "Palbator_arm_move_group": "pmb2_arm",
+  "display_arm_planned_path_topic": "/move_group_arm/display_planned_path"
+}
+
+#PARAMETERS FOR COLUMN CONTROLLER:
+Palbator_column_parameters: {
+  "Palbator_column_move_group": "pmb2_column",
+  "minimum_height": 0.41,
+  "maximum_height": 1.35,
+  "display_column_planned_path_topic": "/move_group_column/display_planned_path"
+}
+

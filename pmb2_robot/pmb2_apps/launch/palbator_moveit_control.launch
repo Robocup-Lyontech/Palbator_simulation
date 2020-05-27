@@ -1,6 +1,11 @@
 <launch>    
     <include file="$(find pmb2_moveit_without_column)/launch/moveit_planning_gazebo.launch" />
 
-    <node name="moveit_global_controller" pkg="pmb2_apps" type="moveit_global_controller.py" output="screen" />
+    <arg name="config" default="$(find pmb2_apps)/config/config_global_moveit_palbator.yaml" doc="Path to parameter config file"/>
+
+
+    <node name="moveit_global_controller" pkg="pmb2_apps" type="moveit_global_controller.py" output="screen">
+        <rosparam file="$(arg config)"/>
+    </node>
 
 </launch>

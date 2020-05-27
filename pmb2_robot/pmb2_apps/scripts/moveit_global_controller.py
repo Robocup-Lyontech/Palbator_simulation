@@ -18,30 +18,49 @@ import math
 class MoveitGlobalController:
 
     def __init__(self):
+        """
+        Initializes the global controller which will control Palbator Moveit arm and column controllers
+        """
         moveit_commander.roscpp_initialize(sys.argv)
         rospy.init_node('moveit_global_controller',anonymous=True)
         self.scene = moveit_commander.PlanningSceneInterface()
 
-       
-        self._column_controller = MoveitColumnController()
+        if rospy.has_param("~Palbator_column_parameters"):
+            column_parameters = rospy.get_param("~Palbator_column_parameters")
+            self._column_controller = MoveitColumnController(column_parameters)
+        else:
+            rospy.logerr("{class_name} : No parameters specified for Moveit Palbator Column controller. Can't start column controller.")
 
-        self._arm_controller = MoveitArmController()
-        
+        if rospy.has_param("~Palbator_arm_parameters"):
+            arm_parameters = rospy.get_param("~Palbator_arm_parameters")
+            self._arm_controller = MoveitArmController(arm_parameters)
+        else:
+            rospy.logerr("{class_name} : No parameters specified for Moveit Palbator Arm controller. Can't start arm controller.")
+            
         self.first_move = True
-        self.sub = rospy.Subscriber("/global_point",Point,self.handle_new_point)
 
         self._column_controller.move_column_to_pose("travelling_pose")
         self._arm_controller.move_arm_to_pose("travelling_pose")
 
+        if rospy.has_param("~Moveit_global_controller_action_name"):
+            action_server_name = rospy.get_param("~Moveit_global_controller_action_name")
+            self._arm_control_server = actionlib.SimpleActionServer(action_server_name,ArmControlAction,self.executeActionServer, False)
+            self._arm_control_server.start()
+        else:
+            rospy.logerr("{class_name} : No name specified for Global Moveit Palbator controller action server. Can't start action server.")
 
-        self._arm_control_server = actionlib.SimpleActionServer("arm_control_action",ArmControlAction,self.executeActionServer, False)
-        self._arm_control_server.start()
-
+        rospy.loginfo("{class_name} : Global Palbator Moveit Controller initialized".format(class_name=self.__class__.__name__))
 
     def executeActionServer(self,goal):
+        """
+        Action Server callback for Moveit global control. Can point an object or move in a defined position to travel without risks.
+        :param goal: contains action data to do
+        :type goal: ArmControlGoal
+        """
         isActionSucceed = False
         action_result = ArmControlResult()
         if goal.action == 'Pointing':
+            rospy.loginfo("{class_name} : Received pointing action goal".format(class_name=self.__class__.__name__))
             try:
                 listener = TransformListener()
                 object_name_TF = goal.object_label
@@ -56,11 +75,11 @@ class MoveitGlobalController:
                 object_point.point.y = trans[1]
                 object_point.point.z = trans[2]
 
-                rospy.loginfo("Object coords in map : %s",str(object_point))
+                rospy.loginfo("{class_name} : Object coords in map : %s".format(class_name=self.__class__.__name__),str(object_point))
                 listener.waitForTransform("/map", "/base_footprint", now, rospy.Duration(20))
                 target = listener.transformPoint("base_footprint",object_point)
 
-                rospy.loginfo("Object coords in base_footprint : %s",str(target))
+                rospy.loginfo("{class_name} : Object coords in base_footprint : %s".format(class_name=self.__class__.__name__),str(target))
 
                 target_x = target.point.x
                 target_y = target.point.y
@@ -76,27 +95,27 @@ class MoveitGlobalController:
                     else:
                         alpha = -math.pi + np.arctan(target_y/target_x) 
 
-                rospy.logwarn("ANGLE PAR RAPPORT A BASE_FOOTPRINT %s radians %s degres",str(alpha),str((alpha*360)/(2*math.pi)))
+                rospy.logwarn("{class_name} : ANGLE PAR RAPPORT A BASE_FOOTPRINT %s radians %s degres".format(class_name=self.__class__.__name__),str(alpha),str((alpha*360)/(2*math.pi)))
 
                 rotation_need = False
 
                 radians_needed_for_rotation = 0.0
                 if alpha < 0 and alpha > -math.pi/2:
-                    rospy.logwarn("NO ROTATION NEEDED")
+                    rospy.logwarn("{class_name} : NO ROTATION NEEDED TO POINT".format(class_name=self.__class__.__name__))
                     
                 elif alpha > 0 and alpha < math.pi/2:
-                    rospy.logwarn("PI/2 ROTATION NEEDED")
+                    rospy.logwarn("{class_name} : PI/2 ROTATION NEEDED TO POINT".format(class_name=self.__class__.__name__))
                     rotation_need = True
                     radians_needed_for_rotation = math.pi/2
 
                 elif alpha > -math.pi and alpha < -math.pi/2:
-                    rospy.logwarn("-PI/2 ROTATION NEEDED")
+                    rospy.logwarn("{class_name} : -PI/2 ROTATION NEEDED TO POINT".format(class_name=self.__class__.__name__))
                     rotation_need = True
                     radians_needed_for_rotation = -math.pi/2
 
                 
                 elif alpha > math.pi/2 and alpha < math.pi:
-                    rospy.logwarn("PI ROTATION NEEDED")
+                    rospy.logwarn("{class_name} : PI ROTATION NEEDED TO POINT".format(class_name=self.__class__.__name__))
                     rotation_need = True
                     radians_needed_for_rotation = math.pi
 
@@ -126,10 +145,11 @@ class MoveitGlobalController:
                 isActionSucceed = True
 
             except Exception as e:
-                rospy.logwarn("unable to find or launch function corresponding to the action %s:, error:[%s]",str(goal.action), str(e))
+                rospy.logwarn("{class_name} : unable to find or launch function corresponding to the action %s:, error:[%s]".format(class_name=self.__class__.__name__),str(goal.action), str(e))
 
 
         elif goal.action == 'Travelling':
+            rospy.loginfo("{class_name} : Received travelling action goal".format(class_name=self.__class__.__name__))
             self._column_controller.move_column_to_pose("travelling_pose")
             self._arm_controller.move_arm_to_pose("travelling_pose")
             json_result = {
@@ -140,93 +160,13 @@ class MoveitGlobalController:
             isActionSucceed = True
 
         if isActionSucceed:
-            rospy.loginfo("Action %s succeeded",goal.action)
+            rospy.loginfo("{class_name} : Action %s succeeded".format(class_name=self.__class__.__name__),goal.action)
             self._arm_control_server.set_succeeded(action_result)
         else:
-            rospy.loginfo("Action %s aborted",goal.action)
+            rospy.loginfo("{class_name} : Action %s aborted".format(class_name=self.__class__.__name__),goal.action)
             self._arm_control_server.set_aborted()
         return
-
-
-
-
-
-
-    def handle_new_point(self,req):
-
-        # self.setup_box(req.x,req.y,req.z)
-
-        # rospy.sleep(3)
-
-        object_name = "object_bleach0_TF"
-
-        if self.first_move == True:
-            self.first_move = False
-            self._arm_controller.move_arm_to_pose("pointing_pose")
-
-        self._arm_controller.move_arm(req.x,req.y)
-
-        self._column_controller.move_column(req.z)
-
-
-    def setup_box(self,x,y,z):
-
-        box_pose = PoseStamped()
-
-        box_name = "table1"
-        box_pose.header.frame_id = "base_footprint"
-
-        box_pose.pose.position.x = x
-        box_pose.pose.position.y = y
-        box_pose.pose.position.z = z
-        box_pose.pose.orientation.w = 1.0
-
-        box_size = (0.25, 0.25, 0.25)
-        self.box_name = box_name
-
-        self.scene.add_box(box_name, box_pose, size=box_size)
-        return self.wait_for_state_update(box_is_known=True)
-
-    def wait_for_state_update(self, box_is_known=False, box_is_attached=False, timeout=4):
-        # Copy class variables to local variables to make the web tutorials more clear.
-        # In practice, you should use the class variables directly unless you have a good
-        # reason not to.
-        box_name = self.box_name
-        scene = self.scene
-
-        ## BEGIN_SUB_TUTORIAL wait_for_scene_update
-        ##
-        ## Ensuring Collision Updates Are Receieved
-        ## ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        ## If the Python node dies before publishing a collision object update message, the message
-        ## could get lost and the box will not appear. To ensure that the updates are
-        ## made, we wait until we see the changes reflected in the
-        ## ``get_known_object_names()`` and ``get_known_object_names()`` lists.
-        ## For the purpose of this tutorial, we call this function after adding,
-        ## removing, attaching or detaching an object in the planning scene. We then wait
-        ## until the updates have been made or ``timeout`` seconds have passed
-        start = rospy.get_time()
-        seconds = rospy.get_time()
-        while (seconds - start < timeout) and not rospy.is_shutdown():
-        # Test if the box is in attached objects
-            attached_objects = scene.get_attached_objects([box_name])
-            is_attached = len(attached_objects.keys()) > 0
-
-            # Test if the box is in the scene.
-            # Note that attaching the box will remove it from known_objects
-            is_known = box_name in scene.get_known_object_names()
-
-            # Test if we are in the expected state
-            if (box_is_attached == is_attached) and (box_is_known == is_known):
-                return True
-
-            # Sleep so that we give other threads time on the processor
-            rospy.sleep(0.1)
-            seconds = rospy.get_time()
-
-        # If we exited the while loop without returning then we timed out
-        return False
-        ## END_SUB_TUTORIAL
+    
 
 if __name__ == "__main__":
 
