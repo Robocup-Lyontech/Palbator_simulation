@@ -129,6 +129,91 @@
       </link>
       <pose frame=''>-2 -5 0 0 -0 0</pose>
     </model>
+
+    <!-- Adding citizen_extras_female_02-->
+    <include>
+      <name>female02</name>
+      <uri>model://citizen_extras_female_02</uri>
+      <pose>3.7 0.53 0.01 0.0125 0.0023 -1.314508</pose>
+    </include>
+    <light type="point" name="female02light">
+      <!-- Light in front of the face of the model -->
+      <pose>3.2 0.5 1.7 0 0 0</pose>
+      <diffuse>0.5 0.5 0.5 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <!-- short range so it doesn't light the ground -->
+        <range>1.0</range>
+        <linear>0.01</linear>
+        <constant>0.3</constant>
+        <quadratic>0.0</quadratic>
+      </attenuation>
+      <direction>0 0 -1</direction>
+      <spot>
+        <inner_angle>0.6</inner_angle>
+        <outer_angle>0.8</outer_angle>
+        <falloff>1.2</falloff>
+      </spot>
+      <cast_shadows>false</cast_shadows>
+    </light>
+
+    <!-- Add male03 -->
+    <include>
+      <name>male03</name>
+      <uri>model://citizen_extras_male_03</uri>
+      <pose>-1.2 6.1 0.01 0 -0.025 0.982961</pose>
+    </include>
+  
+    <light type="point" name="male03light">
+      <!-- Light in front of the face of the model -->
+      <pose>-0.8 5.8 1.5 0 0 0</pose>
+      <diffuse>0.5 0.5 0.5 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <!-- short range so it doesn't light the ground -->
+        <range>1.0</range>
+        <linear>0.01</linear>
+        <constant>0.3</constant>
+        <quadratic>0.0</quadratic>
+      </attenuation>
+      <direction>0 0 -1</direction>
+      <spot>
+        <inner_angle>0.6</inner_angle>
+        <outer_angle>0.8</outer_angle>
+        <falloff>1.2</falloff>
+      </spot>
+      <cast_shadows>false</cast_shadows>
+    </light>
+
+    <!-- Add female 03 -->
+    <include>
+      <name>female03</name>
+      <uri>model://citizen_extras_female_03</uri>
+      <pose>2.3 2.5 0.01 0.011 0.0126 3.245099</pose>
+    </include>
+
+    <light type="point" name="female03light">
+      <!-- Light in front of the face of the model -->
+      <pose>2.2 2.7 1.5 0 0 0</pose>
+      <diffuse>0.5 0.5 0.5 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <!-- short range so it doesn't light the ground -->
+        <range>1.0</range>
+        <linear>0.01</linear>
+        <constant>0.3</constant>
+        <quadratic>0.0</quadratic>
+      </attenuation>
+      <direction>0 0 -1</direction>
+      <spot>
+        <inner_angle>0.6</inner_angle>
+        <outer_angle>0.8</outer_angle>
+        <falloff>1.2</falloff>
+      </spot>
+      <cast_shadows>false</cast_shadows>
+    </light>
+
+    
     <model name='ycb-bleach'>
       <link name='link_8'>
         <pose frame=''>0 0 0 0 -0 0</pose>
