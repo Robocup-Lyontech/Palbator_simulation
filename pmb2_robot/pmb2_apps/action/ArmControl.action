@@ -1,6 +1,9 @@
 #goal
 string action
 string object_label
+float32 coord_x
+float32 coord_y
+float32 coord_z
 ---
 #result
 string action_output

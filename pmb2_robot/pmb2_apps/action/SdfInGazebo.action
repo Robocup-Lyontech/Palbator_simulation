@@ -1,3 +1,4 @@
+string action
 string model_name
 string path_to_sdf
 string model_namespace

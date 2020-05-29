@@ -11,7 +11,7 @@ class ArmControl:
 
         rospy.init_node("arm_control_API",anonymous=True)
 
-        self.client = actionlib.SimpleActionClient('arm_control_action', ArmControlAction)
+        self.client = actionlib.SimpleActionClient('Moveit_Palbator_global_action', ArmControlAction)
 
         rospy.loginfo("WAITING FOR SERVER")
         self.client.wait_for_server()
@@ -21,8 +21,11 @@ class ArmControl:
         rospy.sleep(3)
 
         self.goal = ArmControlGoal()
-        self.goal.action = 'Pointing Object'
-        self.goal.object_label = 'object_bleach0_TF'
+        self.goal.action = 'PointingXYZ'
+        # self.goal.object_label = 'object_bleach0_TF'
+        self.goal.coord_x = 1.5
+        self.goal.coord_y = 5.5
+        self.goal.coord_z = 1.2
 
         self.client.send_goal(self.goal)
 

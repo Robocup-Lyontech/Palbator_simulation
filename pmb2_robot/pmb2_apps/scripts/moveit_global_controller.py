@@ -59,21 +59,31 @@ class MoveitGlobalController:
         """
         isActionSucceed = False
         action_result = ArmControlResult()
-        if goal.action == 'Pointing':
+        if 'Pointing' in goal.action:
             rospy.loginfo("{class_name} : Received pointing action goal".format(class_name=self.__class__.__name__))
             try:
                 listener = TransformListener()
-                object_name_TF = goal.object_label
                 now = rospy.Time(0)
-                listener.waitForTransform("map", object_name_TF, now, rospy.Duration(20))
-                (trans, rot) = listener.lookupTransform("map", object_name_TF, now)
 
-                object_point = PointStamped()
-                object_point.header.frame_id = "map"
-                object_point.header.stamp = now
-                object_point.point.x = trans[0]
-                object_point.point.y = trans[1]
-                object_point.point.z = trans[2]
+                if goal.action == 'Pointing':
+                    object_name_TF = goal.object_label
+                    listener.waitForTransform("map", object_name_TF, now, rospy.Duration(20))
+                    (trans, rot) = listener.lookupTransform("map", object_name_TF, now)
+
+                    object_point = PointStamped()
+                    object_point.header.frame_id = "map"
+                    object_point.header.stamp = now
+                    object_point.point.x = trans[0]
+                    object_point.point.y = trans[1]
+                    object_point.point.z = trans[2]
+
+                elif goal.action == 'PointingXYZ':
+                    object_point = PointStamped()
+                    object_point.header.frame_id = "map"
+                    object_point.header.stamp = now
+                    object_point.point.x = goal.coord_x
+                    object_point.point.y = goal.coord_y
+                    object_point.point.z = goal.coord_z
 
                 rospy.loginfo("{class_name} : Object coords in map : %s".format(class_name=self.__class__.__name__),str(object_point))
                 listener.waitForTransform("/map", "/base_footprint", now, rospy.Duration(20))
