@@ -1,0 +1,9 @@
+string model_name
+string path_to_sdf
+string model_namespace
+geometry_msgs/Pose model_pose
+string reference_frame
+---
+string gazebo_result
+---
+string gazebo_feedback

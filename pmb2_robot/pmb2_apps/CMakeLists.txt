@@ -12,6 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
   actionlib_msgs
+  geometry_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -65,7 +66,7 @@ find_package(catkin REQUIRED COMPONENTS
  add_action_files(
    FILES
    ArmControl.action
-#   Action2.action
+   SdfInGazebo.action
  )
 
 ## Generate added messages and services with any dependencies listed here
@@ -73,6 +74,7 @@ find_package(catkin REQUIRED COMPONENTS
    DEPENDENCIES
    std_msgs
    actionlib_msgs
+   geometry_msgs
  )
 
 ################################################
@@ -107,7 +109,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES pmb2_apps
-  CATKIN_DEPENDS roscpp rospy std_msgs actionlib_msgs
+  CATKIN_DEPENDS roscpp rospy std_msgs actionlib_msgs geometry_msgs
 #  DEPENDS system_lib
 )
 
