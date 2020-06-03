@@ -5,7 +5,6 @@ import actionlib
 
 from pmb2_apps.msg import SdfInGazeboAction, SdfInGazeboGoal
 from geometry_msgs.msg import Pose
-
 import tf
 
 
