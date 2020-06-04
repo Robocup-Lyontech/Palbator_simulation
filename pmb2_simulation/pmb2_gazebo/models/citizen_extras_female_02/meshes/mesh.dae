@@ -50,19 +50,20 @@
             <technique sid="COMMON">
                <phong>
                   <emission>
-                     <color>0.000000 0.000000 0.000000 1</color>
-                  </emission>
-                  <ambient>
-                     <color>0.000000 0.000000 0.000000 1</color>
-                  </ambient>
+		     <color>0.3 0.3 0.3 1</color>
+		  </emission>
+		  <ambient>
+		     <color>0.9 0.9 0.9 1</color>
+		  </ambient>
+		  <specular>
+		     <color>0.5 0.5 0.5 1</color>
+		  </specular>
                   <diffuse>
                      <texture texture="_03_-_Default1noCulling-image-sampler" texcoord="UVSET0"/>
                   </diffuse>
-                  <specular>
-                     <color>0.330000 0.330000 0.330000 1</color>
-                  </specular>
+
                   <shininess>
-                     <float>20.000000</float>
+                     <float>50.000000</float>
                   </shininess>
                   <reflectivity>
                      <float>0.100000</float>
@@ -87,19 +88,16 @@
             <technique sid="COMMON">
                <phong>
                   <emission>
-                     <color>0.000000 0.000000 0.000000 1</color>
-                  </emission>
-                  <ambient>
-                     <color>0.000000 0.000000 0.000000 1</color>
-                  </ambient>
-                  <diffuse>
-                     <color>1.000000 1.000000 1.000000 1</color>
-                  </diffuse>
-                  <specular>
-                     <color>0.330000 0.330000 0.330000 1</color>
-                  </specular>
+		     <color>0.3 0.3 0.3 1</color>
+		  </emission>
+		  <ambient>
+		     <color>0.9 0.9 0.9 1</color>
+		  </ambient>
+		  <specular>
+		     <color>0.5 0.5 0.5 1</color>
+		  </specular>
                   <shininess>
-                     <float>20.000000</float>
+                     <float>50.000000</float>
                   </shininess>
                   <reflectivity>
                      <float>0.100000</float>
@@ -134,19 +132,19 @@
             <technique sid="COMMON">
                <phong>
                   <emission>
-                     <color>0.000000 0.000000 0.000000 1</color>
-                  </emission>
-                  <ambient>
-                     <color>0.000000 0.000000 0.000000 1</color>
-                  </ambient>
+		     <color>0.3 0.3 0.3 1</color>
+		  </emission>
+		  <ambient>
+		     <color>0.9 0.9 0.9 1</color>
+		  </ambient>
+		  <specular>
+		     <color>0.5 0.5 0.5 1</color>
+		  </specular>
                   <diffuse>
                      <texture texture="_02_-_Default1noCulling-image-sampler" texcoord="UVSET0"/>
                   </diffuse>
-                  <specular>
-                     <color>0.330000 0.330000 0.330000 1</color>
-                  </specular>
                   <shininess>
-                     <float>20.000000</float>
+                     <float>50.000000</float>
                   </shininess>
                   <reflectivity>
                      <float>0.100000</float>
@@ -181,19 +179,19 @@
             <technique sid="COMMON">
                <phong>
                   <emission>
-                     <color>0.000000 0.000000 0.000000 1</color>
-                  </emission>
-                  <ambient>
-                     <color>0.000000 0.000000 0.000000 1</color>
-                  </ambient>
+		     <color>0.3 0.3 0.3 1</color>
+		  </emission>
+		  <ambient>
+		     <color>0.9 0.9 0.9 1</color>
+		  </ambient>
+		  <specular>
+		     <color>0.5 0.5 0.5 1</color>
+		  </specular>
                   <diffuse>
                      <texture texture="_01_-_Default1noCulling-image-sampler" texcoord="UVSET0"/>
                   </diffuse>
-                  <specular>
-                     <color>0.330000 0.330000 0.330000 1</color>
-                  </specular>
                   <shininess>
-                     <float>20.000000</float>
+                     <float>50.000000</float>
                   </shininess>
                   <reflectivity>
                      <float>0.100000</float>
