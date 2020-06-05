@@ -50,7 +50,7 @@
             <technique sid="COMMON">
                <phong>
                   <emission>
-		     <color>0.3 0.3 0.3 1</color>
+		     <color>0.1 0.1 0.1 1</color>
 		  </emission>
 		  <ambient>
 		     <color>0.9 0.9 0.9 1</color>
@@ -88,7 +88,7 @@
             <technique sid="COMMON">
                <phong>
                   <emission>
-		     <color>0.3 0.3 0.3 1</color>
+		     <color>0.1 0.1 0.1 1</color>
 		  </emission>
 		  <ambient>
 		     <color>0.9 0.9 0.9 1</color>
@@ -132,7 +132,7 @@
             <technique sid="COMMON">
                <phong>
                   <emission>
-		     <color>0.3 0.3 0.3 1</color>
+		     <color>0.1 0.1 0.1 1</color>
 		  </emission>
 		  <ambient>
 		     <color>0.9 0.9 0.9 1</color>
