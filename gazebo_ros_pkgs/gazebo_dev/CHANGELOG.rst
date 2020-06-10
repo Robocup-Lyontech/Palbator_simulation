@@ -2,8 +2,13 @@
 Changelog for package gazebo_dev
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-2.6.9 (2019-11-05)
+3.0.1 (2019-11-05)
 ------------------
+
+3.0.0 (2019-09-09)
+------------------
+* added melodic API changes
+* Contributors: Sai Kishor Kothakota
 
 2.6.8 (2018-10-25)
 ------------------

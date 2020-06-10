@@ -124,7 +124,7 @@ DynamicIntrospection::DynamicIntrospection()
 {
   node_handle_ = ros::NodeHandle();
   introspectionPub_ = node_handle_.advertise<dynamic_introspection::IntrospectionMsg>(
-      "/introspection_data", 10);
+      "/introspection_data/full", 10);
   thread_ = boost::thread(&DynamicIntrospection::publishDataTopic, this);
 }
 
@@ -168,7 +168,7 @@ void DynamicIntrospection::publishDataBag()
     registered_data_.copy();
     generateMessage();
     unlock();
-    bag_.write("/introspection_data", ros::Time::now(), introspectionMessage_);
+    bag_.write("/introspection_data/full", ros::Time::now(), introspectionMessage_);
   }
 }
 

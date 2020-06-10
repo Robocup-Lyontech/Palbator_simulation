@@ -2,6 +2,46 @@
 Changelog for package pal_statistics
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.4.0 (2020-03-13)
+------------------
+* Merge branch 'use-atomic-bool' into 'erbium-devel'
+  Use atomic bool, because we need atomic operation
+  See merge request qa/pal_statistics!18
+* Use atomic bool, because we need atomic operation
+* Contributors: Victor Lopez, victor
+
+1.3.1 (2019-08-28)
+------------------
+* Fix shadow variable warning
+* Contributors: Victor Lopez
+
+1.3.0 (2019-08-12)
+------------------
+* Merge branch 'async-optimizations' into 'erbium-devel'
+  Optimize async update when everything is enabled
+  See merge request qa/pal_statistics!17
+* Smarter clear and resize of vectors when all enabled
+* Optimize async update when everything is enabled
+* Add LGPL3 version text
+* Contributors: Victor Lopez
+
+1.2.1 (2019-04-18)
+------------------
+* Fix stamp of full messages
+* Contributors: Victor Lopez
+
+1.2.0 (2019-04-16)
+------------------
+* Merge branch 'optimized-msg' into 'erbium-devel'
+  Optimized msg
+  See merge request qa/pal_statistics!15
+* Update python api to new msgs
+* Rename full statistics topic
+* Add new messages
+* Change internal structure from vector of pairs to pair of vectors
+* Add missing add_dependencies
+* Contributors: Victor Lopez
+
 1.1.1 (2018-12-19)
 ------------------
 * Merge branch 'correct-stamp' into 'erbium-devel'

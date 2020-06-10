@@ -9,23 +9,11 @@
   <rosparam command="load" file="$(find joint_state_controller)/joint_state_controller.yaml" />
   <rosparam command="load" file="$(find imu_sensor_controller)/imu_sensor_controller.yaml" />
 
-  <rosparam command="load" file="$(find pmb2_controller_configuration)/config/arm_controller.yaml" />
-  <!-- <rosparam command="load" file="$(find pmb2_controller_configuration)/config/arm_controller_without_column.yaml" /> -->
-
-
   <!-- Controllers that come up started -->
   <node name="default_controllers_spawner"
         pkg="controller_manager" type="spawner" output="screen"
         args="--timeout 120
               imu_sensor_controller
               joint_state_controller
-              mobile_base_controller
-              /pmb2_arm_controller/arm_trajectory_controller
-              /pmb2_arm_controller/column_trajectory_controller" />
-              <!--/pmb2_arm_controller/arm_motor1_hand_joint_controller
-              /pmb2_arm_controller/arm_motor2_hand_joint_controller />
-               /pmb2_arm_controller/arm_hand1_fingertip1_joint_controller
-              /pmb2_arm_controller/arm_hand1_fingertip2_joint_controller
-              /pmb2_arm_controller/arm_hand2_fingertip1_joint_controller
-              /pmb2_arm_controller/arm_hand2_fingertip2_joint_controller" /> -->
+              mobile_base_controller" />
 </launch>

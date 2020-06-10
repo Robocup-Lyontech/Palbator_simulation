@@ -505,7 +505,7 @@ void GazeboRosApiPlugin::advertiseServices()
 
   // todo: contemplate setting environment variable ROBOT=sim here???
   nh_->getParam("pub_clock_frequency", pub_clock_frequency_);
-  last_pub_clock_time_ = world_->GetSimTime();
+  last_pub_clock_time_ = world_->SimTime();
 }
 
 void GazeboRosApiPlugin::onLinkStatesConnect()

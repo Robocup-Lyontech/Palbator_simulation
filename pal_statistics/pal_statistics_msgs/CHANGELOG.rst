@@ -2,6 +2,26 @@
 Changelog for package pal_statistics_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.4.0 (2020-03-13)
+------------------
+
+1.3.1 (2019-08-28)
+------------------
+
+1.3.0 (2019-08-12)
+------------------
+
+1.2.1 (2019-04-18)
+------------------
+
+1.2.0 (2019-04-16)
+------------------
+* Merge branch 'optimized-msg' into 'erbium-devel'
+  Optimized msg
+  See merge request qa/pal_statistics!15
+* Add new messages
+* Contributors: Victor Lopez
+
 1.1.1 (2018-12-19)
 ------------------
 

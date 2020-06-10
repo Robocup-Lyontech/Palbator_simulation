@@ -222,12 +222,12 @@ void IntrospectionBagReader::getVariable(const std::vector<std::string> &variabl
       Eigen::Vector3d v(doubleValues_[index1][i], doubleValues_[index2][i],
                         doubleValues_[index3][i]);
       //      nanDetectedEigen(v);
-      for (size_t i = 0; i < 3; ++i)
+      for (size_t k = 0; k < 3; ++k)
       {
-        if (std::isnan(v[i]) || std::isinf(v[i]))
+        if (std::isnan(v[k]) || std::isinf(v[k]))
         {
-          ROS_WARN_STREAM("found nan while parsing variable: " << variableId[i]);
-          v[i] = 0.;
+          ROS_WARN_STREAM("found nan while parsing variable: " << variableId[k]);
+          v[k] = 0.;
         }
       }
       value.push_back(v);

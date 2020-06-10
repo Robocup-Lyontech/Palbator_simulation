@@ -1,10 +1,19 @@
-/*
-  @file
-
-  @author victor
-
-  @copyright (c) 2018 PAL Robotics SL. All Rights Reserved
-*/
+/**
+ * Copyright (C) 2019 PAL Robotics S.L.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ **/
 #ifndef PAL_STATISTICS_UTILS_H
 #define PAL_STATISTICS_UTILS_H
 
@@ -20,6 +29,8 @@
 #include <map>
 #include <ros/ros.h>
 #include <pal_statistics_msgs/Statistics.h>
+#include <pal_statistics_msgs/StatisticsNames.h>
+#include <pal_statistics_msgs/StatisticsValues.h>
 #include <pal_statistics/static_circular_buffer.h>
 namespace pal_statistics
 {
@@ -94,7 +105,7 @@ private:
  * @brief The RegistrationsRAII class holds handles to registered variables and when it is
  * destroyed, unregisters them automatically.
  */
-class RegistrationsRAII 
+class RegistrationsRAII
 {
 public:
   RegistrationsRAII();
@@ -106,19 +117,19 @@ public:
   bool enable(const std::string &name);
   bool enable(IdType id);
   bool enableAll();
-  
+
   bool disable(const std::string &name);
   bool disable(IdType id);
   bool disableAll();
-  
+
 private:
   // This object should not be copied, because Registration is not copiable
   RegistrationsRAII( const RegistrationsRAII& ) = delete; // non construction-copyable
   RegistrationsRAII& operator=( const RegistrationsRAII& ) = delete; // non copyable
-  
-  std::vector<Registration>::iterator find(const std::string &name);  
+
+  std::vector<Registration>::iterator find(const std::string &name);
   std::vector<Registration>::iterator find(IdType id);
-  
+
   boost::mutex mutex_;
   std::vector<Registration> registrations_;
 };
@@ -134,11 +145,12 @@ public:
     throw std::runtime_error("VariableHolder default constructor should never be called");
   }
 
-  VariableHolder(const double *const pointer) : variable_(pointer)
+  VariableHolder(const double *const pointer) : v_ptr_(pointer)
   {
+    v_ptr_ = pointer;
   }
 
-  VariableHolder(const boost::function<double()> &function) : variable_(function)
+  VariableHolder(const boost::function<double()> &function) : v_ptr_(nullptr), v_func_(function)
   {
   }
 
@@ -152,22 +164,24 @@ public:
 
   void operator=(const VariableHolder &&other)
   {
-    variable_ = std::move(other.variable_);
+    v_ptr_ = std::move(other.v_ptr_);
+    v_func_ = std::move(other.v_func_);
   }
   ~VariableHolder()
   {
   }
 
-  double getValue() const
+  inline double getValue() const
   {
-    if (variable_.type() == typeid(const double *))
-      return *boost::get<const double *>(variable_);
+    if (v_ptr_)
+      return *v_ptr_;
     else
-      return boost::get<boost::function<double()>>(variable_)();
+      return v_func_();
   }
 
 private:
-  boost::variant<const double *, boost::function<double()>> variable_;
+  const double *v_ptr_;
+   boost::function<double()> v_func_;
 };
 
 
@@ -195,31 +209,34 @@ public:
   /**
     @brief fills message with the last captured values.
     */
-  void fillMsg(pal_statistics_msgs::Statistics &msg);
+  void fillMsg(pal_statistics_msgs::StatisticsNames &names, pal_statistics_msgs::StatisticsValues &value);
 
   /**
    * @brief smartFillMsg Attempts to minimize the amount of string copies
+   * @return true if a smartfill was possible
    *
    * Assumes that msg has already been filled before, and if no variables have been
    * registered/deregistered/enabled/disabled since the last call to this function, will
    * only update the values.
    */
-  void smartFillMsg(pal_statistics_msgs::Statistics &msg);
+  bool smartFillMsg(pal_statistics_msgs::StatisticsNames &names, pal_statistics_msgs::StatisticsValues &values);
   /**
    * @return the number of variables registered
    */
   size_t size() const;
-  
+
   bool hasPendingData() const;
-  
-  
+
+
   // How many messages where lost because the buffer was full
   unsigned int overwritten_data_count_;
+
 private:
   void deleteElement(size_t index);
   void registrationsChanged();
 
   int last_id_;
+  unsigned int names_version_;
 
   // Bidirectional map between names and ids.
   // Can have multiple variables with the same name but different id, but not multiple id
@@ -233,8 +250,18 @@ private:
   std::vector<VariableHolder> references_;
   std::vector<bool> enabled_;
 
-  typedef std::vector<std::pair<IdType, double>> LastValues; 
-  typedef std::pair<LastValues, ros::Time> LastValuesStamped;
+  struct NameValues
+  {
+    NameValues(size_t capacity)
+      : names(capacity, IdType(0)), values(capacity, 0.)
+    {}
+
+    std::vector<IdType> names;
+    std::vector<double> values;
+  };
+
+  typedef std::pair<NameValues, ros::Time> LastValuesStamped;
+  bool all_enabled_;
   StaticCircularBuffer<LastValuesStamped> last_values_buffer_;
 
   bool registrations_changed_;

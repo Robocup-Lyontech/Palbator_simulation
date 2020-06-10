@@ -1,3 +1,11 @@
+/*
+ * Copyright 2019 PAL Robotics SL. All Rights Reserved
+ *
+ * Unauthorized copying of this file, via any medium is strictly prohibited,
+ * unless it was supplied under the terms of a license agreement or
+ * nondisclosure agreement with PAL Robotics SL. In this case it may not be
+ * copied or disclosed except in accordance with the terms of that agreement.
+ */
 #ifndef _INTROSPECTION_ONLINE_UTILS_
 #define _INTROSPECTION_ONLINE_UTILS_
 
@@ -12,7 +20,7 @@ namespace dynamic_introspection
 class IntrospectionOnlineReader : public IntrospectionBagReader
 {
 public:
-  IntrospectionOnlineReader(const std::string &topic = "/introspection_data");
+  IntrospectionOnlineReader(const std::string &topic = "/introspection_data/full");
 
   virtual ~IntrospectionOnlineReader();
 

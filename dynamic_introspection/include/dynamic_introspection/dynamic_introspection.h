@@ -1,13 +1,11 @@
-///////////////////////////////////////////////////////////////////////////////
-
-// Copyright (C) 2014, 2015 PAL Robotics S.L.
-
-// All rights reserved.
-
-//////////////////////////////////////////////////////////////////////////////
-
-// Author Hilario Tomé
-
+/*
+ * Copyright 2019 PAL Robotics SL. All Rights Reserved
+ *
+ * Unauthorized copying of this file, via any medium is strictly prohibited,
+ * unless it was supplied under the terms of a license agreement or
+ * nondisclosure agreement with PAL Robotics SL. In this case it may not be
+ * copied or disclosed except in accordance with the terms of that agreement.
+ */
 #ifndef _DYNAMIC_INTROSPECTION_
 #define _DYNAMIC_INTROSPECTION_
 #include <pal_statistics/pal_statistics_macros.h>
@@ -25,7 +23,18 @@ inline IdType customRegister(StatisticsRegistry &registry, const std::string &na
   /// or vairable name
   registry.registerVariable(name + "_X", &variable->x(), bookkeeping, enabled);
   registry.registerVariable(name + "_Y", &variable->y(), bookkeeping, enabled);
-  return registry.registerVariable(name + "_Z", &variable->z(), bookkeeping, enabled);  
+  return registry.registerVariable(name + "_Z", &variable->z(), bookkeeping, enabled);
+}
+
+template <>
+inline IdType customRegister(StatisticsRegistry &registry, const std::string &name,
+                             const Eigen::Vector2d *variable, RegistrationsRAII *bookkeeping,
+                             bool enabled)
+{
+  /// only one id is returned, unregistration should be done with RegistrationRAII
+  /// or vairable name
+  registry.registerVariable(name + "_X", &variable->x(), bookkeeping, enabled);
+  return registry.registerVariable(name + "_Y", &variable->y(), bookkeeping, enabled);
 }
 
 
@@ -60,7 +69,7 @@ inline void statisticsCloseBag()
 
 inline void statististicsWriteDataToBag()
 {
-  bag_->write("/introspection_data", ros::Time::now(),
+  bag_->write("/introspection_data/full", ros::Time::now(),
               getRegistry("/introspection_data")->createMsg());
 }
 }  // namespace bag_hack

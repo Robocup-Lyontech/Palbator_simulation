@@ -44,10 +44,14 @@
 #include <diagnostic_updater/diagnostic_updater.h>
 #include <sensor_msgs/RegionOfInterest.h>
 
-#include <opencv/cv.h>
-#include <opencv/highgui.h>
+// DEPRECATED FOR OPENCV 4
+//#include <opencv/cv.h>
+//#include <opencv/highgui.h>
+//#include <opencv/cvwimage.h>
 
-#include <opencv/cvwimage.h>
+// FIX FOR OPENCV 4 
+#include <opencv2/opencv.hpp>
+#include <opencv2/highgui.hpp>
 
 #include <boost/scoped_ptr.hpp>
 #include <boost/bind.hpp>
@@ -295,7 +299,7 @@ void GazeboRosProsilica::pollCallback(polled_camera::GetPolledImage::Request& re
           // copy data into ROI image
           this->roiImageMsg = &image;
           this->roiImageMsg->header.frame_id = this->frame_name_;
-          common::Time roiLastRenderTime = this->parentSensor_->LastMeasurementTime();
+          roiLastRenderTime = this->parentSensor_->LastMeasurementTime();
           this->roiImageMsg->header.stamp.sec = roiLastRenderTime.sec;
           this->roiImageMsg->header.stamp.nsec = roiLastRenderTime.nsec;
 

@@ -8,6 +8,20 @@ Changelog for package pal_gazebo_plugins
 * Added gazebo world odometry that outputs rpy
 * Contributors: Hilario Tome
 
+2.0.0 (2019-09-10)
+------------------
+* Fixed shadowed variables
+* added gazebo 9 API changes
+* Contributors: Jordan Palacios, Sai Kishor Kothakota
+
+1.1.9 (2019-05-20)
+------------------
+* Merge branch 'license-refactor' into 'erbium-devel'
+  Update pal license
+  See merge request common/pal_gazebo_plugins!5
+* Update PAL licenses
+* Contributors: Victor Lopez
+
 1.1.8 (2018-05-17)
 ------------------
 * Rotate object position using target link pose

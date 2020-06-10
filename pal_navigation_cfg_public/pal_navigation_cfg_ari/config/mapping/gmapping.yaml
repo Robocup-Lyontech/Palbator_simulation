@@ -37,5 +37,3 @@ lasamplerange: 0.005
 lasamplestep : 0.005
 
 transform_publish_period: 0.05
-
-

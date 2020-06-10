@@ -36,7 +36,7 @@ void IntrospectionOnlineReader::dumpRosBag(const std::string &bag_name)
 
   for (size_t i = 0; i < read_messages_.size(); ++i)
   {
-    bag.write("/introspection_data", read_messages_[i].header.stamp, read_messages_[i]);
+    bag.write("/introspection_data/full", read_messages_[i].header.stamp, read_messages_[i]);
   }
   bag.close();
 }

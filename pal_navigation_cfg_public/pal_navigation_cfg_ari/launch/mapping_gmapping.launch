@@ -8,4 +8,3 @@
     <rosparam file="$(find pal_navigation_cfg_ari)/config/mapping/gmapping.yaml" command="load"/>
   </node>
 </launch>
-

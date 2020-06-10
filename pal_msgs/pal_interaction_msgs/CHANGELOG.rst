@@ -2,6 +2,15 @@
 Changelog for package pal_interaction_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.13.1 (2020-06-04)
+-------------------
+* Merge branch 'user-input-update' into 'dubnium-devel'
+  User input update
+  See merge request common/pal_msgs!27
+* Restore old constants for compatibility
+* Change default actions for pal_interaction_msgs/Input
+* Contributors: Victor Lopez, victor
+
 0.13.0 (2020-04-07)
 -------------------
 

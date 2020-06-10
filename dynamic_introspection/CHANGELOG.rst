@@ -2,6 +2,35 @@
 Changelog for package dynamic_introspection
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.12 (2019-08-23)
+-------------------
+* Add SYSTEM to include_directories and fix shadowed variable
+* Contributors: Victor Lopez
+
+1.0.11 (2019-05-21)
+-------------------
+* Merge branch 'license-refactor' into 'erbium-devel'
+  Update pal license
+  See merge request control/dynamic_introspection!17
+* Update PAL licenses
+* Contributors: Victor Lopez
+
+1.0.10 (2019-04-24)
+-------------------
+* Merge branch 'new-statistics-msgs' into 'erbium-devel'
+  New statistics topic name
+  See merge request control/dynamic_introspection!16
+* New statistics topic name
+* Contributors: Victor Lopez
+
+1.0.9 (2019-01-17)
+------------------
+* Merge branch '2d_vectors' into 'erbium-devel'
+  added 2d vector helpers
+  See merge request control/dynamic_introspection!14
+* added 2d vector helpers
+* Contributors: Hilario Tome
+
 1.0.8 (2018-10-25)
 ------------------
 * Merge branch 'migrate-to-statistics' into 'erbium-devel'
