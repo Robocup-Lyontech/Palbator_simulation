@@ -1,5 +1,12 @@
 # Palbator_simulation
 
+## Authors
+- Sai Kishor Kothakota
+
+## Contributors
+- Thomas Curé
+- Simon Ernst
+
 ## Installation
 
 Go to your workspace sources and execute the following commands :
