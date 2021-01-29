@@ -1,8 +1,5 @@
 # Palbator_simulation
 
-
-# Palbator_simulation
-
 ## Authors
 - Sai Kishor Kothakota
 
