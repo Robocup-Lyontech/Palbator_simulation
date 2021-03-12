@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: pmb2_description
+    relative_path: robots/pmb2.urdf.xacro
+    xacro_args: "--inorder "
+  SRDF:
+    relative_path: config/pmb2.srdf
+  CONFIG:
+    author_name: gripper
+    author_email: cedric.mathou@cpe.fr
+    generated_timestamp: 1615468913

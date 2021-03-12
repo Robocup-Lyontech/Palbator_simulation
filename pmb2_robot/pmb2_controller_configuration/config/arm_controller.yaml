@@ -86,7 +86,7 @@ pmb2_arm_controller:
       palbator_arm_column_joint: {trajectory: 0.1, goal: 0.1}
 
     gains: # Required because we're controlling an effort interface
-      palbator_arm_column_joint: {p: 100,  d: 5, i: 2, i_clamp: 2}
+      palbator_arm_column_joint: {p: 1000,  d: 10, i: 2, i_clamp: 2}
 
     stop_trajectory_duration: 0.5
     state_publish_rate:  25
@@ -122,10 +122,29 @@ pmb2_arm_controller:
       palbator_arm_shoulder_3_joint: {p: 100,  d: 5, i: 2, i_clamp: 2}
       palbator_arm_wrist_1_joint: {p: 100,  d: 5, i: 2, i_clamp: 2}
       palbator_arm_wrist_2_joint: {p: 100,  d: 5, i: 2, i_clamp: 2}
-      palbator_arm_wrist_3_joint: {p: 100,  d: 5, i: 2, i_clamp: 2}
+      palbator_arm_wrist_3_joint: {p: 100,  d: 1, i: 0, i_clamp: 2}
     
     stop_trajectory_duration: 0.5
     state_publish_rate:  25
     action_monitor_rate: 10
     
-      
+  gripper_trajectory_controller:
+    type: "effort_controllers/JointTrajectoryController"
+    joints:
+      - motor1_hand_joint
+      - motor2_hand_joint
+
+    constraints:
+      goal_time: 0.6
+      # vel_tolerance is 0 for due to the movegroup/follow_joint_trajectory/goal tolerance is empty
+      stopped_velocity_tolerance: 0.05
+      motor1_hand_joint: {trajectory: 0.1, goal: 0.1}
+      motor2_hand_joint: {trajectory: 0.1, goal: 0.1}
+
+    gains: # Required because we're controlling an effort interface
+      motor1_hand_joint: {p: 100,  d: 0.01, i: 0, i_clamp: 2}
+      motor2_hand_joint: {p: 100,  d: 0.01, i: 0, i_clamp: 2}
+
+    stop_trajectory_duration: 0.5
+    state_publish_rate:  25
+    action_monitor_rate: 10
