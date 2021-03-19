@@ -277,7 +277,9 @@
       </collision>
     </link>
 
+    <link name="end_effector_link">
 
+    </link>
 
     <!-- JOINTS -->
 
@@ -351,6 +353,11 @@
       <!--<limit lower="-1" upper="1" effort="10" velocity="0.5" />-->
     </joint>
 
+    <joint name="gripper_end_effector_joint" type="fixed">
+      <origin xyz="0 0.10 0" rpy="0 0 1.5707" />
+      <parent link="gripper_base_link" />
+      <child link="end_effector_link" />
+    </joint>
 
 
     <!-- TRANSMISSIONS -->
@@ -442,6 +449,7 @@
 
     <!-- GAZEBO MATERIAL PARAMS -->
     <gazebo reference="gripper_base_link">
+      <self_collide>true</self_collide>
       <material>Gazebo/Black</material>
     </gazebo>
 
