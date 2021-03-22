@@ -12,7 +12,7 @@
 
   
   <!-- Palbator arm -->
-  <xacro:include filename="$(find pmb2_description)/urdf/arm/palbator_arm.urdf.xacro"/>
+  <xacro:include filename="$(find pmb2_description)/urdf/arm/palbator_arm_with_gripper.urdf.xacro"/>
 
 
   <xacro:include filename="$(find pmb2_description)/urdf/deg_to_rad.xacro"/>
