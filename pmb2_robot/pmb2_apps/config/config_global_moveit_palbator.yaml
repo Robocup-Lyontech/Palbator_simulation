@@ -3,7 +3,7 @@ Moveit_global_controller_action_name: "Moveit_Palbator_global_action"
 
 #PARAMETERS FOR ARM CONTROLLER:
 Palbator_arm_parameters: {
-  "Palbator_arm_length": 0.4,
+  "Palbator_arm_length": 0.45,
   "Palbator_arm_move_group": "pmb2_arm",
   "display_arm_planned_path_topic": "/move_group_arm/display_planned_path"
 }
