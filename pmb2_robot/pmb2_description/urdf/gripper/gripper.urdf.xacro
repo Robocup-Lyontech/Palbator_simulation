@@ -453,19 +453,19 @@
     </gazebo>
 
     <gazebo reference="hand2_link">
-      <material>Gazebo/LightBlue</m
+      <material>Gazebo/LightBlue</material>
       <mu1>100.0</mu1>
       <mu2>50.0</mu2>
       <minDepth>0.003</minDepth>
-      <maxVel>2</maxVel>aterial>
+      <maxVel>2</maxVel>
     </gazebo>
 
     <gazebo reference="hand1_link">
-      <material>Gazebo/LightBlue</m
+      <material>Gazebo/LightBlue</material>
       <mu1>100.0</mu1>
       <mu2>50.0</mu2>
       <minDepth>0.003</minDepth>
-      <maxVel>2</maxVel>aterial>
+      <maxVel>2</maxVel>
     </gazebo>
 
     <gazebo reference="fingertip1_1_link">
