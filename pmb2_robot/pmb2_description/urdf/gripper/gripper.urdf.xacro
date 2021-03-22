@@ -311,7 +311,7 @@
       <parent link="hand1_link" />
       <child link="fingertip1_1_link" />
       <axis xyz="0 0 1" />
-      <!--<limit lower="-1" upper="1" effort="10" velocity="0.5" />-->
+      <limit lower="-1" upper="1" effort="10" velocity="0.5" />
     </joint>
 
     <joint name="hand1_fingertip2_joint" type="revolute">
@@ -319,7 +319,7 @@
       <parent link="hand1_link" />
       <child link="fingertip1_2_link" />
       <axis xyz="0 0 1" />
-      <!--<limit lower="-1" upper="1" effort="10" velocity="0.5" />-->
+      <limit lower="-1" upper="1" effort="10" velocity="0.5" />
     </joint>
 
     <joint name="gripper_motor2_joint" type="fixed">
@@ -342,7 +342,7 @@
       <parent link="hand2_link" />
       <child link="fingertip2_1_link" />
       <axis xyz="0 0 1" />
-      <!--<limit lower="-1" upper="1" effort="10" velocity="0.5" />-->
+      <limit lower="-1" upper="1" effort="10" velocity="0.5" />
     </joint>
 
     <joint name="hand2_fingertip2_joint" type="revolute">
@@ -350,7 +350,7 @@
       <parent link="hand2_link" />
       <child link="fingertip2_2_link" />
       <axis xyz="0 0 1" />
-      <!--<limit lower="-1" upper="1" effort="10" velocity="0.5" />-->
+      <limit lower="-1" upper="1" effort="10" velocity="0.5" />
     </joint>
 
     <joint name="gripper_end_effector_joint" type="fixed">
@@ -449,59 +449,55 @@
 
     <!-- GAZEBO MATERIAL PARAMS -->
     <gazebo reference="gripper_base_link">
-      <mu1>100.0</mu1>
-      <mu2>50.0</mu2>
-      <minDepth>0.003</minDepth>
-      <maxVel>2</maxVel>
       <material>Gazebo/Black</material>
     </gazebo>
 
     <gazebo reference="hand2_link">
+      <material>Gazebo/LightBlue</m
       <mu1>100.0</mu1>
       <mu2>50.0</mu2>
       <minDepth>0.003</minDepth>
-      <maxVel>2</maxVel>
-      <material>Gazebo/LightBlue</material>
+      <maxVel>2</maxVel>aterial>
     </gazebo>
 
     <gazebo reference="hand1_link">
+      <material>Gazebo/LightBlue</m
       <mu1>100.0</mu1>
       <mu2>50.0</mu2>
       <minDepth>0.003</minDepth>
-      <maxVel>2</maxVel>
-      <material>Gazebo/LightBlue</material>
+      <maxVel>2</maxVel>aterial>
     </gazebo>
 
     <gazebo reference="fingertip1_1_link">
+      <material>Gazebo/Grey</material>
       <mu1>100.0</mu1>
       <mu2>50.0</mu2>
       <minDepth>0.003</minDepth>
       <maxVel>2</maxVel>
-      <material>Gazebo/Grey</material>
     </gazebo>
 
     <gazebo reference="fingertip1_2_link">
+      <material>Gazebo/Grey</material>
       <mu1>100.0</mu1>
       <mu2>50.0</mu2>
       <minDepth>0.003</minDepth>
       <maxVel>2</maxVel>
-      <material>Gazebo/Grey</material>
     </gazebo>
 
     <gazebo reference="fingertip2_1_link">
+      <material>Gazebo/Grey</material>
       <mu1>100.0</mu1>
       <mu2>50.0</mu2>
       <minDepth>0.003</minDepth>
       <maxVel>2</maxVel>
-      <material>Gazebo/Grey</material>
     </gazebo>
 
     <gazebo reference="fingertip2_2_link">
+      <material>Gazebo/Grey</material>
       <mu1>100.0</mu1>
       <mu2>50.0</mu2>
       <minDepth>0.003</minDepth>
       <maxVel>2</maxVel>
-      <material>Gazebo/Grey</material>
     </gazebo>
 
 
