@@ -100,14 +100,14 @@
     <link name="fingertip1_1_link">
       <inertial>
         <origin xyz="-0.0010321 0.0050002 -3.5129E-05" rpy="0 0 0" />
-        <mass value="0.0062622" />
+        <mass value="0.034799" />
         <inertia
-          ixx="9.7768E-07"
-          ixy="1.568E-11"
-          ixz="1.5157E-09"
-          iyy="1.0446E-06"
-          iyz="5.6166E-12"
-          izz="1.8516E-07" />
+          ixx="1.1668E-05"
+          ixy="1.0081E-14"
+          ixz="1.9718E-14"
+          iyy="1.5945E-05"
+          iyz="1.2429E-07"
+          izz="6.7071E-06" />
       </inertial>
       <visual>
         <origin xyz="0 0 0" rpy="1.5708 0 3.141592" />
@@ -130,14 +130,14 @@
     <link name="fingertip1_2_link">
       <inertial>
         <origin xyz="-0.0010321 0.0050002 -3.5129E-05" rpy="0 0 0" />
-        <mass value="0.0062622" />
+        <mass value="0.034799" />
         <inertia
-          ixx="9.7768E-07"
-          ixy="1.5681E-11"
-          ixz="1.5157E-09"
-          iyy="1.0446E-06"
-          iyz="5.6167E-12"
-          izz="1.8516E-07" />
+          ixx="1.1668E-05"
+          ixy="1.0081E-14"
+          ixz="1.9718E-14"
+          iyy="1.5945E-05"
+          iyz="1.2429E-07"
+          izz="6.7071E-06" />
       </inertial>
       <visual>
         <origin xyz="0 0 0" rpy="-1.5708 0 3.141592" />
@@ -220,14 +220,14 @@
     <link name="fingertip2_1_link">
       <inertial>
         <origin xyz="-0.0010321375 0.0050002 -3.512856E-05" rpy="0 0 0" />
-        <mass value="0.00626220315523217" />
+        <mass value="0.034799" />
         <inertia
-          ixx="9.7767596887376E-07"
-          ixy="1.56803668594996E-11"
-          ixz="1.5157444715102E-09"
-          iyy="1.04455526714601E-06"
-          iyz="5.61662128246886E-12"
-          izz="1.8516351841874E-07" />
+          ixx="1.1668E-05"
+          ixy="1.0081E-14"
+          ixz="1.9718E-14"
+          iyy="1.5945E-05"
+          iyz="1.2429E-07"
+          izz="6.7071E-06" />
       </inertial>
       <visual>
         <origin xyz="0 0 0" rpy="1.5708 0 3.141592" />
@@ -251,14 +251,14 @@
       <inertial>
         <origin
           xyz="-0.001032137588 0.0050002404 -3.512856642E-05" rpy="0 0 0" />
-        <mass value="0.00626220316616597" />
+        <mass value="0.034799" />
         <inertia
-          ixx="9.77675969200664E-07"
-          ixy="1.56806262615851E-11"
-          ixz="1.51574413550611E-09"
-          iyy="1.04455526789645E-06"
-          iyz="5.6167744165921E-12"
-          izz="1.85163518907813E-07" />
+          ixx="1.1668E-05"
+          ixy="1.0081E-14"
+          ixz="1.9718E-14"
+          iyy="1.5945E-05"
+          iyz="1.2429E-07"
+          izz="6.7071E-06" />
       </inertial>
       <visual>
         <origin xyz="0 0 0" rpy="-1.5708 0 3.141592" />
@@ -303,7 +303,7 @@
       <parent link="motor1_link" />
       <child link="hand1_link" />
       <axis xyz="0 0 1" />
-      <limit lower="-1" upper="1" effort="10" velocity="0.5" />
+      <limit lower="-1" upper="1" effort="50" velocity="0.5" />
     </joint>
 
     <joint name="hand1_fingertip1_joint" type="revolute">
@@ -311,7 +311,7 @@
       <parent link="hand1_link" />
       <child link="fingertip1_1_link" />
       <axis xyz="0 0 1" />
-      <limit lower="-1" upper="1" effort="10" velocity="0.5" />
+      <limit lower="-1" upper="1" effort="0.05" velocity="0.5" />
     </joint>
 
     <joint name="hand1_fingertip2_joint" type="revolute">
@@ -319,7 +319,7 @@
       <parent link="hand1_link" />
       <child link="fingertip1_2_link" />
       <axis xyz="0 0 1" />
-      <limit lower="-1" upper="1" effort="10" velocity="0.5" />
+      <limit lower="-1" upper="1" effort="0.05" velocity="0.5" />
     </joint>
 
     <joint name="gripper_motor2_joint" type="fixed">
@@ -334,7 +334,7 @@
       <parent link="motor2_link" />
       <child  link="hand2_link" />
       <axis xyz="0 0 1" />
-      <limit lower="-1" upper="1" effort="10" velocity="0.5" />
+      <limit lower="-1" upper="1" effort="50" velocity="0.5" />
     </joint>
 
     <joint name="hand2_fingertip1_joint" type="revolute">
@@ -342,7 +342,7 @@
       <parent link="hand2_link" />
       <child link="fingertip2_1_link" />
       <axis xyz="0 0 1" />
-      <limit lower="-1" upper="1" effort="10" velocity="0.5" />
+      <limit lower="-1" upper="1" effort="0.05" velocity="0.5" />
     </joint>
 
     <joint name="hand2_fingertip2_joint" type="revolute">
@@ -350,7 +350,7 @@
       <parent link="hand2_link" />
       <child link="fingertip2_2_link" />
       <axis xyz="0 0 1" />
-      <limit lower="-1" upper="1" effort="10" velocity="0.5" />
+      <limit lower="-1" upper="1" effort="0.05" velocity="0.5" />
     </joint>
 
     <joint name="gripper_end_effector_joint" type="fixed">
@@ -454,50 +454,74 @@
 
     <gazebo reference="hand2_link">
       <material>Gazebo/LightBlue</material>
+      <kp>1000000</kp>
+      <kd>100</kd>
       <mu1>100.0</mu1>
       <mu2>50.0</mu2>
-      <minDepth>0.003</minDepth>
-      <maxVel>2</maxVel>
+      <slip1>1</slip1>
+      <fdir1>0 0 1</fdir1>
+      <min_depth>0.00</min_depth>
+      <max_vel>2</max_vel>
     </gazebo>
 
     <gazebo reference="hand1_link">
       <material>Gazebo/LightBlue</material>
+      <kp>1000000</kp>
+      <kd>100</kd>
       <mu1>100.0</mu1>
       <mu2>50.0</mu2>
-      <minDepth>0.003</minDepth>
-      <maxVel>2</maxVel>
+      <slip1>1</slip1>
+      <fdir1>0 0 1</fdir1>
+      <min_depth>0.00</min_depth>
+      <max_vel>2</max_vel>
     </gazebo>
 
     <gazebo reference="fingertip1_1_link">
       <material>Gazebo/Grey</material>
+      <kp>1000000</kp>
+      <kd>100</kd>
       <mu1>100.0</mu1>
       <mu2>50.0</mu2>
-      <minDepth>0.003</minDepth>
-      <maxVel>2</maxVel>
+      <slip1>1</slip1>
+      <fdir1>0 0 1</fdir1>
+      <min_depth>0.00</min_depth>
+      <max_vel>2</max_vel>
     </gazebo>
 
     <gazebo reference="fingertip1_2_link">
       <material>Gazebo/Grey</material>
+      <kp>1000000</kp>
+      <kd>100</kd>
       <mu1>100.0</mu1>
       <mu2>50.0</mu2>
-      <minDepth>0.003</minDepth>
-      <maxVel>2</maxVel>
+      <slip1>1</slip1>
+      <fdir1>0 0 1</fdir1>
+      <min_depth>0.00</min_depth>
+      <max_vel>2</max_vel>
     </gazebo>
 
     <gazebo reference="fingertip2_1_link">
       <material>Gazebo/Grey</material>
+      <kp>1000000</kp>
+      <kd>100</kd>
       <mu1>100.0</mu1>
       <mu2>50.0</mu2>
-      <minDepth>0.003</minDepth>
-      <maxVel>2</maxVel>
+      <slip1>1</slip1>
+      <fdir1>0 0 1</fdir1>
+      <min_depth>0.00</min_depth>
+      <max_vel>2</max_vel>
     </gazebo>
 
     <gazebo reference="fingertip2_2_link">
       <material>Gazebo/Grey</material>
+      <kp>1000000</kp>
+      <kd>100</kd>
       <mu1>100.0</mu1>
       <mu2>50.0</mu2>
-      <minDepth>0.003</minDepth>
-      <maxVel>2</maxVel>
+      <slip1>1</slip1>
+      <fdir1>0 0 1</fdir1>
+      <min_depth>0.00</min_depth>
+      <max_vel>2</max_vel>
     </gazebo>
 
 

@@ -22,9 +22,9 @@
               mobile_base_controller
               /pmb2_arm_controller/arm_trajectory_controller
               /pmb2_arm_controller/column_trajectory_controller
-              /pmb2_arm_controller/gripper_trajectory_controller" />
-              <!--/pmb2_arm_controller/arm_hand1_fingertip1_joint_controller
+              /pmb2_arm_controller/gripper_trajectory_controller
+              /pmb2_arm_controller/arm_hand1_fingertip1_joint_controller
               /pmb2_arm_controller/arm_hand1_fingertip2_joint_controller
               /pmb2_arm_controller/arm_hand2_fingertip1_joint_controller
-              /pmb2_arm_controller/arm_hand2_fingertip2_joint_controller" /> -->
+              /pmb2_arm_controller/arm_hand2_fingertip2_joint_controller" />
 </launch>
