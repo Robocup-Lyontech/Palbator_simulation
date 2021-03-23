@@ -47,7 +47,7 @@ class MoveitGlobalController:
 
         self._column_controller.move_column_to_pose("travelling_pose")
         self._arm_controller.move_arm_to_pose("travelling_pose")
-        self._gripper_controller.move_gripper_to_pose("close_gripper")
+        self._gripper_controller.move_gripper(0.1)
 
         if rospy.has_param("~Moveit_global_controller_action_name"):
             action_server_name = rospy.get_param("~Moveit_global_controller_action_name")
@@ -149,12 +149,12 @@ class MoveitGlobalController:
                 self._arm_controller.move_arm(target_x, target_y, target_z, mode="pre_grasp")
                 self._column_controller.move_column(target_z)
 
-                self._gripper_controller.move_gripper_to_pose("open_gripper")
+                self._gripper_controller.move_gripper(1.0)
 
                 # move end effector to the object
                 self._arm_controller.move_arm(target_x, target_y, target_z, mode="cartesian")
 
-                self._gripper_controller.move_gripper_to_pose("close_gripper")
+                self._gripper_controller.move_gripper(0.1)
 
                 json_result = {
                     "action": goal.action,

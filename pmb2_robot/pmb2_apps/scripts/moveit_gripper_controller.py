@@ -57,7 +57,7 @@ class MoveitGripperController:
         :param opening_size: Opening size value from 0.0 to 1.0
         :type opening_size: float
         """
-        rospy.loginfo("{class_name} : Gripper opening request %s%".format(class_name=self.__class__.__name__), str(opening_size))
+        rospy.loginfo("{class_name} : Gripper opening request %s%%".format(class_name=self.__class__.__name__), str(opening_size * 100))
 
         open_value = opening_size * (self.maximum_gripper - self.minimum_gripper) + self.minimum_gripper
 

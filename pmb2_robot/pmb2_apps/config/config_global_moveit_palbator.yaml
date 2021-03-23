@@ -19,7 +19,7 @@ Palbator_column_parameters: {
 #PARAMETERS FOR GRIPPER CONTROLLER:
 Palbator_gripper_parameters: {
   "Palbator_gripper_move_group": "pmb2_gripper",
-  "minimum_opening": -1.0,
-  "maximum_opening": 0.3,
+  "minimum_opening": 0.3,
+  "maximum_opening": -1.0,
   "display_gripper_planned_path_topic": "/move_group_gripper/display_planned_path"
 }

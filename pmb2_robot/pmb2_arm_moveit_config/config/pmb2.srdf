@@ -441,8 +441,10 @@
     <disable_collisions link1="caster_front_right_2_link" link2="wheel_right_link" reason="Never" />
     <disable_collisions link1="fingertip1_1_link" link2="fingertip1_2_link" reason="Never" />
     <disable_collisions link1="fingertip1_1_link" link2="fingertip2_1_link" reason="Never" />
+    <disable_collisions link1="fingertip1_1_link" link2="fingertip2_2_link" reason="User" />
     <disable_collisions link1="fingertip1_1_link" link2="gripper_base_link" reason="Never" />
     <disable_collisions link1="fingertip1_1_link" link2="hand1_link" reason="Adjacent" />
+    <disable_collisions link1="fingertip1_1_link" link2="hand2_link" reason="User" />
     <disable_collisions link1="fingertip1_1_link" link2="motor1_link" reason="Never" />
     <disable_collisions link1="fingertip1_1_link" link2="motor2_link" reason="Never" />
     <disable_collisions link1="fingertip1_1_link" link2="palbator_arm_camera_link" reason="Never" />
@@ -454,9 +456,11 @@
     <disable_collisions link1="fingertip1_1_link" link2="palbator_arm_wrist_link1" reason="Never" />
     <disable_collisions link1="fingertip1_1_link" link2="palbator_arm_wrist_link2" reason="Never" />
     <disable_collisions link1="fingertip1_1_link" link2="wheel_left_link" reason="Never" />
+    <disable_collisions link1="fingertip1_2_link" link2="fingertip2_1_link" reason="User" />
     <disable_collisions link1="fingertip1_2_link" link2="fingertip2_2_link" reason="Never" />
     <disable_collisions link1="fingertip1_2_link" link2="gripper_base_link" reason="Never" />
     <disable_collisions link1="fingertip1_2_link" link2="hand1_link" reason="Adjacent" />
+    <disable_collisions link1="fingertip1_2_link" link2="hand2_link" reason="User" />
     <disable_collisions link1="fingertip1_2_link" link2="motor1_link" reason="Never" />
     <disable_collisions link1="fingertip1_2_link" link2="motor2_link" reason="Never" />
     <disable_collisions link1="fingertip1_2_link" link2="palbator_arm_camera_link" reason="Never" />
@@ -470,6 +474,7 @@
     <disable_collisions link1="fingertip1_2_link" link2="wheel_left_link" reason="Never" />
     <disable_collisions link1="fingertip2_1_link" link2="fingertip2_2_link" reason="Never" />
     <disable_collisions link1="fingertip2_1_link" link2="gripper_base_link" reason="Never" />
+    <disable_collisions link1="fingertip2_1_link" link2="hand1_link" reason="User" />
     <disable_collisions link1="fingertip2_1_link" link2="hand2_link" reason="Adjacent" />
     <disable_collisions link1="fingertip2_1_link" link2="motor1_link" reason="Never" />
     <disable_collisions link1="fingertip2_1_link" link2="motor2_link" reason="Never" />
@@ -482,6 +487,7 @@
     <disable_collisions link1="fingertip2_1_link" link2="palbator_arm_wrist_link2" reason="Never" />
     <disable_collisions link1="fingertip2_1_link" link2="wheel_left_link" reason="Never" />
     <disable_collisions link1="fingertip2_2_link" link2="gripper_base_link" reason="Never" />
+    <disable_collisions link1="fingertip2_2_link" link2="hand1_link" reason="User" />
     <disable_collisions link1="fingertip2_2_link" link2="hand2_link" reason="Adjacent" />
     <disable_collisions link1="fingertip2_2_link" link2="motor1_link" reason="Never" />
     <disable_collisions link1="fingertip2_2_link" link2="motor2_link" reason="Never" />
@@ -505,6 +511,7 @@
     <disable_collisions link1="gripper_base_link" link2="palbator_arm_wrist_link1" reason="Never" />
     <disable_collisions link1="gripper_base_link" link2="palbator_arm_wrist_link2" reason="Adjacent" />
     <disable_collisions link1="gripper_base_link" link2="wheel_left_link" reason="Never" />
+    <disable_collisions link1="hand1_link" link2="hand2_link" reason="User" />
     <disable_collisions link1="hand1_link" link2="motor1_link" reason="Adjacent" />
     <disable_collisions link1="hand1_link" link2="motor2_link" reason="Never" />
     <disable_collisions link1="hand1_link" link2="palbator_arm_camera_link" reason="Never" />
