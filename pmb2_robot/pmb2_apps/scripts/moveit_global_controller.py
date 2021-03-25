@@ -121,7 +121,7 @@ class MoveitGlobalController:
 
                 json_result = {
                     "action": goal.action,
-                    "rotation": rotationNeeded
+                    "rotation": rotationNeeded,
                     "status": 'Aborted'
                 }
                 action_result.action_output = json.dumps(json_result)
