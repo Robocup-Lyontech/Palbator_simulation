@@ -65,12 +65,12 @@ class MoveitGlobalController:
         """
         isActionSucceed = False
         action_result = ArmControlResult()
-        if "Grasping" in goal.action:
-            rospy.loginfo("{class_name} : Received grasping action goal".format(class_name=self.__class__.__name__))
+        if "Grasping" in goal.action or "Pointing" in goal.action or "Droping" in goal.action:
+            rospy.loginfo("{class_name} : Received %s action goal".format(class_name=self.__class__.__name__), goal.action)
             listener = TransformListener()
             now = rospy.Time(0)
 
-            if goal.action == 'Grasping':
+            if goal.action == 'Grasping' or goal.action == 'Pointing':
                 # ToDo test
                 listener.waitForTransform("map", goal.object_label, now, rospy.Duration(20))
                 (trans, rot) = listener.lookupTransform("map", goal.object_label, now)
@@ -82,7 +82,7 @@ class MoveitGlobalController:
                 object_point.point.y = trans[1]
                 object_point.point.z = trans[2]
 
-            elif goal.action == 'GraspingXYZ':
+            elif goal.action == 'GraspingXYZ' or goal.action == 'PointingXYZ' or "Droping" in goal.action:
                 object_point = PointStamped()
                 object_point.header.frame_id = "map"
                 object_point.header.stamp = now
@@ -90,11 +90,11 @@ class MoveitGlobalController:
                 object_point.point.y = goal.coord_y
                 object_point.point.z = goal.coord_z
 
-            rospy.loginfo("{class_name} : Object coords in map : %s".format(class_name=self.__class__.__name__), str(object_point))
+            rospy.loginfo("{class_name} : Goal coords in map : %s".format(class_name=self.__class__.__name__), str(object_point))
             listener.waitForTransform("/map", "/base_footprint", now, rospy.Duration(20))
             target = listener.transformPoint("base_footprint", object_point)
 
-            rospy.loginfo("{class_name} : Object coords in base_footprint : %s".format(class_name=self.__class__.__name__), str(target))
+            rospy.loginfo("{class_name} : Goal coords in base_footprint : %s".format(class_name=self.__class__.__name__), str(target))
 
             target_x = target.point.x
             target_y = target.point.y
@@ -102,7 +102,7 @@ class MoveitGlobalController:
 
             alpha = math.atan2(target_y, target_x)
 
-            rospy.logwarn("{class_name} : ANGLE TO OBJECT %s Radian %s Degree".format(
+            rospy.logwarn("{class_name} : ANGLE TO GOAL %s Radian %s Degree".format(
                 class_name=self.__class__.__name__), str(alpha), str(alpha*180/math.pi))
 
             if (target_x > 0):
@@ -127,27 +127,52 @@ class MoveitGlobalController:
                 action_result.action_output = json.dumps(json_result)
 
             else:
-                # put the arm in base pose before grab
-                self._arm_controller.move_arm_to_pose("pointing_pose")
+                if "Grasping" in goal.action:
+                    # put the arm in base pose before grab
+                    self._arm_controller.move_arm_to_pose("pointing_pose")
 
-                # align end effector and object to grab
-                self._arm_controller.move_arm(target_x, target_y, target_z, mode="pre_grasp")
-                self._column_controller.move_column(target_z)
+                    # align end effector and object to grab
+                    self._arm_controller.move_arm(target_x, target_y, target_z, mode="pre_grasp")
+                    self._column_controller.move_column(target_z)
 
-                self._gripper_controller.move_gripper(1.0)
+                    self._gripper_controller.move_gripper(1.0)
 
-                # move end effector to the object
-                self._arm_controller.move_arm(target_x, target_y, target_z, mode="cartesian")
+                    # move end effector to the object
+                    self._arm_controller.move_arm(target_x, target_y, target_z, mode="cartesian")
 
-                self._gripper_controller.move_gripper(0.1)
+                    # close gripper
+                    self._gripper_controller.move_gripper(0.1)
+
+                    self._arm_controller.move_arm(target_x, target_y, target_z, mode="pre_grasp")
+                    self._column_controller.move_column_to_pose("travelling_pose")
+
+                    isActionSucceed = True
+
+                elif "Pointing" in goal.action:
+                    # align end effector and position to point
+                    self._arm_controller.move_arm(target_x, target_y, target_z, mode="pre_grasp")
+                    self._column_controller.move_column(target_z)
+
+                    isActionSucceed = True
+
+                elif "Droping" in goal.action:
+                    # align end effector and position to drop
+                    self._arm_controller.move_arm(target_x, target_y, target_z, mode="pre_grasp")
+                    self._column_controller.move_column(target_z)
+
+                    # move end effector to the position to drop
+                    self._arm_controller.move_arm(target_x, target_y, target_z, mode="cartesian")
+
+                    # drop
+                    self._gripper_controller.move_gripper(1.0)
+
+                    isActionSucceed = True
 
                 json_result = {
                     "action": goal.action,
-                    "status": 'Success'
+                    "status": ('Success' if isActionSucceed else 'Aborted')
                 }
                 action_result.action_output = json.dumps(json_result)
-
-            isActionSucceed = True
 
         elif goal.action == 'Travelling':
             rospy.loginfo("{class_name} : Received travelling action goal".format(class_name=self.__class__.__name__))
