@@ -13,7 +13,6 @@ from pmb2_apps.msg import ArmControlAction, ArmControlResult
 from tf import TransformListener
 from geometry_msgs.msg import PointStamped
 import json
-import numpy as np
 import math
 
 
@@ -47,7 +46,7 @@ class MoveitGlobalController:
 
         self._column_controller.move_column_to_pose("travelling_pose")
         self._arm_controller.move_arm_to_pose("travelling_pose")
-        self._gripper_controller.move_gripper(0.1)
+        self._gripper_controller.move_gripper_to_pose("close_gripper")
 
         if rospy.has_param("~Moveit_global_controller_action_name"):
             action_server_name = rospy.get_param("~Moveit_global_controller_action_name")
@@ -101,43 +100,29 @@ class MoveitGlobalController:
             target_y = target.point.y
             target_z = target.point.z
 
-            if target_x > 0:
-                alpha = np.arctan(target_y/target_x)
+            alpha = math.atan2(target_y, target_x)
 
-            else:
-                if target_y > 0:
-                    alpha = math.pi + np.arctan(target_y/target_x)
+            rospy.logwarn("{class_name} : ANGLE TO OBJECT %s Radian %s Degree".format(
+                class_name=self.__class__.__name__), str(alpha), str(alpha*180/math.pi))
+
+            if (target_x > 0):
+                if (target_y > 0):
+                    rotationNeeded = -math.pi/2
                 else:
-                    alpha = -math.pi + np.arctan(target_y/target_x)
+                    rotationNeeded = 0.0
+            else:
+                if (target_y > 0):
+                    rotationNeeded = -math.pi
+                else:
+                    rotationNeeded = math.pi/2
 
-            rospy.logwarn("{class_name} : ANGLE PAR RAPPORT A BASE_FOOTPRINT %s radians %s degres".format(
-                class_name=self.__class__.__name__), str(alpha), str((alpha*360)/(2*math.pi)))
+            if (rotationNeeded != 0):
+                rospy.logwarn("{class_name} : ROTATION OF %.2f RADIAN NEEDED TO POINT".format(class_name=self.__class__.__name__), rotationNeeded)
 
-            rotation_need = False
-
-            radians_needed_for_rotation = 0.0
-            if alpha < 0 and alpha > -math.pi/2:
-                rospy.logwarn("{class_name} : NO ROTATION NEEDED TO POINT".format(class_name=self.__class__.__name__))
-
-            elif alpha > 0 and alpha < math.pi/2:
-                rospy.logwarn("{class_name} : PI/2 ROTATION NEEDED TO POINT".format(class_name=self.__class__.__name__))
-                rotation_need = True
-                radians_needed_for_rotation = math.pi/2
-
-            elif alpha > -math.pi and alpha < -math.pi/2:
-                rospy.logwarn("{class_name} : -PI/2 ROTATION NEEDED TO POINT".format(class_name=self.__class__.__name__))
-                rotation_need = True
-                radians_needed_for_rotation = -math.pi/2
-
-            elif alpha > math.pi/2 and alpha < math.pi:
-                rospy.logwarn("{class_name} : PI ROTATION NEEDED TO POINT".format(class_name=self.__class__.__name__))
-                rotation_need = True
-                radians_needed_for_rotation = math.pi
-
-            if rotation_need:
                 json_result = {
                     "action": goal.action,
-                    "rotationNeed": radians_needed_for_rotation
+                    "rotation": rotationNeeded
+                    "status": 'Aborted'
                 }
                 action_result.action_output = json.dumps(json_result)
 
@@ -158,7 +143,7 @@ class MoveitGlobalController:
 
                 json_result = {
                     "action": goal.action,
-                    "status": 'OK'
+                    "status": 'Success'
                 }
                 action_result.action_output = json.dumps(json_result)
 
@@ -168,9 +153,10 @@ class MoveitGlobalController:
             rospy.loginfo("{class_name} : Received travelling action goal".format(class_name=self.__class__.__name__))
             self._column_controller.move_column_to_pose("travelling_pose")
             self._arm_controller.move_arm_to_pose("travelling_pose")
+            self._gripper_controller.move_gripper_to_pose("close_gripper")
             json_result = {
                 "action": goal.action,
-                "status": 'OK'
+                "status": 'Success'
             }
             action_result.action_output = json.dumps(json_result)
             isActionSucceed = True

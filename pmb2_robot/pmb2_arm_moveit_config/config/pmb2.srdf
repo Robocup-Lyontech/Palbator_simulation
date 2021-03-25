@@ -29,7 +29,7 @@
         <joint name="palbator_arm_wrist_3_joint" value="0" />
     </group_state>
     <group_state name="travelling_pose" group="pmb2_column">
-        <joint name="palbator_arm_column_joint" value="1" />
+        <joint name="palbator_arm_column_joint" value="0.6" />
     </group_state>
     <group_state name="close_gripper" group="pmb2_gripper">
         <joint name="motor1_hand_joint" value="0.3" />
