@@ -65,7 +65,7 @@ class MoveitGlobalController:
         """
         isActionSucceed = False
         action_result = ArmControlResult()
-        if "Grasping" in goal.action or "Pointing" in goal.action or "Droping" in goal.action:
+        if "Grasping" in goal.action or "Pointing" in goal.action or "Dropping" in goal.action:
             rospy.loginfo("{class_name} : Received %s action goal".format(class_name=self.__class__.__name__), goal.action)
             listener = TransformListener()
             now = rospy.Time(0)
@@ -82,7 +82,7 @@ class MoveitGlobalController:
                 object_point.point.y = trans[1]
                 object_point.point.z = trans[2]
 
-            elif goal.action == 'GraspingXYZ' or goal.action == 'PointingXYZ' or "Droping" in goal.action:
+            elif goal.action == 'GraspingXYZ' or goal.action == 'PointingXYZ' or "Dropping" in goal.action:
                 object_point = PointStamped()
                 object_point.header.frame_id = "map"
                 object_point.header.stamp = now
@@ -155,7 +155,7 @@ class MoveitGlobalController:
 
                     isActionSucceed = True
 
-                elif "Droping" in goal.action:
+                elif "Dropping" in goal.action:
                     # align end effector and position to drop
                     self._arm_controller.move_arm(target_x, target_y, target_z, mode="pre_grasp")
                     self._column_controller.move_column(target_z)
