@@ -219,8 +219,8 @@
     <joint name="palbator_arm_column_joint" type="prismatic">
       <parent link="palbator_arm_column"/>
       <child link="palbator_arm_column_link"/>
-      <origin xyz="0 0.1 0" rpy="0 0 0" />
-      <limit effort="1000" velocity="0.3" lower="0.35" upper="1.35" />
+      <origin xyz="0 0.1 0.35" rpy="0 0 0" />
+      <limit effort="1000" velocity="0.3" lower="0" upper="1" />
       <axis xyz="0 0 1" />
     </joint>  
 

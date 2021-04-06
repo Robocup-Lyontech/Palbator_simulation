@@ -1,5 +1,5 @@
 <launch>    
-    <include file="$(find pmb2_moveit_without_column)/launch/moveit_planning_gazebo.launch" />
+    <include file="$(find pmb2_arm_moveit_config)/launch/moveit_planning_gazebo.launch" />
 
     <arg name="config" default="$(find pmb2_apps)/config/config_global_moveit_palbator.yaml" doc="Path to parameter config file"/>
 
@@ -7,5 +7,10 @@
     <node name="moveit_global_controller" pkg="pmb2_apps" type="moveit_global_controller.py" output="screen">
         <rosparam file="$(arg config)"/>
     </node>
+
+    <node pkg="rostopic" type="rostopic" name="rostopic1" args="pub -1 /pmb2_arm_controller/arm_hand1_fingertip1_joint_controller/command std_msgs/Float64 'data: 0.0'"/>
+    <node pkg="rostopic" type="rostopic" name="rostopic2" args="pub -1 /pmb2_arm_controller/arm_hand1_fingertip2_joint_controller/command std_msgs/Float64 'data: 0.0'"/>
+    <node pkg="rostopic" type="rostopic" name="rostopic3" args="pub -1 /pmb2_arm_controller/arm_hand2_fingertip1_joint_controller/command std_msgs/Float64 'data: 0.0'"/>
+    <node pkg="rostopic" type="rostopic" name="rostopic4" args="pub -1 /pmb2_arm_controller/arm_hand2_fingertip2_joint_controller/command std_msgs/Float64 'data: 0.0'"/>
 
 </launch>

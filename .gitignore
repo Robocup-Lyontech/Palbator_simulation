@@ -21,5 +21,6 @@ pal_python/src/pal_python/pal_publishers.pyc
 pal_python/src/pal_python/pal_rpc.pyc
 pal_python/src/pal_python/pal_thread.pyc
 pal_python/src/pal_python/shell_cmd.pyc
+pmb2_robot/pmb2_apps/scripts/moveit_gripper_controller.pyc
 pmb2_robot/pmb2_apps/scripts/moveit_arm_controller.pyc
 pmb2_robot/pmb2_apps/scripts/moveit_column_controller.pyc

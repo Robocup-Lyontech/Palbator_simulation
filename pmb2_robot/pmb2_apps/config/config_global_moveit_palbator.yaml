@@ -3,7 +3,7 @@ Moveit_global_controller_action_name: "Moveit_Palbator_global_action"
 
 #PARAMETERS FOR ARM CONTROLLER:
 Palbator_arm_parameters: {
-  "Palbator_arm_length": 0.608,
+  "Palbator_arm_length": 0.45,
   "Palbator_arm_move_group": "pmb2_arm",
   "display_arm_planned_path_topic": "/move_group_arm/display_planned_path"
 }
@@ -11,8 +11,15 @@ Palbator_arm_parameters: {
 #PARAMETERS FOR COLUMN CONTROLLER:
 Palbator_column_parameters: {
   "Palbator_column_move_group": "pmb2_column",
-  "minimum_height": 0.41,
-  "maximum_height": 1.35,
+  "minimum_height": 0,
+  "maximum_height": 1,
   "display_column_planned_path_topic": "/move_group_column/display_planned_path"
 }
 
+#PARAMETERS FOR GRIPPER CONTROLLER:
+Palbator_gripper_parameters: {
+  "Palbator_gripper_move_group": "pmb2_gripper",
+  "minimum_opening": 0.3,
+  "maximum_opening": -1.0,
+  "display_gripper_planned_path_topic": "/move_group_gripper/display_planned_path"
+}
