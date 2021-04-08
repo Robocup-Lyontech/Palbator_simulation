@@ -100,7 +100,7 @@
     <link name="fingertip1_1_link">
       <inertial>
         <origin xyz="-0.0010321 0.0050002 -3.5129E-05" rpy="0 0 0" />
-        <mass value="0.034799" />
+        <mass value="0.0062622" />
         <inertia
           ixx="1.1668E-05"
           ixy="1.0081E-14"
@@ -130,7 +130,7 @@
     <link name="fingertip1_2_link">
       <inertial>
         <origin xyz="-0.0010321 0.0050002 -3.5129E-05" rpy="0 0 0" />
-        <mass value="0.034799" />
+        <mass value="0.0062622" />
         <inertia
           ixx="1.1668E-05"
           ixy="1.0081E-14"
@@ -220,7 +220,7 @@
     <link name="fingertip2_1_link">
       <inertial>
         <origin xyz="-0.0010321375 0.0050002 -3.512856E-05" rpy="0 0 0" />
-        <mass value="0.034799" />
+        <mass value="0.0062622" />
         <inertia
           ixx="1.1668E-05"
           ixy="1.0081E-14"
@@ -251,7 +251,7 @@
       <inertial>
         <origin
           xyz="-0.001032137588 0.0050002404 -3.512856642E-05" rpy="0 0 0" />
-        <mass value="0.034799" />
+        <mass value="0.0062622" />
         <inertia
           ixx="1.1668E-05"
           ixy="1.0081E-14"
