@@ -32,7 +32,9 @@ class MoveitArmController:
         self.display_trajectory_publisher = rospy.Publisher(
             self._parameters['display_arm_planned_path_topic'], DisplayTrajectory, queue_size=10)
         self._tflistener = TransformListener()
-        self.arm_length = self._parameters['Palbator_arm_length']
+        self.arm_hold_length = self._parameters['Palbator_hold_length']
+        self.arm_min_length = self._parameters['Palbator_min_length']
+        self.arm_max_length = self._parameters['Palbator_max_length']
 
         rospy.logwarn("{class_name} : ARM CONTROLLER ON".format(class_name=self.__class__.__name__))
 
@@ -82,8 +84,8 @@ class MoveitArmController:
         q = tf.transformations.quaternion_from_euler(0.0, 0.0, alpha)
         position_effector = self.group.get_current_pose("palbator_arm_shoulder_link1")
 
-        arm_pose.position.x = np.cos(alpha)*self.arm_length
-        arm_pose.position.y = np.sin(alpha)*self.arm_length
+        arm_pose.position.x = np.cos(alpha)*self.arm_hold_length
+        arm_pose.position.y = np.sin(alpha)*self.arm_hold_length
         arm_pose.position.z = position_effector.pose.position.z
 
         arm_pose.orientation.x = q[0]
@@ -102,7 +104,6 @@ class MoveitArmController:
         orientation_constraint.orientation.w = 1.0
         orientation_constraint.absolute_x_axis_tolerance = 0.4
         orientation_constraint.absolute_y_axis_tolerance = 0.4
-        #orientation_constraint.absolute_z_axis_tolerance = 0.4
         orientation_constraint.absolute_z_axis_tolerance = 3.14 #ignore this axis
         orientation_constraint.weight = 1
         constraints.orientation_constraints.append(orientation_constraint)
@@ -112,7 +113,6 @@ class MoveitArmController:
         self.group.set_pose_target(arm_pose)
         plan = self.group.plan()
 
-        #(plan, fraction) = self.group.compute_cartesian_path([arm_pose], 0.01, 0.0)
         self.__display_plan(plan)
         rospy.loginfo("{class_name} : Moving arm ...".format(class_name=self.__class__.__name__))
         self.group.execute(plan, wait=True)
@@ -152,8 +152,8 @@ class MoveitArmController:
 
         waypoint = copy.deepcopy(waypoints[-1])
         alpha = np.arctan(goal.point.y/goal.point.x)
-        waypoint.position.x = np.cos(alpha)*self.arm_length
-        waypoint.position.y = np.sin(alpha)*self.arm_length
+        waypoint.position.x = np.cos(alpha)*self.arm_hold_length
+        waypoint.position.y = np.sin(alpha)*self.arm_hold_length
         waypoints.append(waypoint)
 
         height = self.group.get_current_pose("palbator_arm_shoulder_link1").pose.position.z
