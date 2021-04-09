@@ -57,7 +57,7 @@ controller_list:
     default: True
     type: FollowJointTrajectory
     joints:
-      palbator_arm_column_joint
+      - palbator_arm_column_joint
 pmb2_gripper_controller:
   type: effort_controllers/JointTrajectoryController
   joints:
