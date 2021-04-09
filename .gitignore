@@ -24,3 +24,5 @@ pal_python/src/pal_python/shell_cmd.pyc
 pmb2_robot/pmb2_apps/scripts/moveit_gripper_controller.pyc
 pmb2_robot/pmb2_apps/scripts/moveit_arm_controller.pyc
 pmb2_robot/pmb2_apps/scripts/moveit_column_controller.pyc
+
+**/*.pyc

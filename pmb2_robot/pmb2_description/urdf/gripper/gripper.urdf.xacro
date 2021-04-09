@@ -454,6 +454,7 @@
 
     <gazebo reference="hand2_link">
       <material>Gazebo/LightBlue</material>
+      <self_collide>true</self_collide>
       <kp>1000000.0</kp>
       <kd>1000.0</kd>
       <mu1>1.0</mu1>
@@ -464,62 +465,52 @@
 
     <gazebo reference="hand1_link">
       <material>Gazebo/LightBlue</material>
+      <self_collide>true</self_collide>
       <kp>1000000</kp>
       <kd>100</kd>
       <mu1>100.0</mu1>
       <mu2>50.0</mu2>
-      <slip1>1</slip1>
       <fdir1>0 0 1</fdir1>
-      <min_depth>0.00</min_depth>
-      <max_vel>2</max_vel>
     </gazebo>
 
     <gazebo reference="fingertip1_1_link">
       <material>Gazebo/Grey</material>
+      <self_collide>true</self_collide>
       <kp>1000000</kp>
       <kd>100</kd>
       <mu1>100.0</mu1>
       <mu2>50.0</mu2>
-      <slip1>1</slip1>
       <fdir1>0 0 1</fdir1>
-      <min_depth>0.00</min_depth>
-      <max_vel>2</max_vel>
     </gazebo>
 
     <gazebo reference="fingertip1_2_link">
       <material>Gazebo/Grey</material>
+      <self_collide>true</self_collide>
       <kp>1000000</kp>
       <kd>100</kd>
       <mu1>100.0</mu1>
       <mu2>50.0</mu2>
-      <slip1>1</slip1>
       <fdir1>0 0 1</fdir1>
-      <min_depth>0.00</min_depth>
-      <max_vel>2</max_vel>
     </gazebo>
 
     <gazebo reference="fingertip2_1_link">
       <material>Gazebo/Grey</material>
+      <self_collide>true</self_collide>
       <kp>1000000</kp>
       <kd>100</kd>
       <mu1>100.0</mu1>
       <mu2>50.0</mu2>
-      <slip1>1</slip1>
       <fdir1>0 0 1</fdir1>
-      <min_depth>0.00</min_depth>
-      <max_vel>2</max_vel>
     </gazebo>
 
     <gazebo reference="fingertip2_2_link">
       <material>Gazebo/Grey</material>
+      <self_collide>true</self_collide>
       <kp>1000000</kp>
       <kd>100</kd>
       <mu1>100.0</mu1>
       <mu2>50.0</mu2>
-      <slip1>1</slip1>
       <fdir1>0 0 1</fdir1>
-      <min_depth>0.00</min_depth>
-      <max_vel>2</max_vel>
     </gazebo>
 
 
