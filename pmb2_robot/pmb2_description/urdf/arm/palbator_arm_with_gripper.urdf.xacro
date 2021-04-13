@@ -18,6 +18,7 @@
   <xacro:property name="PI" value="3.14159"/>
 
   <xacro:include filename="$(find pmb2_description)/urdf/gripper/gripper.urdf.xacro"/>
+  <xacro:include filename="$(find pmb2_description)/urdf/display/face_screen.urdf.xacro"/>
 
   <xacro:macro name="palbator_arm" params="parent">
 
@@ -56,6 +57,7 @@
         </material>          
       </visual>
     </link>  
+
 
     <link name="palbator_arm_column_link" >
       <inertial>
@@ -212,9 +214,11 @@
     <joint name="palbator_arm_kinect_joint" type="fixed">
       <parent link="palbator_arm_column"/>
       <child link="palbator_arm_kinect_link"/>
-        <origin xyz="0.0 0.0 1.60" rpy="${PI} ${PI - 0.3} 0" />
+        <origin xyz="-0.022 0.0 1.60" rpy="${PI} ${PI - 0.3} 0" />
         <axis xyz="0 0 1" />
     </joint>
+
+
 
     <joint name="palbator_arm_column_joint" type="prismatic">
       <parent link="palbator_arm_column"/>
@@ -329,6 +333,10 @@
     <xacro:gripper parent="${name}_link"> 
       <origin xyz="0 0.0275 0.012" rpy="0 0 0" />
     </xacro:gripper>
+
+    <xacro:face_screen parent="${name}_link"> 
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </xacro:face_screen>
 
 
     <transmission name="tran1">
