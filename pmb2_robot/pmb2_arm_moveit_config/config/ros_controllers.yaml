@@ -1,6 +1,6 @@
 # Simulation settings for using moveit_sim_controllers
 moveit_sim_hw_interface:
-  joint_model_group: pmb2_gripper
+  joint_model_group: pmb2_arm
   joint_model_group_pose: travelling_pose
 # Settings for ros_control_boilerplate control loop
 generic_hw_control_loop:
@@ -58,19 +58,10 @@ controller_list:
     type: FollowJointTrajectory
     joints:
       - palbator_arm_column_joint
-pmb2_gripper_controller:
-  type: effort_controllers/JointTrajectoryController
-  joints:
-    - motor1_hand_joint
-    - motor2_hand_joint
-  gains:
-    motor1_hand_joint:
-      p: 10
-      d: 0
-      i: 0.1
-      i_clamp: 2
-    motor2_hand_joint:
-      p: 10
-      d: 0
-      i: 0.1
-      i_clamp: 2
+  - name: pmb2_gripper_controller
+    action_ns: follow_joint_trajectory
+    default: True
+    type: FollowJointTrajectory
+    joints:
+      - motor1_hand_joint
+      - motor2_hand_joint

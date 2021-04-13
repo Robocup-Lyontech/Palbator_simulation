@@ -5,7 +5,7 @@ Moveit_global_controller_action_name: "Moveit_Palbator_global_action"
 Palbator_arm_parameters: {
   "Palbator_hold_length": 0.45,
   "Palbator_min_length": 0.55,
-  "Palbator_max_length": 0.75,
+  "Palbator_max_length": 0.80,
   "Palbator_arm_move_group": "pmb2_arm",
   "display_arm_planned_path_topic": "/move_group_arm/display_planned_path"
 }

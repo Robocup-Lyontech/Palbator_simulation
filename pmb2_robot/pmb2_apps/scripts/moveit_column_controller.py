@@ -60,25 +60,23 @@ class MoveitColumnController:
         :type z_target: float
         """
         rospy.loginfo("{class_name} : Column move request to coordinate Z %s".format(class_name=self.__class__.__name__), str(z_target))
-        column_pose_target = Pose()
-        if z_target < self.minimum_column:
-            column_pose_target.position.z = self.minimum_column
+        if z_target - 0.65 < self.minimum_column:
+            column_pose_target = self.minimum_column
 
-        elif z_target > self.maximum_column:
-            column_pose_target.position.z = self.maximum_column
+        elif z_target - 0.65 > self.maximum_column:
+            column_pose_target = self.maximum_column
 
         else:
-            column_pose_target.position.z = z_target
+            column_pose_target = z_target - 0.65
+        
+        #self.group.set_pose_reference_frame("base_footprint")
+        self.group.set_joint_value_target([column_pose_target])
 
-        column_pose_target.orientation.w = 1.0
-        self.group.set_pose_reference_frame("base_footprint")
-        self.group.set_joint_value_target(column_pose_target, True)
-
-        plan1 = self.group.plan()
+        plan = self.group.plan()
         self.display_trajectory = moveit_msgs.msg.DisplayTrajectory()
 
         self.display_trajectory.trajectory_start = self.robot.get_current_state()
-        self.display_trajectory.trajectory.append(plan1)
+        self.display_trajectory.trajectory.append(plan)
         self.display_trajectory_publisher.publish(self.display_trajectory)
         rospy.loginfo("{class_name} : Moving column".format(class_name=self.__class__.__name__))
         self.group.go(wait=True)
