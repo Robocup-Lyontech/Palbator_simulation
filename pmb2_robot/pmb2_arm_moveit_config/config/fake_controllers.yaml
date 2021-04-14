@@ -14,3 +14,10 @@ controller_list:
   - name: fake_pmb2_column_controller
     joints:
       - palbator_arm_column_joint
+initial:  # Define initial robot poses.
+  - group: pmb2_gripper
+    pose: close_gripper
+  - group: pmb2_arm
+    pose: travelling_pose
+  - group: pmb2_column
+    pose: travelling_pose

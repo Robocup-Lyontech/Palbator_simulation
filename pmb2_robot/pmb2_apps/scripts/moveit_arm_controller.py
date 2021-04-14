@@ -124,11 +124,9 @@ class MoveitArmController:
 
         waypoints = [self.group.get_current_pose().pose]
 
-        height = self.group.get_current_pose("palbator_arm_shoulder_link1").pose.position.z
-        if goal.point.z != height:
-            waypoint = copy.deepcopy(waypoints[-1])
-            waypoint.position.z = goal.point.z
-            waypoints.append(waypoint)
+        waypoint = copy.deepcopy(waypoints[-1])
+        waypoint.position.z = goal.point.z
+        waypoints.append(waypoint)
 
         waypoint = copy.deepcopy(waypoints[-1])
         waypoint.position.x = goal.point.x
@@ -156,11 +154,9 @@ class MoveitArmController:
         waypoint.position.y = np.sin(alpha)*self.arm_hold_length
         waypoints.append(waypoint)
 
-        height = self.group.get_current_pose("palbator_arm_shoulder_link1").pose.position.z
-        if waypoints[-1].position.z != height:
-            waypoint = copy.deepcopy(waypoints[-1])
-            waypoint.position.z = height
-            waypoints.append(waypoint)
+        waypoint = copy.deepcopy(waypoints[-1])
+        waypoint.position.z = self.group.get_current_pose("palbator_arm_column_link").pose.position.z
+        waypoints.append(waypoint)
 
         waypoints.pop(0)
 
