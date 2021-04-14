@@ -152,42 +152,50 @@ class MoveitGlobalController:
         return rotationNeeded, distanceNeeded
 
     def grasping(self, goal):
+        ret = True
         # put the arm in base pose before grab
-        self._arm_controller.point_at(goal)
+        ret = ret and self._arm_controller.point_at(goal)
 
         # align end effector and object to grab
-        self._column_controller.move_column(goal.point.z)
+        ret = ret and self._column_controller.move_column(goal.point.z)
 
-        self._gripper_controller.move_gripper(1.0)
+        ret = ret and self._gripper_controller.move_gripper(1.0)
 
         # move end effector to the object
-        self._arm_controller.grab(goal)
+        ret = ret and self._arm_controller.grab(goal)
 
         # close gripper
-        self._gripper_controller.move_gripper(0.0)
+        ret = ret and self._gripper_controller.move_gripper(0.0)
 
-        self._arm_controller.post_grab(goal)
+        ret = ret and self._arm_controller.post_grab(goal)
+        return ret
 
     def pointing(self, goal):
-        self._arm_controller.point_at(goal)
-        self._column_controller.move_column(goal.point.z)
+        ret = True
+        ret = ret and self._arm_controller.point_at(goal)
+        ret = ret and self._column_controller.move_column(goal.point.z)
+        return ret
 
     def dropping(self, goal):
+        ret = True
         # align end effector and position to drop
-        self._arm_controller.point_at(goal)
-        self._column_controller.move_column(goal.point.z)
+        ret = ret and self._arm_controller.point_at(goal)
+        ret = ret and self._column_controller.move_column(goal.point.z)
 
         # move end effector to the position to drop
-        self._arm_controller.drop(goal)
+        ret = ret and self._arm_controller.drop(goal)
         # drop
-        self._gripper_controller.move_gripper(1.0)
+        ret = ret and self._gripper_controller.move_gripper(1.0)
         # move arm to standby
-        self._arm_controller.move_arm_to_pose("pointing_pose")
+        ret = ret and self._arm_controller.move_arm_to_pose("pointing_pose")
+        return ret
 
     def traveling(self):
-        self._column_controller.move_column_to_pose("travelling_pose")
-        self._arm_controller.move_arm_to_pose("travelling_pose")
-        self._gripper_controller.move_gripper_to_pose("close_gripper")
+        ret = True
+        ret = ret and self._column_controller.move_column_to_pose("travelling_pose")
+        ret = ret and self._arm_controller.move_arm_to_pose("travelling_pose")
+        ret = ret and self._gripper_controller.move_gripper_to_pose("close_gripper")
+        return ret
 
     def executeActionServer(self, goal):
         """
@@ -206,26 +214,41 @@ class MoveitGlobalController:
                 rospy.loginfo("{class_name} : Goal coords in base_footprint : %s".format(class_name=self.__class__.__name__), goalPointStamped)
 
                 (rotation_needed, distance_needed) = self.__getPlacement(goalPointStamped, goal.action)
+                fct = None
 
-                if rotation_needed != 0:
-                    rospy.logwarn("{class_name} : ROTATION OF %.2f RADIAN NEEDED TO POINT".format(
-                        class_name=self.__class__.__name__), rotation_needed)
-                    JSONRequest["rotation"] = rotation_needed
+                if "Grasping" in goal.action:
+                    if rotation_needed != 0:
+                        rospy.logwarn("{class_name} : ROTATION OF %.2f RADIAN NEEDED".format(
+                            class_name=self.__class__.__name__), rotation_needed)
+                        JSONRequest["rotation"] = rotation_needed
 
-                if distance_needed !=0:
-                    rospy.logwarn("{class_name} : DISTANCE OF %.3f METER NEEDED TO POINT".format(
-                        class_name=self.__class__.__name__), distance_needed)
-                    JSONRequest["distance"] = distance_needed
+                    if distance_needed !=0:
+                        rospy.logwarn("{class_name} : DISTANCE OF %.3f METER NEEDED".format(
+                            class_name=self.__class__.__name__), distance_needed)
+                        JSONRequest["distance"] = distance_needed
+                    fct = self.grasping
 
+                elif "Pointing" in goal.action:
+                    if rotation_needed != 0:
+                        rospy.logwarn("{class_name} : ROTATION OF %.2f RADIAN NEEDED".format(
+                            class_name=self.__class__.__name__), rotation_needed)
+                        JSONRequest["rotation"] = rotation_needed
+                    fct = self.pointing
+
+                elif "Dropping" in goal.action:
+                    if rotation_needed != 0:
+                        rospy.logwarn("{class_name} : ROTATION OF %.2f RADIAN NEEDED".format(
+                            class_name=self.__class__.__name__), rotation_needed)
+                        JSONRequest["rotation"] = rotation_needed
+
+                    if distance_needed !=0:
+                        rospy.logwarn("{class_name} : DISTANCE OF %.3f METER NEEDED".format(
+                            class_name=self.__class__.__name__), distance_needed)
+                        JSONRequest["distance"] = distance_needed
+                    fct = self.dropping
+                
                 if len(JSONRequest) == 0:
-                    if "Grasping" in goal.action:
-                        self.grasping(goalPointStamped)
-
-                    elif "Pointing" in goal.action:
-                        self.pointing(goalPointStamped)
-
-                    elif "Dropping" in goal.action:
-                        self.dropping(goalPointStamped)
+                    isActionSucceed = fct(goalPointStamped)
 
             elif goal.action == 'Travelling':
                 rospy.loginfo("{class_name} : Received travelling action goal".format(class_name=self.__class__.__name__))
@@ -235,7 +258,6 @@ class MoveitGlobalController:
                 rospy.logwarn("{class_name} : unable to find or launch function corresponding to the action %s".format(
                     class_name=self.__class__.__name__), str(goal.action))
 
-            isActionSucceed = True  # ToDo temporary until Success check
             json_result = {
                 "action": goal.action,
                 "request": JSONRequest,
@@ -246,7 +268,9 @@ class MoveitGlobalController:
                           goal.action, ('Succeded' if isActionSucceed else 'Aborted'))
             if isActionSucceed:
                 self._arm_control_server.set_succeeded(action_result)
-
+            else:
+                self._arm_control_server.set_aborted(action_result)
+            
         except Exception as exc:
             rospy.logerr("{class_name} : Action %s aborted because of: %s".format(class_name=self.__class__.__name__), goal.action, exc)
             rospy.logerr(traceback.format_exc())

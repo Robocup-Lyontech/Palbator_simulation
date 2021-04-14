@@ -39,21 +39,26 @@ class MoveitColumnController:
         :param pose_name: name of the position to reach
         :type pose_name: string
         """
+        ret = True
         rospy.loginfo("{class_name} : Column move request to position %s".format(class_name=self.__class__.__name__), pose_name)
         self.group.set_named_target(pose_name)
 
-        plan1 = self.group.plan()
+        plan = self.group.plan()
         self.display_trajectory = moveit_msgs.msg.DisplayTrajectory()
 
+        if not plan.joint_trajectory.points:
+            return False
+
         self.display_trajectory.trajectory_start = self.robot.get_current_state()
-        self.display_trajectory.trajectory.append(plan1)
+        self.display_trajectory.trajectory.append(plan)
         self.display_trajectory_publisher.publish(self.display_trajectory)
         rospy.loginfo("{class_name} : Moving column".format(class_name=self.__class__.__name__))
-        # rospy.sleep(5)
-        self.group.go(wait=True)
+        ret = ret and self.group.go(wait=True)
         rospy.loginfo("{class_name} : Column position reached".format(class_name=self.__class__.__name__))
+        return ret
 
     def move_column(self, z_target):
+        ret = True
         """
         Moves the column in a position on Z axis.
         :param z_target: Coordinate Z of the point to reach
@@ -75,9 +80,14 @@ class MoveitColumnController:
         plan = self.group.plan()
         self.display_trajectory = moveit_msgs.msg.DisplayTrajectory()
 
+        if not plan.joint_trajectory.points:
+            return False
+
         self.display_trajectory.trajectory_start = self.robot.get_current_state()
         self.display_trajectory.trajectory.append(plan)
         self.display_trajectory_publisher.publish(self.display_trajectory)
         rospy.loginfo("{class_name} : Moving column".format(class_name=self.__class__.__name__))
-        self.group.go(wait=True)
+        ret = ret and self.group.go(wait=True)
         rospy.loginfo("{class_name} : Column position reached".format(class_name=self.__class__.__name__))
+        return ret
+            

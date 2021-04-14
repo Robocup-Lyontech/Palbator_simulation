@@ -51,28 +51,41 @@ class MoveitArmController:
         :param pose_name: name of the position to reach
         :type pose_name: string
         """
+        ret = True
         rospy.loginfo("{class_name} : Move arm request to position %s".format(class_name=self.__class__.__name__), pose_name)
         self.group.set_named_target(pose_name)
 
         plan = self.group.plan()
+
+        if not plan.joint_trajectory.points:
+            return False
+
         self.__display_plan(plan)
         rospy.loginfo("{class_name} : Moving arm ...".format(class_name=self.__class__.__name__))
-        self.group.go(wait=True)
+        ret = ret and self.group.go(wait=True)
         rospy.loginfo("{class_name} : Arm position reached".format(class_name=self.__class__.__name__))
+        return ret
 
     def move_arm(self, goal):
+        ret = True
         rospy.loginfo("{class_name} : Move arm request to position %s".format(class_name=self.__class__.__name__), goal.point)
 
         self.group.set_pose_reference_frame("base_footprint")
         self.group.set_position_target(goal.point)
 
         plan = self.group.plan()
+
+        if not plan.joint_trajectory.points:
+            return False
+
         self.__display_plan(plan)
         rospy.loginfo("{class_name} : Moving arm ...".format(class_name=self.__class__.__name__))
-        self.group.go(wait=True)
+        ret = ret and self.group.go(wait=True)
         rospy.loginfo("{class_name} : Arm position reached".format(class_name=self.__class__.__name__))
+        return ret
 
     def point_at(self, goal):
+        ret = True
         rospy.loginfo("{class_name} : Move arm request to point %s".format(class_name=self.__class__.__name__), goal.point)
 
         self.move_arm_to_pose("pointing_pose")
@@ -112,14 +125,19 @@ class MoveitArmController:
 
         self.group.set_pose_target(arm_pose)
         plan = self.group.plan()
+        self.group.clear_path_constraints()
+
+        if not plan.joint_trajectory.points:
+            return False
 
         self.__display_plan(plan)
         rospy.loginfo("{class_name} : Moving arm ...".format(class_name=self.__class__.__name__))
-        self.group.execute(plan, wait=True)
-        self.group.clear_path_constraints()
+        ret = ret and self.group.execute(plan, wait=True)
         rospy.loginfo("{class_name} : Arm position reached".format(class_name=self.__class__.__name__))
+        return ret
 
     def grab(self, goal):
+        ret = True
         rospy.loginfo("{class_name} : Move arm request to grab object at position %s".format(class_name=self.__class__.__name__), goal.point)
 
         waypoints = [self.group.get_current_pose().pose]
@@ -136,10 +154,17 @@ class MoveitArmController:
         waypoints.pop(0)
 
         (plan, fraction) = self.group.compute_cartesian_path(waypoints, 0.01, 0.0)
+
+        if not plan.joint_trajectory.points:
+            return False
+
         self.__display_plan(plan)
-        self.group.execute(plan, wait=True)
+        ret = ret and self.group.execute(plan, wait=True)
+        return ret
+
 
     def post_grab(self, goal):
+        ret = True
         rospy.loginfo("{class_name} : Move arm request to standby position".format(class_name=self.__class__.__name__))
 
         waypoints = [self.group.get_current_pose().pose]
@@ -161,8 +186,13 @@ class MoveitArmController:
         waypoints.pop(0)
 
         (plan, fraction) = self.group.compute_cartesian_path(waypoints, 0.01, 0.0)
+
+        if not plan.joint_trajectory.points:
+            return False
+
         self.__display_plan(plan)
-        self.group.execute(plan, wait=True)
+        ret = ret and self.group.execute(plan, wait=True)
+            
 
         constraints = Constraints()
         constraints.name = "keepLevel"
@@ -180,10 +210,12 @@ class MoveitArmController:
         constraints.orientation_constraints.append(orientation_constraint)
 
         self.group.set_path_constraints(constraints)
-        self.move_arm_to_pose("pointing_pose")
+        ret = ret and self.move_arm_to_pose("pointing_pose")
         self.group.clear_path_constraints()
+        return ret
 
     def drop(self, goal):
+        ret = True
         rospy.loginfo("{class_name} : Move arm request to drop object at position %s".format(class_name=self.__class__.__name__), goal.point)
 
         waypoints = [self.group.get_current_pose().pose]
@@ -208,5 +240,10 @@ class MoveitArmController:
         waypoints.append(waypoint)
 
         (plan, fraction) = self.group.compute_cartesian_path(waypoints, 0.03, 0.0)
+
+        if not plan.joint_trajectory.points:
+            return False
+
         self.__display_plan(plan)
-        self.group.execute(plan, wait=True)
+        ret = ret and self.group.execute(plan, wait=True)
+        return ret
