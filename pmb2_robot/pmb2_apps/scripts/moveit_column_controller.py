@@ -31,7 +31,9 @@ class MoveitColumnController:
 
         self.minimum_column = self._parameters['minimum_height']
         self.maximum_column = self._parameters['maximum_height']
+        self.allow_wrong_execution = self._parameters['Allow_wrong_execution']
         rospy.logwarn("{class_name} : COLUMN CONTROLLER ON".format(class_name=self.__class__.__name__))
+        
 
     def move_column_to_pose(self, pose_name):
         """
@@ -39,7 +41,6 @@ class MoveitColumnController:
         :param pose_name: name of the position to reach
         :type pose_name: string
         """
-        ret = True
         rospy.loginfo("{class_name} : Column move request to position %s".format(class_name=self.__class__.__name__), pose_name)
         self.group.set_named_target(pose_name)
 
@@ -47,18 +48,17 @@ class MoveitColumnController:
         self.display_trajectory = moveit_msgs.msg.DisplayTrajectory()
 
         if not plan.joint_trajectory.points:
-            return False
+            raise Exception("Planning failed")
 
         self.display_trajectory.trajectory_start = self.robot.get_current_state()
         self.display_trajectory.trajectory.append(plan)
         self.display_trajectory_publisher.publish(self.display_trajectory)
         rospy.loginfo("{class_name} : Moving column".format(class_name=self.__class__.__name__))
-        ret = ret and self.group.go(wait=True)
+        if not self.group.go(wait=True) and not self.allow_wrong_execution:
+            raise Exception("Execution failed")
         rospy.loginfo("{class_name} : Column position reached".format(class_name=self.__class__.__name__))
-        return ret
 
     def move_column(self, z_target):
-        ret = True
         """
         Moves the column in a position on Z axis.
         :param z_target: Coordinate Z of the point to reach
@@ -81,13 +81,13 @@ class MoveitColumnController:
         self.display_trajectory = moveit_msgs.msg.DisplayTrajectory()
 
         if not plan.joint_trajectory.points:
-            return False
+            raise Exception("Planning failed")
 
         self.display_trajectory.trajectory_start = self.robot.get_current_state()
         self.display_trajectory.trajectory.append(plan)
         self.display_trajectory_publisher.publish(self.display_trajectory)
         rospy.loginfo("{class_name} : Moving column".format(class_name=self.__class__.__name__))
-        ret = ret and self.group.go(wait=True)
+        if not self.group.go(wait=True) and not self.allow_wrong_execution:
+            raise Exception("Execution failed")
         rospy.loginfo("{class_name} : Column position reached".format(class_name=self.__class__.__name__))
-        return ret
             

@@ -152,50 +152,42 @@ class MoveitGlobalController:
         return rotationNeeded, distanceNeeded
 
     def grasping(self, goal):
-        ret = True
         # put the arm in base pose before grab
-        ret = ret and self._arm_controller.point_at(goal)
+        self._arm_controller.point_at(goal)
 
         # align end effector and object to grab
-        ret = ret and self._column_controller.move_column(goal.point.z)
+        self._column_controller.move_column(goal.point.z)
 
-        ret = ret and self._gripper_controller.move_gripper(1.0)
+        self._gripper_controller.move_gripper(1.0)
 
         # move end effector to the object
-        ret = ret and self._arm_controller.grab(goal)
+        self._arm_controller.grab(goal)
 
         # close gripper
-        ret = ret and self._gripper_controller.move_gripper(0.0)
+        self._gripper_controller.move_gripper(0.0)
 
-        ret = ret and self._arm_controller.post_grab(goal)
-        return ret
+        self._arm_controller.post_grab(goal)
 
     def pointing(self, goal):
-        ret = True
-        ret = ret and self._arm_controller.point_at(goal)
-        ret = ret and self._column_controller.move_column(goal.point.z)
-        return ret
+        self._arm_controller.point_at(goal)
+        self._column_controller.move_column(goal.point.z)
 
     def dropping(self, goal):
-        ret = True
         # align end effector and position to drop
-        ret = ret and self._arm_controller.point_at(goal)
-        ret = ret and self._column_controller.move_column(goal.point.z)
+        self._arm_controller.point_at(goal)
+        self._column_controller.move_column(goal.point.z)
 
         # move end effector to the position to drop
-        ret = ret and self._arm_controller.drop(goal)
+        self._arm_controller.drop(goal)
         # drop
-        ret = ret and self._gripper_controller.move_gripper(1.0)
+        self._gripper_controller.move_gripper(1.0)
         # move arm to standby
-        ret = ret and self._arm_controller.move_arm_to_pose("pointing_pose")
-        return ret
+        self._arm_controller.move_arm_to_pose("pointing_pose")
 
     def traveling(self):
-        ret = True
-        ret = ret and self._column_controller.move_column_to_pose("travelling_pose")
-        ret = ret and self._arm_controller.move_arm_to_pose("travelling_pose")
-        ret = ret and self._gripper_controller.move_gripper_to_pose("close_gripper")
-        return ret
+        self._column_controller.move_column_to_pose("travelling_pose")
+        self._arm_controller.move_arm_to_pose("travelling_pose")
+        self._gripper_controller.move_gripper_to_pose("close_gripper")
 
     def executeActionServer(self, goal):
         """

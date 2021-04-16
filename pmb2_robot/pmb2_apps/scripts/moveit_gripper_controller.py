@@ -30,6 +30,7 @@ class MoveitGripperController:
 
         self.minimum_gripper = self._parameters['minimum_opening']
         self.maximum_gripper = self._parameters['maximum_opening']
+        self.allow_wrong_execution = self._parameters['Allow_wrong_execution']
         rospy.logwarn("{class_name} : GRIPPER CONTROLLER ON".format(class_name=self.__class__.__name__))
 
     def move_gripper_to_pose(self, pose_name):
@@ -38,7 +39,6 @@ class MoveitGripperController:
         :param pose_name: name of the position to reach
         :type pose_name: string
         """
-        ret = True
         rospy.loginfo("{class_name} : Gripper move request to position %s".format(class_name=self.__class__.__name__), pose_name)
         self.group.set_named_target(pose_name)
 
@@ -46,15 +46,15 @@ class MoveitGripperController:
         self.display_trajectory = moveit_msgs.msg.DisplayTrajectory()
 
         if not plan.joint_trajectory.points:
-            return False
+            raise Exception("Planning failed")
 
         self.display_trajectory.trajectory_start = self.robot.get_current_state()
         self.display_trajectory.trajectory.append(plan)
         self.display_trajectory_publisher.publish(self.display_trajectory)
         rospy.loginfo("{class_name} : Moving gripper".format(class_name=self.__class__.__name__))
-        ret = ret and self.group.go(wait=True)
+        if not self.group.go(wait=True) and not self.allow_wrong_execution:
+            raise Exception("Execution failed")
         rospy.loginfo("{class_name} : Gripper position reached".format(class_name=self.__class__.__name__))
-        return ret
 
     def move_gripper(self, opening_size):
         """
@@ -62,7 +62,6 @@ class MoveitGripperController:
         :param opening_size: Opening size value from 0.0 to 1.0
         :type opening_size: float
         """
-        ret = True
         rospy.loginfo("{class_name} : Gripper opening request %s%%".format(class_name=self.__class__.__name__), str(opening_size * 100))
 
         open_value = opening_size * (self.maximum_gripper - self.minimum_gripper) + self.minimum_gripper
@@ -74,12 +73,12 @@ class MoveitGripperController:
         self.display_trajectory = moveit_msgs.msg.DisplayTrajectory()
 
         if not plan.joint_trajectory.points:
-            return False
+            raise Exception("Planning failed")
 
         self.display_trajectory.trajectory_start = self.robot.get_current_state()
         self.display_trajectory.trajectory.append(plan)
         self.display_trajectory_publisher.publish(self.display_trajectory)
         rospy.loginfo("{class_name} : Moving gripper".format(class_name=self.__class__.__name__))
-        ret = ret and self.group.go(wait=True)
+        if not self.group.go(wait=True) and not self.allow_wrong_execution:
+            raise Exception("Execution failed")
         rospy.loginfo("{class_name} : Gripper position reached".format(class_name=self.__class__.__name__))
-        return ret
