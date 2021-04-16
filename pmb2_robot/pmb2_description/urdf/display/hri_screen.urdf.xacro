@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="hri_screen" params="parent *origin">
+
+    <link name="hri_screen_link" >
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.08"/>
+        <inertia ixx="0.01" ixy="0.001" ixz="0.001" iyy="0.01" iyz="0.001" izz="0.01"/>
+      </inertial>
+      <visual>
+        <geometry>
+            <box size="0.21 0.14 0.01"/>
+        </geometry>
+        <!--<geometry>
+          <mesh filename="package://pmb2_description/meshes/display/face2.stl" scale="0.001 0.001 0.001"/>
+        </geometry>     --> 
+          <origin xyz="0 0 0" rpy="0 0 0"/>
+        <material name="White">
+          <color rgba="1 1 1 0.5"/>-->
+        </material>          
+      </visual>
+    </link>  
+
+
+    <!-- JOINTS -->
+
+    <joint name="palbator_arm_hri_screen_joint" type="fixed">
+      <parent link="palbator_arm_column"/>
+      <child link="hri_screen_link"/>
+        <origin xyz="-0.18 0.0 0.8" rpy="1.27 0 -1.57" />
+        <axis xyz="0 0 1" />
+    </joint>
+
+
+
+    <!-- GAZEBO PLUGINS -->
+
+    <gazebo reference="hri_screen_link">
+      <visual>
+        <plugin name="display_video_controller" filename="libgazebo_ros_video.so">
+          <topicName>/screen/hri</topicName>
+          <height>120</height>
+          <width>180</width>
+        </plugin>
+      </visual>
+    </gazebo>
+
+
+  </xacro:macro>
+
+</robot>

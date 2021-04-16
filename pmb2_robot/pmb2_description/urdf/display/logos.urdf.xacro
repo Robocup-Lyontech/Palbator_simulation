@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="logos" params="parent *origin">
+
+
+
+
+
+    <link name="logo_cpe_1" >
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.00001"/>
+        <inertia ixx="0.000001" ixy="0.0000001" ixz="0.0000001" iyy="0.0000001" iyz="0.0000001" izz="0.0000001"/>
+      </inertial>
+      <visual>
+        <geometry>
+          <mesh filename="package://pmb2_description/meshes/display/cpe-hand.dae" scale="0.04 0.025 1"/>
+        </geometry>            
+      </visual>
+    </link>      
+
+
+    <!-- JOINTS -->
+
+    <joint name="logo_cpe_1_joint" type="fixed">
+      <parent link="palbator_arm_column"/>
+      <child link="logo_cpe_1"/>
+        <origin xyz="-0.041 0.0 1.2" rpy="1.57 0 -1.57" />
+        <axis xyz="0 0 1" />
+    </joint>
+
+
+
+
+
+  </xacro:macro>
+
+</robot>

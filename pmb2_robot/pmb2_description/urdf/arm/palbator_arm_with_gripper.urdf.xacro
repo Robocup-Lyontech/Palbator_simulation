@@ -19,6 +19,8 @@
 
   <xacro:include filename="$(find pmb2_description)/urdf/gripper/gripper.urdf.xacro"/>
   <xacro:include filename="$(find pmb2_description)/urdf/display/face_screen.urdf.xacro"/>
+  <xacro:include filename="$(find pmb2_description)/urdf/display/hri_screen.urdf.xacro"/>
+  <xacro:include filename="$(find pmb2_description)/urdf/display/logos.urdf.xacro"/>
 
   <xacro:macro name="palbator_arm" params="parent">
 
@@ -328,16 +330,25 @@
 
   <link name="kinect_depth_link"></link>
 
+<!-- SCREENS INCLUDE -->
+
+    <xacro:face_screen parent="${name}_link"> 
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </xacro:face_screen>  
+
+    <xacro:hri_screen parent="${name}_link"> 
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </xacro:hri_screen>      
+
+    <xacro:logos parent="${name}_link"> 
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </xacro:logos>       
+
 <!-- GRIPPER INCLUDE -->
 
     <xacro:gripper parent="${name}_link"> 
       <origin xyz="0 0.0275 0.012" rpy="0 0 0" />
     </xacro:gripper>
-
-    <xacro:face_screen parent="${name}_link"> 
-      <origin xyz="0 0 0" rpy="0 0 0" />
-    </xacro:face_screen>
-
 
     <transmission name="tran1">
       <type>SimpleTransmission</type>
