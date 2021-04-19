@@ -31,7 +31,7 @@
       </inertial>
       <visual>
         <geometry>
-          <mesh filename="package://pmb2_description/meshes/display/cpe-hand.dae" scale="0.1 0.06 100"/>
+          <mesh filename="package://pmb2_description/meshes/display/PALbator_face.dae" scale="0.1 0.06 100"/>
         </geometry>            
       </visual>
     </link>      

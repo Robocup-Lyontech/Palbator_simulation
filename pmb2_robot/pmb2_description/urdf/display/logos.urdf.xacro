@@ -4,7 +4,7 @@
 
 
 
-
+<!--
 
     <link name="logo_cpe_1" >
       <inertial>
@@ -19,16 +19,182 @@
       </visual>
     </link>      
 
+    -->
+
+    <link name="logo_lyontech_1" >
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.00001"/>
+        <inertia ixx="0.000001" ixy="0.0000001" ixz="0.0000001" iyy="0.0000001" iyz="0.0000001" izz="0.0000001"/>
+      </inertial>
+      <visual>
+        <geometry>
+          <mesh filename="package://pmb2_description/meshes/display/lyontech.dae" scale="0.04 0.05 1"/>
+        </geometry>            
+      </visual>
+    </link>    
+
+    <link name="logo_lyontech_2" >
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.00001"/>
+        <inertia ixx="0.000001" ixy="0.0000001" ixz="0.0000001" iyy="0.0000001" iyz="0.0000001" izz="0.0000001"/>
+      </inertial>
+      <visual>
+        <geometry>
+          <mesh filename="package://pmb2_description/meshes/display/lyontech.dae" scale="0.04 0.05 1"/>
+        </geometry>            
+      </visual>
+    </link>     
+
+    <link name="logo_lyontech_3" >
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.00001"/>
+        <inertia ixx="0.000001" ixy="0.0000001" ixz="0.0000001" iyy="0.0000001" iyz="0.0000001" izz="0.0000001"/>
+      </inertial>
+      <visual>
+        <geometry>
+          <mesh filename="package://pmb2_description/meshes/display/lyontech.dae" scale="0.04 0.05 1"/>
+        </geometry>            
+      </visual>
+    </link>       
+
+    <link name="logo_lyontech_4" >
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.00001"/>
+        <inertia ixx="0.000001" ixy="0.0000001" ixz="0.0000001" iyy="0.0000001" iyz="0.0000001" izz="0.0000001"/>
+      </inertial>
+      <visual>
+        <geometry>
+          <mesh filename="package://pmb2_description/meshes/display/lyontech.dae" scale="0.04 0.05 1"/>
+        </geometry>            
+      </visual>
+    </link>      
+
+    <link name="logo_palbator_cpe_1" >
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.00001"/>
+        <inertia ixx="0.000001" ixy="0.0000001" ixz="0.0000001" iyy="0.0000001" iyz="0.0000001" izz="0.0000001"/>
+      </inertial>
+      <visual>
+        <geometry>
+          <mesh filename="package://pmb2_description/meshes/display/PALbator_cpe.dae" scale="0.04 0.04 1"/>
+        </geometry>            
+      </visual>
+    </link>             
+
+    <link name="logo_palbator_cpe_2" >
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.00001"/>
+        <inertia ixx="0.000001" ixy="0.0000001" ixz="0.0000001" iyy="0.0000001" iyz="0.0000001" izz="0.0000001"/>
+      </inertial>
+      <visual>
+        <geometry>
+          <mesh filename="package://pmb2_description/meshes/display/PALbator_cpe.dae" scale="0.04 0.04 1"/>
+        </geometry>            
+      </visual>
+    </link>   
+
+    <link name="logo_palbator_cpe_3" >
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.00001"/>
+        <inertia ixx="0.000001" ixy="0.0000001" ixz="0.0000001" iyy="0.0000001" iyz="0.0000001" izz="0.0000001"/>
+      </inertial>
+      <visual>
+        <geometry>
+          <mesh filename="package://pmb2_description/meshes/display/PALbator_cpe.dae" scale="0.04 0.04 1"/>
+        </geometry>            
+      </visual>
+    </link>   
+
+    <link name="logo_palbator_cpe_4" >
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.00001"/>
+        <inertia ixx="0.000001" ixy="0.0000001" ixz="0.0000001" iyy="0.0000001" iyz="0.0000001" izz="0.0000001"/>
+      </inertial>
+      <visual>
+        <geometry>
+          <mesh filename="package://pmb2_description/meshes/display/PALbator_cpe.dae" scale="0.04 0.04 1"/>
+        </geometry>            
+      </visual>
+    </link>               
+
 
     <!-- JOINTS -->
 
+    <!--
     <joint name="logo_cpe_1_joint" type="fixed">
       <parent link="palbator_arm_column"/>
       <child link="logo_cpe_1"/>
         <origin xyz="-0.041 0.0 1.2" rpy="1.57 0 -1.57" />
         <axis xyz="0 0 1" />
     </joint>
+-->
 
+     <!-- LYONTECH -->
+    <joint name="logo_lyontech_1_joint" type="fixed">
+      <parent link="palbator_arm_column"/>
+      <child link="logo_lyontech_1"/>
+        <origin xyz="-0.041 0.0 1.35" rpy="1.57 0 -1.57" />
+        <axis xyz="0 0 1" />
+    </joint>    
+
+    <joint name="logo_lyontech_2_joint" type="fixed">
+      <parent link="palbator_arm_column"/>
+      <child link="logo_lyontech_2"/>
+        <origin xyz="0 -0.041 1.35" rpy="1.57 0 0" />
+        <axis xyz="0 0 1" />
+    </joint>      
+
+    <joint name="logo_lyontech_3_joint" type="fixed">
+      <parent link="palbator_arm_column"/>
+      <child link="logo_lyontech_3"/>
+        <origin xyz="0 0.041 1.35" rpy="1.57 0 -3.14157" />
+        <axis xyz="0 0 1" />
+    </joint>        
+    
+    <joint name="logo_lyontech_4_joint" type="fixed">
+      <parent link="palbator_arm_column"/>
+      <child link="logo_lyontech_4"/>
+        <origin xyz="0.041 0.0 1.35" rpy="1.57 0 1.57" />
+        <axis xyz="0 0 1" />
+    </joint>    
+    
+
+    <!-- PALbator CPE -->
+    <joint name="logo_palbator_cpe_1_joint" type="fixed">
+      <parent link="palbator_arm_column"/>
+      <child link="logo_palbator_cpe_1"/>
+        <origin xyz="-0.041 0.0 1.25" rpy="1.57 0 -1.57" />
+        <axis xyz="0 0 1" />
+    </joint> 
+
+    <joint name="logo_palbator_cpe_2_joint" type="fixed">
+      <parent link="palbator_arm_column"/>
+      <child link="logo_palbator_cpe_2"/>
+        <origin xyz="0 -0.041 1.25" rpy="1.57 0 0" />
+        <axis xyz="0 0 1" />
+    </joint> 
+
+    <joint name="logo_palbator_cpe_3_joint" type="fixed">
+      <parent link="palbator_arm_column"/>
+      <child link="logo_palbator_cpe_3"/>
+        <origin xyz="0 0.041 1.25" rpy="1.57 0 -3.14157" />
+        <axis xyz="0 0 1" />
+    </joint> 
+
+    <joint name="logo_palbator_cpe_4_joint" type="fixed">
+      <parent link="palbator_arm_column"/>
+      <child link="logo_palbator_cpe_4"/>
+        <origin xyz="0.041 0.0 1.25" rpy="1.57 0 1.57" />
+        <axis xyz="0 0 1" />
+    </joint>             
 
 
 

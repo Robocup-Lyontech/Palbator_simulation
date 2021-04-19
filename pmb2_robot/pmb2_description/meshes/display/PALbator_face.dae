@@ -79,7 +79,7 @@
   </library_effects>
  <library_images>
     <image id="tiboim" name="tiboim">
-      <init_from>cpe.png</init_from>
+      <init_from>PALbator_face.jpg</init_from>
     </image>
   </library_images>
   <library_materials>
