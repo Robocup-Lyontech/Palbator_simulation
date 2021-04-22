@@ -7,7 +7,7 @@ Palbator_arm_parameters: {
   "Palbator_hold_length": 0.45,
   "Palbator_min_length": 0.55,
   "Palbator_max_length": 0.80,
-  "Allow_wrong_execution": False,
+  "Allow_wrong_execution": True,
   "display_arm_planned_path_topic": "/move_group_arm/display_planned_path"
 }
 
@@ -25,6 +25,6 @@ Palbator_gripper_parameters: {
   "Palbator_gripper_move_group": "pmb2_gripper",
   "minimum_opening": 0.3,
   "maximum_opening": -1.0,
-  "Allow_wrong_execution": False,
+  "Allow_wrong_execution": True,
   "display_gripper_planned_path_topic": "/move_group_gripper/display_planned_path"
 }
