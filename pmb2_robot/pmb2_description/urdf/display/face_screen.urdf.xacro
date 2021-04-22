@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="face_screen" params="parent *origin">
+
+    <link name="face_screen_link" >
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.08"/>
+        <inertia ixx="0.01" ixy="0.001" ixz="0.001" iyy="0.01" iyz="0.001" izz="0.01"/>
+      </inertial>
+      <visual>
+        <geometry>
+            <box size="0.20 0.12 0.01"/>
+        </geometry>
+     
+          <origin xyz="0 0 0" rpy="0 0 0"/>
+        <material name="White">
+          <color rgba="1 1 1 0.5"/>
+        </material>          
+      </visual>
+    </link>  
+
+
+
+
+    <link name="face_screen_display_link" >
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.00001"/>
+        <inertia ixx="0.000001" ixy="0.0000001" ixz="0.0000001" iyy="0.0000001" iyz="0.0000001" izz="0.0000001"/>
+      </inertial>
+      <visual>
+        <geometry>
+          <mesh filename="package://pmb2_description/meshes/display/PALbator_face.dae" scale="0.1 0.06 100"/>
+        </geometry>            
+      </visual>
+    </link>      
+
+
+    <!-- JOINTS -->
+
+    <joint name="palbator_arm_face_screen_joint" type="fixed">
+      <parent link="palbator_arm_column"/>
+      <child link="face_screen_link"/>
+        <origin xyz="-0.04 0.0 1.505" rpy="1.57 0 -1.57" />
+        <axis xyz="0 0 1" />
+    </joint>
+
+
+    <joint name="face_screen_display_joint" type="fixed">
+      <parent link="face_screen_link"/>
+      <child link="face_screen_display_link"/>
+        <origin xyz="0 0 0.0051" rpy="0 0 0" />
+        <axis xyz="0 0 1" />
+    </joint>    
+
+
+
+    <!-- GAZEBO PLUGINS -->
+<!--
+    <gazebo reference="face_screen_link">
+      <visual>
+        <plugin name="display_video_controller" filename="libgazebo_ros_video.so">
+          <topicName>/screen/face</topicName>
+          <height>120</height>
+          <width>180</width>
+        </plugin>
+      </visual>
+    </gazebo>
+-->
+
+  </xacro:macro>
+
+</robot>

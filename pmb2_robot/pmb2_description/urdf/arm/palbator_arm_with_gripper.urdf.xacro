@@ -18,6 +18,9 @@
   <xacro:property name="PI" value="3.14159"/>
 
   <xacro:include filename="$(find pmb2_description)/urdf/gripper/gripper.urdf.xacro"/>
+  <xacro:include filename="$(find pmb2_description)/urdf/display/face_screen.urdf.xacro"/>
+  <xacro:include filename="$(find pmb2_description)/urdf/display/hri_screen.urdf.xacro"/>
+  <xacro:include filename="$(find pmb2_description)/urdf/display/logos.urdf.xacro"/>
 
   <xacro:macro name="palbator_arm" params="parent">
 
@@ -57,6 +60,7 @@
       </visual>
     </link>  
 
+
     <link name="palbator_arm_column_link" >
       <inertial>
           <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -70,6 +74,111 @@
         </geometry>
       </visual>    
     </link>    
+
+
+    <link name="cart_1_link" >
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.002"/>
+        <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+            <box size="0.02 0.14 0.08"/>
+        </geometry>
+        <material name="black">
+          <color rgba="0 0 0 1.0"/>
+        </material>
+      </visual>
+    </link>     
+
+    <link name="cart_2_link" >
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.002"/>
+        <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+            <box size="0.02 0.14 0.08"/>
+        </geometry>
+        <material name="black">
+          <color rgba="0 0 0 1.0"/>
+        </material>
+      </visual>
+    </link>         
+
+    <link name="cart_3_link" >
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.002"/>
+        <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+            <box size="0.10 0.02 0.16"/>
+        </geometry>
+        <material name="black">
+          <color rgba="0 0 0 1.0"/>
+        </material>
+      </visual>
+    </link>          
+
+    <link name="cart_4_link" >
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.002"/>
+        <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+            <box size="0.12 0.02 0.08"/>
+        </geometry>
+        <material name="black">
+          <color rgba="0 0 0 1.0"/>
+        </material>
+      </visual>
+    </link>          
+
+    <link name="cart_3A_link" >
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.002"/>
+        <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+            <box size="0.04 0.05 0.02"/>
+        </geometry>
+        <material name="black">
+          <color rgba="0 0 0 1.0"/>
+        </material>
+      </visual>
+    </link>      
+
+    <link name="cart_3B_link" >
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.002"/>
+        <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+            <box size="0.04 0.05 0.02"/>
+        </geometry>
+        <material name="black">
+          <color rgba="0 0 0 1.0"/>
+        </material>
+      </visual>
+    </link>       
+
+
 
     <link name="palbator_arm_shoulder_link1" >
       <inertial>
@@ -101,6 +210,35 @@
         </geometry>
       </visual>
     </link>
+
+
+    <link name="arm_cam_holder1_link" >
+      <inertial>
+          <origin xyz="0 0 0" rpy="0 0 0" />
+          <mass value="0.001"/>
+          <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+            <box size="0.06 0.04 0.02"/>
+        </geometry>
+      </visual>
+    </link>    
+
+    <link name="arm_cam_holder2_link" >
+      <inertial>
+          <origin xyz="0 0 0" rpy="0 0 0" />
+          <mass value="0.001"/>
+          <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+            <box size="0.02 0.04 0.05"/>
+        </geometry>
+      </visual>
+    </link>      
 
     <link name="palbator_arm_shoulder_link3" >
       <inertial>
@@ -212,9 +350,64 @@
     <joint name="palbator_arm_kinect_joint" type="fixed">
       <parent link="palbator_arm_column"/>
       <child link="palbator_arm_kinect_link"/>
-        <origin xyz="0.0 0.0 1.60" rpy="${PI} ${PI - 0.3} 0" />
+        <origin xyz="-0.022 0.0 1.60" rpy="${PI} ${PI - 0.3} 0" />
         <axis xyz="0 0 1" />
     </joint>
+
+
+
+
+
+
+    <joint name="cart_1_joint" type="fixed">
+      <parent link="palbator_arm_column_link"/>
+      <child link="cart_1_link"/>
+      <origin xyz="-0.06 -0.1 0.0" rpy="0 0 0" />
+      <axis xyz="0 0 1" />
+    </joint>  
+
+    <joint name="cart_2_joint" type="fixed">
+      <parent link="palbator_arm_column_link"/>
+      <child link="cart_2_link"/>
+      <origin xyz="0.06 -0.1 0.0" rpy="0 0 0" />
+      <axis xyz="0 0 1" />
+    </joint>  
+
+
+    <joint name="cart_3_joint" type="fixed">
+      <parent link="palbator_arm_column_link"/>
+      <child link="cart_3_link"/>
+      <origin xyz="0.0 -0.04 0.0" rpy="0 0 0" />
+      <axis xyz="0 0 1" />
+    </joint>  
+
+
+    <joint name="cart_4_joint" type="fixed">
+      <parent link="palbator_arm_column_link"/>
+      <child link="cart_4_link"/>
+      <origin xyz="0.0 -0.16 0.0" rpy="0 0 0" />
+      <axis xyz="0 0 1" />
+    </joint>      
+
+    <joint name="cart_3A_joint" type="fixed">
+      <parent link="palbator_arm_column_link"/>
+      <child link="cart_3A_link"/>
+      <origin xyz="0.0 -0.025 0.08" rpy="0 0 0" />
+      <axis xyz="0 0 1" />
+    </joint>  
+
+    <joint name="cart_3B_joint" type="fixed">
+      <parent link="palbator_arm_column_link"/>
+      <child link="cart_3B_link"/>
+      <origin xyz="0.0 -0.025 -0.08" rpy="0 0 0" />
+      <axis xyz="0 0 1" />
+    </joint>      
+
+
+
+
+
+
 
     <joint name="palbator_arm_column_joint" type="prismatic">
       <parent link="palbator_arm_column"/>
@@ -247,6 +440,7 @@
       <limit effort="1000" velocity="0.3" lower="-1.17" upper="1.6" />
       <axis xyz="-1 0 0" />
     </joint>
+
 
     <joint name="palbator_arm_wrist_1_joint" type="revolute">
       <parent link="palbator_arm_shoulder_link3"/>
@@ -298,12 +492,28 @@
       <axis xyz="0 0 0" />
     </joint>
 -->
+
+
     <joint name="palbator_arm_camera_joint" type="fixed">
       <parent link="palbator_arm_shoulder_link2"/>
       <child link="palbator_arm_camera_link"/>
       <origin xyz="0.0 -0.05 0.20" rpy="0 0.5 1.57" />
       <axis xyz="0 0 0" />
     </joint>
+
+    <joint name="arm_cam_holder1_joint" type="fixed">
+      <parent link="palbator_arm_shoulder_link2"/>
+      <child link="arm_cam_holder1_link"/>
+      <origin xyz="0.0 -0.036 0.135" rpy="0 0 1.57" />
+      <axis xyz="0 0 0" />
+    </joint>
+
+    <joint name="arm_cam_holder2_joint" type="fixed">
+      <parent link="arm_cam_holder1_link"/>
+      <child link="arm_cam_holder2_link"/>
+      <origin xyz="-0.02 0 0.03" rpy="0 0 0" />
+      <axis xyz="0 0 0" />
+    </joint>    
 
 
   <!-- Empty camera joint for fixing wrong depth sensor orientation -->
@@ -324,12 +534,25 @@
 
   <link name="kinect_depth_link"></link>
 
+<!-- SCREENS INCLUDE -->
+
+    <xacro:face_screen parent="${name}_link"> 
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </xacro:face_screen>  
+
+    <xacro:hri_screen parent="${name}_link"> 
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </xacro:hri_screen>      
+
+    <xacro:logos parent="${name}_link"> 
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </xacro:logos>       
+
 <!-- GRIPPER INCLUDE -->
 
     <xacro:gripper parent="${name}_link"> 
       <origin xyz="0 0.0275 0.012" rpy="0 0 0" />
     </xacro:gripper>
-
 
     <transmission name="tran1">
       <type>SimpleTransmission</type>
@@ -408,6 +631,30 @@
     <gazebo reference="palbator_arm_camera_link">
       <material>Gazebo/Black</material>
     </gazebo>
+
+  <gazebo reference="palbator_arm_column">
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>       
+
+  <gazebo reference="palbator_arm_shoulder_link1">
+    <material>Gazebo/Orange</material>
+  </gazebo>   
+
+  <gazebo reference="palbator_arm_shoulder_link2">
+    <material>Gazebo/Orange</material>
+  </gazebo>  
+
+  <gazebo reference="palbator_arm_shoulder_link3">
+    <material>Gazebo/Orange</material>
+  </gazebo>   
+
+  <gazebo reference="palbator_arm_wrist_link1">
+    <material>Gazebo/Orange</material>
+  </gazebo>   
+
+  <gazebo reference="palbator_arm_wrist_link2">
+    <material>Gazebo/Orange</material>
+  </gazebo>        
 
 
 <!-- GAZEBO PLUGINS -->

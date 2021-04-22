@@ -141,12 +141,37 @@
         </visual>
     </link>
 
+    <!-- Battery pack-->
+    <link name="palbator_base_battery_link" >
+      <inertial>
+          <origin xyz="0 0 0" rpy="0 0 0"/>
+          <mass value="20"/>
+          <inertia ixx="0.142" ixy="217" ixz="0.188" iyy="0.142" iyz="0.104" izz="0.142"/>
+      </inertial>
+        <visual>
+            <geometry>
+              <box size="0.28 0.14 0.15"/>
+          </geometry>
+          <material name="Blue">
+            <color rgba="0 0 1 1.0"/>
+          </material>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </visual>
+    </link>    
+
      <!-- JOINTS -->
 
     <joint name="palbator_base_camera_joint" type="fixed">
       <parent link="${name}_link"/>
       <child link="palbator_base_camera_link"/>
       <origin xyz="0.25 0.0 0.23" rpy="0 0.35 0.0" />
+      <axis xyz="0 0 0" />
+    </joint>
+
+      <joint name="palbator_base_battery_joint" type="fixed">
+      <parent link="${name}_link"/>
+      <child link="palbator_base_battery_link"/>
+      <origin xyz="0.0 0.0 0.025" rpy="0 0.0 0.0" />
       <axis xyz="0 0 0" />
     </joint>
 
