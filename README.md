@@ -22,6 +22,33 @@ Then, build the new modules :
 catkin build
 ```
 
+Start with:
+```bash
+roslaunch hsrb_wrs_gazebo_launch wrs_practice0_easy_tmc.launch public_sim:=true
+```
+wrs_practice0_easy_tmc.launch can be change for different object position
+
+## launch arguments
+
+You can optionally set following arguments when you launch the simulator:
+
+- seed
+- fast_physics
+- highrtf
+
+"seed" is used to set random number seed to determine object placement. You can use this argument to test your algorithm with more variations.
+
+If you set "fast_physics" to "true", the simulator will launch in fast physics mode.
+Please note that in fast physics mode, we can enjoy faster simulation, on the other hand preciseness of the simulation will be reduced.
+
+If "highrtf" is set to "true", the simulator will run in faster-than-realtime mode.
+
+Each arguments can be used in combination as the follows:
+
+```bash
+$ roslaunch hsrb_wrs_gazebo_launch wrs_practice0_easy_tmc.launch seed:=10 fast_physics:=true highrtf:=true public_sim:=true
+```
+
 
 
 Based on PAL-Robotics PMB2 Simulation 
