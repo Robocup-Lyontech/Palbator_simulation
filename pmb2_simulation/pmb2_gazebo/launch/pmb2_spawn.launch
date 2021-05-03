@@ -1,5 +1,5 @@
 <launch>
-  <arg name="gzpose" default="-x 0 -y 0 -z 0.0 -R 0.0 -P 0.0 -Y 0.0"/>
+  <arg name="robot_pos" default="-x 0 -y 0 -z 0 -Y 0" />
   <arg name="joints_pose" default="-J palbator_arm_shoulder_1_joint 0 
                                    -J palbator_arm_shoulder_2_joint -0.75 
                                    -J palbator_arm_shoulder_3_joint 1.6
@@ -29,6 +29,6 @@
 
   <!-- Spawn robot in Gazebo -->
   <node pkg="gazebo_ros" type="spawn_model" name="$(anon spawn_model)"
-    args="-urdf -param robot_description $(arg gzpose) -model $(arg model_name) $(arg joints_pose)" />
+    args="-urdf -param robot_description $(arg robot_pos) -model $(arg model_name) $(arg joints_pose)" />
 
 </launch>

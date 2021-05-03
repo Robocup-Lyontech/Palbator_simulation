@@ -1,5 +1,5 @@
 <launch>
-  <arg name="gzpose"             default="-x 0 -y 0 -z 0.0 -R 0.0 -P 0.0 -Y 0.0"/>
+  <arg name="robot_pos" default="-x 0 -y 0 -z 0 -Y 0" />
   <arg name="laser_model"/>
   <arg name="robot"              default="simple_pmb2"/>
   <arg name="model_name"         default="pmb2"/>
@@ -17,6 +17,6 @@
 
   <!-- Spawn robot in Gazebo -->
   <node pkg="gazebo_ros" type="spawn_model" name="$(anon spawn_model)"
-    args="-urdf -param robot_description $(arg gzpose) -model $(arg model_name)" />
+    args="-urdf -param robot_description $(arg robot_pos) -model $(arg model_name)" />
 
 </launch>

@@ -1,0 +1,78 @@
+<!--
+Copyright (c) 2016, Toyota Motor Corporation
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+ * Redistributions of source code must retain the above copyright notice,
+   this list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions and the following disclaimer in the
+   documentation and/or other materials provided with the distribution.
+ * Neither the name of Toyota Motor Corporation nor the names of its
+   contributors may be used to endorse or promote products derived from
+   this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+-->
+<launch>
+    <arg name="namespace" default="hsrb" />
+    <arg name="personal_name" default="" />
+    <arg name="use_oss_stacks" default="false" />
+
+    <group ns="$(arg personal_name)/$(arg namespace)">
+        <group unless="$(arg use_oss_stacks)">
+            <rosparam command="load" file="$(find hsrb_common_config)/params/hsrb_controller_config.yaml"/>
+            <rosparam command="load" file="$(find hsrb_gazebo_bringup)/params/hsrb_controller_config.yaml"/>
+            <param name="omni_base_controller/tf_prefix" value="$(arg personal_name)" />
+            <param name="omni_base_controller/model_name" value="$(arg personal_name)/robot_description" />
+            <node name="controller_spawner"
+                pkg="controller_manager"
+                type="spawner"
+                respawn="false"
+                output="screen"
+                args="joint_state_controller
+                      arm_trajectory_controller
+                      head_trajectory_controller
+                      omni_base_controller
+                      --timeout 60" />
+        </group>
+        <group if="$(arg use_oss_stacks)">
+            <rosparam command="load" file="$(find hsrb_common_config)/params/hsrb_controller_config_oss.yaml"/>
+            <rosparam command="load" file="$(find hsrb_gazebo_bringup)/params/hsrb_controller_config.yaml"/>
+            <node name="controller_spawner"
+                pkg="controller_manager"
+                type="spawner"
+                respawn="false"
+                output="screen"
+                args="joint_state_controller
+                      arm_trajectory_controller
+                      head_trajectory_controller
+                      offset_diff_drive_controller
+                      omni_trajectory_controller
+                      --timeout 60" />
+            <node name="controller_spawner_stopped"
+                pkg="controller_manager"
+                type="spawner"
+                respawn="false"
+                output="screen"
+                args="--stopped
+                      cmd_vel_controller
+                      --timeout 60" />
+            <node name="controller_switcher" pkg="cmd_vel_controller" type="controller_switcher.py" respawn="true" output="screen">
+                <param name="cmd_vel_topic_name" value="/$(arg namespace)/command_velocity" />
+            </node>
+        </group>
+    </group>
+</launch>

@@ -3,8 +3,7 @@
 <launch>
   <arg name="laser_model"  default="sick-571"/>
   <arg name="rgbd_sensors"  default="false"/>
-  <arg name="world"  default="small_office"/>  <!-- empty, small_office, ... (see ../worlds) -->
-  <arg name="gzpose" default="-x 0.0 -y 0.0 -z 0.0 -R 0.0 -P 0.0 -Y 0.0"/>
+  <arg name="robot_pos" default="-x 0 -y 0 -z 0 -Y 0" />
   <arg name="gui" default="true"/>
   <arg name="debug" default="false"/>
   <arg name="public_sim" default="false"/>
@@ -16,30 +15,19 @@
 
   <env name="LC_NUMERIC" value="C" />
 
-  <!-- start up world -->
-  <include file="$(find pal_gazebo_worlds)/launch/pal_gazebo.launch">
-    <arg name="world" value="$(arg world)"/>
-    <arg name="gui" value="$(arg gui)"/>
-    <arg name="debug" value="$(arg debug)"/>
-    <arg name="recording" value="$(arg recording)"/>
-    <arg name="extra_gz_model_path" value="$(arg extra_gz_model_path):$(find pmb2_gazebo)/models"/>
-    <arg name="extra_gz_resource_path" value="$(arg extra_gz_resource_path):$(find pmb2_gazebo)"/>
-    <arg name="extra_gazebo_args" value="$(arg extra_gazebo_args)"/>
-  </include>
-
   <!-- spawn robot in simulation -->
   <group unless="$(arg simple_sim_model)">
     <include file="$(find pmb2_gazebo)/launch/pmb2_spawn.launch">
       <arg name="laser_model" value="$(arg laser_model)"/>
       <arg name="rgbd_sensors" value="$(arg rgbd_sensors)"/>
-      <arg name="gzpose" value="$(arg gzpose)"/>
+      <arg name="robot_pos" value="$(arg robot_pos)"/>
     </include>
   </group>
 
   <group if="$(arg simple_sim_model)">
     <include file="$(find simple_models_gazebo)/launch/simple_models_spawn.launch">
       <arg name="laser_model" value="$(arg laser_model)"/>
-      <arg name="gzpose" value="$(arg gzpose)"/>
+      <arg name="robot_pos" value="$(arg robot_pos)"/>
       <arg name="robot" value="simple_pmb2"/>
     </include>
 
