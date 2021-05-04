@@ -35,6 +35,7 @@ You can optionally set following arguments when you launch the simulator:
 - seed
 - fast_physics
 - highrtf
+- mapping
 
 "seed" is used to set random number seed to determine object placement. You can use this argument to test your algorithm with more variations.
 
@@ -42,6 +43,8 @@ If you set "fast_physics" to "true", the simulator will launch in fast physics m
 Please note that in fast physics mode, we can enjoy faster simulation, on the other hand preciseness of the simulation will be reduced.
 
 If "highrtf" is set to "true", the simulator will run in faster-than-realtime mode.
+
+If "mapping" is set to "true", the simulator will run in mapping mode.
 
 Each arguments can be used in combination as the follows:
 

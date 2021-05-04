@@ -30,6 +30,7 @@ POSSIBILITY OF SUCH DAMAGE.
 <launch>
   <arg name="debug" default="false"/>
   <arg name="public_sim" default="false"/>
+  <arg name="mapping" default="false"/>
   <arg name="gui" default="true" />
   <arg name="paused" default="true" />
   <arg name="fast_physics" default="false" />
@@ -49,6 +50,7 @@ POSSIBILITY OF SUCH DAMAGE.
   <arg unless="$(arg with_handle)" name="world_suffix3" value=""/>
   <arg     if="$(arg with_handle)" name="world_suffix3" value="_knob"/>
   <arg name="world_name" default="$(find tmc_wrs_gazebo_worlds)/worlds/wrs2020$(arg world_suffix)$(arg world_suffix2)$(arg world_suffix3).world" />
+  <arg name="world" default="wrs2020" />
 
   <arg name="robot_pos" default="-x -2.1 -y 1.2 -z 0 -Y -1.57" />
 
@@ -64,10 +66,14 @@ POSSIBILITY OF SUCH DAMAGE.
   </include>
 
   <!-- spawn robot -->
-  <include file="$(find pmb2_2dnav_gazebo)/launch/pmb2_navigation.launch">
+  <include unless="$(arg mapping)" file="$(find pmb2_2dnav_gazebo)/launch/pmb2_navigation.launch">
     <arg name="public_sim" value="$(arg public_sim)"/>
     <arg name="robot_pos" value="$(arg robot_pos)"/>
-    <arg name="world" value="$(arg world_name)" />
+    <arg name="world" value="$(arg world)" />
+  </include>
+  <include if="$(arg mapping)" file="$(find pmb2_2dnav_gazebo)/launch/pmb2_mapping.launch">
+    <arg name="public_sim" value="$(arg public_sim)"/>
+    <arg name="robot_pos" value="$(arg robot_pos)"/>
   </include>
 
   <!-- spawn objects to the world -->

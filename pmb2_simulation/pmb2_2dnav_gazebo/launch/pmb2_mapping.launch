@@ -4,9 +4,8 @@
   
   <arg name="public_sim"   default="false"/>
 
-  <arg name="world"  default="small_office"/>
   <arg name="laser_model"  default="sick-571"/>
-  <arg name="gzpose" default="-x 0.0 -y 0.0 -z 0.0 -R 0.0 -P 0.0 -Y 0.0"/>
+  <arg name="robot_pos" default="-x 0 -y 0 -z 0 -Y 0" />
 
   <arg name="planner"        default="base"/>
   <arg name="global_planner" default="global_planner"/>
@@ -24,9 +23,8 @@
   <group ns="$(arg namespace)">
 
     <include file="$(find pmb2_gazebo)/launch/pmb2_gazebo.launch">
-      <arg name="world"  value="$(arg world)"/>
       <arg name="laser_model"  value="$(arg laser_model)"/>
-      <arg name="gzpose" value="$(arg gzpose)"/>
+      <arg name="robot_pos" value="$(arg robot_pos)"/>
       <arg name="public_sim" value="$(arg public_sim)"/>
       <arg name="gui"    value="$(arg gzclient)"/>
       <arg name="recording"  value="$(arg recording)"/>
