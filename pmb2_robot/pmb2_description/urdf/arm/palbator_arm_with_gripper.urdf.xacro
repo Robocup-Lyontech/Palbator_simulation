@@ -412,7 +412,7 @@
     <joint name="palbator_arm_column_joint" type="prismatic">
       <parent link="palbator_arm_column"/>
       <child link="palbator_arm_column_link"/>
-      <origin xyz="0 0.1 0.35" rpy="0 0 0" />
+      <origin xyz="0 0.1 0.11" rpy="0 0 0" />
       <limit effort="1000" velocity="0.3" lower="0" upper="1" />
       <axis xyz="0 0 1" />
     </joint>  
@@ -429,7 +429,7 @@
       <parent link="palbator_arm_shoulder_link1"/>
       <child link="palbator_arm_shoulder_link2"/>
       <origin xyz="0 ${Joint_Y_2_3} ${Joint_Z_2_3}" rpy="0 0 0" />
-      <limit effort="100" velocity="0.3" lower="-2.5" upper="2.27" />
+      <limit effort="1000" velocity="0.3" lower="-2.5" upper="2.27" />
       <axis xyz="0 0 -1" />
     </joint>
 
