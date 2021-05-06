@@ -11,7 +11,6 @@
   <author>Yosuke Matsusaka</author>
 
   <buildtool_depend>catkin</buildtool_depend>
-  <exec_depend>hsrb_gazebo_launch</exec_depend>
   <exec_depend>roscpp</exec_depend> --
   <test_depend>roslaunch</test_depend>
   <exec_depend>tmc_wrs_gazebo_worlds</exec_depend>
