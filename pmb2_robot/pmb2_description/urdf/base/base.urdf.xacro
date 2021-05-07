@@ -164,7 +164,7 @@
     <joint name="palbator_base_camera_joint" type="fixed">
       <parent link="${name}_link"/>
       <child link="palbator_base_camera_link"/>
-      <origin xyz="0.25 0.0 0.2" rpy="0 0.55 0.0" />
+      <origin xyz="0.245 0.0 0.215" rpy="0 0.75 0.0" />
       <axis xyz="0 0 0" />
     </joint>
 
@@ -197,7 +197,7 @@
     <sensor name="palbator_base_camera_link_camera" type="depth">
       <update_rate>20</update_rate>
       <camera>
-        <horizontal_fov>1.047198</horizontal_fov>
+        <horizontal_fov>1.570797</horizontal_fov>
         <image>
           <width>640</width>
           <height>480</height>
@@ -220,7 +220,7 @@
         <depthImageCameraInfoTopicName>/camera_base/depth/camera_info</depthImageCameraInfoTopicName>
         <pointCloudTopicName>/camera_base/depth/points</pointCloudTopicName>
         <frameName>camera_depth_link_2</frameName>
-        <pointCloudCutoff>0.05</pointCloudCutoff>
+        <pointCloudCutoff>0.225</pointCloudCutoff>
         <pointCloudCutoffMax>3.0</pointCloudCutoffMax>
         <distortionK1>0</distortionK1>
         <distortionK2>0</distortionK2>
