@@ -14,8 +14,8 @@ Palbator_arm_parameters: {
 #PARAMETERS FOR COLUMN CONTROLLER:
 Palbator_column_parameters: {
   "Palbator_column_move_group": "pmb2_column",
-  "minimum_height": 0,
-  "maximum_height": 1,
+  "minimum_height": 0.0,
+  "maximum_height": 1.0,
   "Allow_wrong_execution": False,
   "display_column_planned_path_topic": "/move_group_column/display_planned_path"
 }

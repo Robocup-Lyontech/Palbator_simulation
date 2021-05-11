@@ -65,16 +65,17 @@ class MoveitColumnController:
         :type z_target: float
         """
         rospy.loginfo("{class_name} : Column move request to coordinate Z %s".format(class_name=self.__class__.__name__), str(z_target))
-        if z_target - 0.65 < self.minimum_column:
+        offset = self.group.get_current_pose("palbator_arm_column").pose.position.z
+        if z_target - offset < self.minimum_column:
             column_pose_target = self.minimum_column
 
-        elif z_target - 0.65 > self.maximum_column:
+        elif z_target - offset > self.maximum_column:
             column_pose_target = self.maximum_column
 
         else:
-            column_pose_target = z_target - 0.65
+            column_pose_target = z_target - offset
         
-        #self.group.set_pose_reference_frame("base_footprint")
+        self.group.set_pose_reference_frame("base_footprint")
         self.group.set_joint_value_target([column_pose_target])
 
         plan = self.group.plan()

@@ -240,11 +240,13 @@ class MoveitGlobalController:
                     fct = self.dropping
                 
                 if len(JSONRequest) == 0:
-                    isActionSucceed = fct(goalPointStamped)
+                    fct(goalPointStamped)
+                    isActionSucceed = True
 
             elif goal.action == 'Travelling':
                 rospy.loginfo("{class_name} : Received travelling action goal".format(class_name=self.__class__.__name__))
                 self.traveling()
+                isActionSucceed = True
 
             else:
                 rospy.logwarn("{class_name} : unable to find or launch function corresponding to the action %s".format(

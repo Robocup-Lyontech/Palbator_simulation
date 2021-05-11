@@ -21,7 +21,6 @@
       <!--<fdir1>1 0 0</fdir1>-->
       <maxVel>10.0</maxVel>
       <minDepth>0.0005</minDepth>
-      <implicitSpringDamper>0</implicitSpringDamper>
       <material>Gazebo/DarkGrey</material>
     </gazebo>
 
@@ -33,8 +32,15 @@
       <!--<fdir1>1 0 0</fdir1>-->
       <maxVel>10.0</maxVel>
       <minDepth>0.0005</minDepth>
-      <implicitSpringDamper>0</implicitSpringDamper>
       <material>Gazebo/DarkGrey</material>
+    </gazebo>
+
+
+    <gazebo reference="caster_{side}_1_joint">
+      <implicitSpringDamper>0</implicitSpringDamper>
+    </gazebo>
+    <gazebo reference="caster_{side}_2_joint">
+      <implicitSpringDamper>0</implicitSpringDamper>
     </gazebo>
   </xacro:macro>
 

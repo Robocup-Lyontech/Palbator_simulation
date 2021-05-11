@@ -155,7 +155,7 @@ class MoveitArmController:
             raise Exception("Planning failed")
 
         self.__display_plan(plan)
-        if not self.group.execute(plan, wait=True) and not self.allow_wrong_execution:
+        if (not self.group.execute(plan, wait=True) or fraction != 1.0) and not self.allow_wrong_execution:
             raise Exception("Execution failed")
 
 
@@ -186,7 +186,7 @@ class MoveitArmController:
             raise Exception("Planning failed")
 
         self.__display_plan(plan)
-        if not self.group.execute(plan, wait=True) and not self.allow_wrong_execution:
+        if (not self.group.execute(plan, wait=True) or fraction != 1.0) and not self.allow_wrong_execution:
             raise Exception("Execution failed")
             
 
@@ -233,11 +233,13 @@ class MoveitArmController:
         waypoint.position.z = goal.point.z
         waypoints.append(waypoint)
 
+        waypoints.pop(0)
+
         (plan, fraction) = self.group.compute_cartesian_path(waypoints, 0.03, 0.0)
 
         if not plan.joint_trajectory.points:
             raise Exception("Planning failed")
 
         self.__display_plan(plan)
-        if not self.group.execute(plan, wait=True) and not self.allow_wrong_execution:
+        if (not self.group.execute(plan, wait=True) or fraction != 1.0) and not self.allow_wrong_execution:
             raise Exception("Execution failed")
