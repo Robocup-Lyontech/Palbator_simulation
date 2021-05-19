@@ -14,35 +14,98 @@ local_costmap:
   height        : 4.0
   resolution    : 0.025
 
-  robot_radius: 0.275
+  robot_radius: 0.245 #0.275
 
   #plugins are loaded on a separate file
 
   obstacle_laser_layer:
     enabled: true
-    observation_sources: base_scan
-    combination_method: 0 # can erase static layer
+    footprint_clearing_enabled: true
+    observation_sources: base_scan pcl_scan_2
+    combination_method: 0 #0 can erase static layer,1 maximum value is kept
 
     base_scan:
       sensor_frame: base_laser_link
       data_type: LaserScan
       topic: scan
-      expected_update_rate: 0.3
+      expected_update_rate: 0.5
       observation_persistence: 1.0
       inf_is_valid: true
       marking: true
       clearing: true
       raytrace_range: 6.0
       obstacle_range: 5.5
+    
+    pcl_scan_2:
+      data_type: PointCloud2
+      topic: /camera_base/depth/points
+      marking: true
+      clearing: true
+      observation_persistence: 0.0
+      track_unknown_space: true
+      min_obstacle_height: 0.005
+      max_obstacle_height: 2.0
+      obstacle_range: 1.5
+      raytrace_range: 2.5
+      inf_is_valid: true
+      #blanking_range: 0.1
+      #expected_update_rate: 0.4
+  #pcl_scan_clean:
+  #  data_type: PointCloud2
+  #  topic: /camera_base/depth/points
+  #  marking: false
+  #  clearing: true
+  #  track_unknown_space: false
+  #  min_obstacle_height: 0.005
+  #  max_obstacle_height: 2.0
+  #  obstacle_range: 1.5
+  #  raytrace_range: 3.5
+  #  inf_is_valid: true
+  #  blanking_range: 0.1
+  #  expected_update_rate: 0.5
+  #  observation_persistence: 0.0
 
-  obstacle_sonar_layer:
-    enabled: false
-    ns: ""
-    topics: ["/sonar_base"]
-    no_readings_timeout: 0.0
-    clear_threshold: 0.20
-    mark_threshold: 0.80
-    clear_on_max_reading: true
+  #obstacle_sonar_layer:
+  #  enabled: false
+  #  ns: ""
+  #  topics: ["/sonar_base"]
+  #  no_readings_timeout: 0.0
+  #  clear_threshold: 0.20
+  #  mark_threshold: 0.80
+  #  clear_on_max_reading: true
+  #
+  #obstacle_pcl_layer:
+  #  enabled: false
+  #  footprint_clearing_enabled: true
+  #  observation_sources: pcl_scan 
+  #  combination_method: 1 #0 can erase static layer, 1 maximum value is kept
+#
+  #  #VoxelCostmapPlugin
+  #  #origin_z: 0.0
+  #  #z_resolution: 0.2
+  #  #z_voxels: 10
+  #  #unknown_threshold:    15
+  #  #mark_threshold:       0
+  #  #publish_voxel_map: false
+  #  
+  #  pcl_scan:
+  #    data_type: PointCloud2
+  #    topic: /camera_base/depth/points
+  #    marking: true
+  #    clearing: true
+  #    observation_persistence: 0.0
+  #    track_unknown_space: true
+  #    min_obstacle_height: 0.005
+  #    max_obstacle_height: 2.0
+  #    obstacle_range: 1.5
+  #    raytrace_range: 2.5
+  #    inf_is_valid: true
+  #    #blanking_range: 0.1
+  #    #expected_update_rate: 0.4
+#
+    
+
+
 
 
   inflation_layer:

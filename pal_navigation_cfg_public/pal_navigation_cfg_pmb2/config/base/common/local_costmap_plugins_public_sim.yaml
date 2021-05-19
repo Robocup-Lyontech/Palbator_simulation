@@ -1,9 +1,20 @@
 # Independent settings for the local costmap
+#local_costmap:
+#  plugins:
+#    - name: obstacle_pcl_layer
+#      type: "costmap_2d::VoxelLayer"
+#    - name: inflation_layer
+#      type: 'costmap_2d::InflationLayer'
+
+
+# Independent settings for the local costmap
 local_costmap:
   plugins:
     - name: obstacle_laser_layer
       type: 'costmap_2d::ObstacleLayer'
-    - name: obstacle_sonar_layer
-      type: 'range_sensor_layer::RangeSensorLayer'
+    #- name: obstacle_sonar_layer
+    #  type: 'range_sensor_layer::RangeSensorLayer'
+    #- name: obstacle_pcl_layer
+    #  type: 'costmap_2d::ObstacleLayer'
     - name: inflation_layer
       type: 'costmap_2d::InflationLayer'

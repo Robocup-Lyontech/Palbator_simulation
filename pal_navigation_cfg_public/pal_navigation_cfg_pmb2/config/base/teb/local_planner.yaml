@@ -28,7 +28,7 @@ TebLocalPlannerROS:
   is_footprint_dynamic: false
   footprint_model:
     type: "circular"
-    radius: 0.275
+    radius: 0.245 #0.275
 
   # GoalTolerance
 
