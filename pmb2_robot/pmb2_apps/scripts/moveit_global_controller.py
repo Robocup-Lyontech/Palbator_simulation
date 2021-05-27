@@ -114,7 +114,7 @@ class MoveitGlobalController:
 
     def __getPlacement(self, pointStamped, action):
         """
-        Function used to detect if the movement is possible and movement to do if not
+        Function used to detect if the movement is possible and return the movement to do if not
 
         :param pointStamped: coord of the goal
         :type pointStamped: PointStamped

@@ -4,10 +4,10 @@ Moveit_global_controller_action_name: "Moveit_Palbator_global_action"
 #PARAMETERS FOR ARM CONTROLLER:
 Palbator_arm_parameters: {
   "Palbator_arm_move_group": "pmb2_arm",
-  "Palbator_hold_length": 0.45,
-  "Palbator_min_length": 0.55,
-  "Palbator_max_length": 0.80,
-  "Allow_wrong_execution": True,
+  "Palbator_hold_length": 0.45,   #length of the arm when pointing at
+  "Palbator_min_length": 0.55,    #min lenght to interact with object
+  "Palbator_max_length": 0.80,    #max lenght to interact with object
+  "Allow_wrong_execution": True,  #continue action after movement failed
   "display_arm_planned_path_topic": "/move_group_arm/display_planned_path"
 }
 
@@ -16,7 +16,7 @@ Palbator_column_parameters: {
   "Palbator_column_move_group": "pmb2_column",
   "minimum_height": 0.0,
   "maximum_height": 1.0,
-  "Allow_wrong_execution": False,
+  "Allow_wrong_execution": False, #continue action after movement failed
   "display_column_planned_path_topic": "/move_group_column/display_planned_path"
 }
 
@@ -25,6 +25,6 @@ Palbator_gripper_parameters: {
   "Palbator_gripper_move_group": "pmb2_gripper",
   "minimum_opening": 0.3,
   "maximum_opening": -1.0,
-  "Allow_wrong_execution": True,
+  "Allow_wrong_execution": True,  #continue action after movement failed
   "display_gripper_planned_path_topic": "/move_group_gripper/display_planned_path"
 }
