@@ -3,7 +3,8 @@ import sys
 import copy
 import rospy
 import moveit_commander
-from moveit_msgs.msg import DisplayTrajectory, Constraints, OrientationConstraint
+from moveit_msgs.msg import DisplayTrajectory, Constraints, OrientationConstraint, PositionConstraint
+from shape_msgs.msg import SolidPrimitive
 import geometry_msgs.msg
 from std_msgs.msg import String
 from tf import TransformListener
@@ -35,6 +36,8 @@ class MoveitArmController:
         self.arm_hold_length = self._parameters['Palbator_hold_length']
         self.arm_min_length = self._parameters['Palbator_min_length']
         self.arm_max_length = self._parameters['Palbator_max_length']
+        self.shoulder_min_rot = self._parameters['Shoulder_min_rot']
+        self.shoulder_max_rot = self._parameters['Shoulder_max_rot']
         self.allow_wrong_execution = self._parameters['Allow_wrong_execution']
         rospy.logwarn("{class_name} : ARM CONTROLLER ON".format(class_name=self.__class__.__name__))
 
@@ -81,6 +84,57 @@ class MoveitArmController:
         if not self.group.go(wait=True) and not self.allow_wrong_execution:
             raise Exception("Execution failed")
         rospy.loginfo("{class_name} : Arm position reached".format(class_name=self.__class__.__name__))
+
+    def look_at(self, goal):
+        rospy.loginfo("{class_name} : Move arm request to look at %s".format(class_name=self.__class__.__name__), goal.point)
+
+        jointNames = self.group.get_joints()
+
+        self._tflistener.waitForTransform("/map", "/palbator_arm_shoulder_link1", rospy.Time(0), rospy.Duration(5))
+        goalTransformed = self._tflistener.transformPoint("palbator_arm_shoulder_link1", goal)
+
+        jointValues = self.group.get_current_joint_values()
+        jointsDict = dict(zip(jointNames, jointValues))
+        
+        rotation = jointsDict["palbator_arm_shoulder_1_joint"] + np.arctan(goalTransformed.point.y/goalTransformed.point.x) - math.pi/2
+
+        if rotation < self.shoulder_min_rot:
+            rotation = self.shoulder_min_rot
+        elif rotation > self.shoulder_max_rot:
+            rotation = self.shoulder_max_rot
+
+        self.group.set_joint_value_target({"palbator_arm_shoulder_1_joint": rotation})
+        plan = self.group.plan()
+
+        if not plan.joint_trajectory.points:
+            raise Exception("Planning failed")
+
+        self.__display_plan(plan)
+
+        if not self.group.execute(plan, wait=True) and not self.allow_wrong_execution:
+            raise Exception("Execution failed")
+
+        self._tflistener.waitForTransform("/map", "/palbator_arm_shoulder_link2", rospy.Time(0), rospy.Duration(5))
+        goalTransformed = self._tflistener.transformPoint("palbator_arm_shoulder_link2", goal)
+
+        jointValues = self.group.get_current_joint_values()
+        jointsDict = dict(zip(jointNames, jointValues))
+
+        rotation = jointsDict["palbator_arm_shoulder_2_joint"] - np.arctan(goalTransformed.point.y/goalTransformed.point.x) + math.pi/2
+
+        self.group.set_joint_value_target({"palbator_arm_shoulder_2_joint": rotation})
+        plan = self.group.plan()
+
+        if not plan.joint_trajectory.points:
+            raise Exception("Planning failed")
+
+        self.__display_plan(plan)
+
+        if not self.group.execute(plan, wait=True) and not self.allow_wrong_execution:
+            raise Exception("Execution failed")
+
+        rospy.loginfo("{class_name} : Arm position reached".format(class_name=self.__class__.__name__))
+
 
     def point_at(self, goal):
         rospy.loginfo("{class_name} : Move arm request to point %s".format(class_name=self.__class__.__name__), goal.point)

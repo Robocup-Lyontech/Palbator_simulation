@@ -184,6 +184,14 @@ class MoveitGlobalController:
         # move arm to standby
         self._arm_controller.move_arm_to_pose("pointing_pose")
 
+    def looking(self, goal):
+        # set initial pose
+        self.traveling()
+
+        # align camera with goal
+        self._arm_controller.look_at(goal)
+        self._column_controller.move_column(goal.point.z)
+
     def traveling(self):
         self._column_controller.move_column_to_pose("travelling_pose")
         self._arm_controller.move_arm_to_pose("travelling_pose")
@@ -199,7 +207,7 @@ class MoveitGlobalController:
         JSONRequest = {}
         action_result = ArmControlResult()
         try:
-            if goal.action in ["Grasping", "GraspingXYZ", "Pointing", "PointingXYZ", "Dropping", "DroppingXYZ"]:
+            if goal.action in ["Grasping", "GraspingXYZ", "Pointing", "PointingXYZ", "Dropping", "DroppingXYZ", "Looking", "LookingXYZ"]:
                 rospy.loginfo("{class_name} : Received %s action goal".format(class_name=self.__class__.__name__), goal.action)
 
                 goalPointStamped = self.__getPointStamped(goal)
@@ -238,6 +246,13 @@ class MoveitGlobalController:
                             class_name=self.__class__.__name__), distance_needed)
                         JSONRequest["distance"] = distance_needed
                     fct = self.dropping
+                
+                elif "Looking" in goal.action:
+                    if rotation_needed != 0:
+                        rospy.logwarn("{class_name} : ROTATION OF %.2f RADIAN NEEDED".format(
+                            class_name=self.__class__.__name__), rotation_needed)
+                        JSONRequest["rotation"] = rotation_needed
+                    fct = self.looking
                 
                 if len(JSONRequest) == 0:
                     fct(goalPointStamped)

@@ -7,6 +7,8 @@ Palbator_arm_parameters: {
   "Palbator_hold_length": 0.45,   #length of the arm when pointing at
   "Palbator_min_length": 0.55,    #min lenght to interact with object
   "Palbator_max_length": 0.80,    #max lenght to interact with object
+  "Shoulder_min_rot": -1.22,      #min shoulder1 orientation
+  "Shoulder_max_rot": 1.22,       #max shoulder1 orientation
   "Allow_wrong_execution": True,  #continue action after movement failed
   "display_arm_planned_path_topic": "/move_group_arm/display_planned_path"
 }
