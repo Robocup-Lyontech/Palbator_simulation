@@ -90,8 +90,8 @@ class MoveitArmController:
 
         jointNames = self.group.get_joints()
 
-        self._tflistener.waitForTransform("/map", "/palbator_arm_shoulder_link1", rospy.Time(0), rospy.Duration(5))
-        goalTransformed = self._tflistener.transformPoint("palbator_arm_shoulder_link1", goal)
+        self._tflistener.waitForTransform("/map", "/palbator_arm_shoulder_link2", rospy.Time(0), rospy.Duration(5))
+        goalTransformed = self._tflistener.transformPoint("palbator_arm_shoulder_link2", goal)
 
         jointValues = self.group.get_current_joint_values()
         jointsDict = dict(zip(jointNames, jointValues))
@@ -104,25 +104,6 @@ class MoveitArmController:
             rotation = self.shoulder_max_rot
 
         self.group.set_joint_value_target({"palbator_arm_shoulder_1_joint": rotation})
-        plan = self.group.plan()
-
-        if not plan.joint_trajectory.points:
-            raise Exception("Planning failed")
-
-        self.__display_plan(plan)
-
-        if not self.group.execute(plan, wait=True) and not self.allow_wrong_execution:
-            raise Exception("Execution failed")
-
-        self._tflistener.waitForTransform("/map", "/palbator_arm_shoulder_link2", rospy.Time(0), rospy.Duration(5))
-        goalTransformed = self._tflistener.transformPoint("palbator_arm_shoulder_link2", goal)
-
-        jointValues = self.group.get_current_joint_values()
-        jointsDict = dict(zip(jointNames, jointValues))
-
-        rotation = jointsDict["palbator_arm_shoulder_2_joint"] - np.arctan(goalTransformed.point.y/goalTransformed.point.x) + math.pi/2
-
-        self.group.set_joint_value_target({"palbator_arm_shoulder_2_joint": rotation})
         plan = self.group.plan()
 
         if not plan.joint_trajectory.points:

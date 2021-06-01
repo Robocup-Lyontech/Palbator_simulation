@@ -47,6 +47,14 @@
         <joint name="palbator_arm_wrist_2_joint" value="0" />
         <joint name="palbator_arm_wrist_3_joint" value="0" />
     </group_state>
+    <group_state name="looking_pose" group="pmb2_arm">
+        <joint name="palbator_arm_shoulder_1_joint" value="-0.7" />
+        <joint name="palbator_arm_shoulder_2_joint" value="-2.27" />
+        <joint name="palbator_arm_shoulder_3_joint" value="0" />
+        <joint name="palbator_arm_wrist_1_joint" value="0" />
+        <joint name="palbator_arm_wrist_2_joint" value="0.6" />
+        <joint name="palbator_arm_wrist_3_joint" value="0" />
+    </group_state>
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
     <end_effector name="gripper" parent_link="end_effector_link" group="pmb2_arm" />
     <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->

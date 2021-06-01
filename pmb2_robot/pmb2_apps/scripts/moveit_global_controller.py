@@ -186,11 +186,11 @@ class MoveitGlobalController:
 
     def looking(self, goal):
         # set initial pose
-        self.traveling()
+        self._arm_controller.move_arm_to_pose("looking_pose")
 
         # align camera with goal
-        self._arm_controller.look_at(goal)
         self._column_controller.move_column(goal.point.z)
+        self._arm_controller.look_at(goal)
 
     def traveling(self):
         self._column_controller.move_column_to_pose("travelling_pose")
