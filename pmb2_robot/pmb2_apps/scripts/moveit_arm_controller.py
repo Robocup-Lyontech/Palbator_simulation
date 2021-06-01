@@ -6,7 +6,8 @@ import moveit_commander
 from moveit_msgs.msg import DisplayTrajectory, Constraints, OrientationConstraint, PositionConstraint
 from shape_msgs.msg import SolidPrimitive
 import geometry_msgs.msg
-from std_msgs.msg import String, Empty
+from std_msgs.msg import String
+from std_srvs.srv import Empty
 from tf import TransformListener
 from geometry_msgs.msg import Pose
 from std_msgs.msg import Float32
