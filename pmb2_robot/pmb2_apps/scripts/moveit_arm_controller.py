@@ -7,7 +7,6 @@ from moveit_msgs.msg import DisplayTrajectory, Constraints, OrientationConstrain
 from shape_msgs.msg import SolidPrimitive
 import geometry_msgs.msg
 from std_msgs.msg import String
-from std_srvs.srv import Empty
 from tf import TransformListener
 from geometry_msgs.msg import Pose
 from std_msgs.msg import Float32
@@ -23,6 +22,7 @@ class MoveitArmController:
         Initializes the Palbator Moveit arm controller.
         """
         moveit_commander.roscpp_initialize(sys.argv)
+        # rospy.init_node('move_group_python_interface_tutorial', anonymous=True)
 
         self._parameters = arm_parameters
 
@@ -30,8 +30,6 @@ class MoveitArmController:
         self.scene = moveit_commander.PlanningSceneInterface()
         self.group = moveit_commander.MoveGroupCommander(self._parameters['Palbator_arm_move_group'])
 
-        rospy.wait_for_service('/clear_octomap')
-        self.clear_octomap = rospy.ServiceProxy('/clear_octomap', Empty)
         self.display_trajectory_publisher = rospy.Publisher(
             self._parameters['display_arm_planned_path_topic'], DisplayTrajectory, queue_size=10)
         self._tflistener = TransformListener()
@@ -59,7 +57,6 @@ class MoveitArmController:
         rospy.loginfo("{class_name} : Move arm request to position %s".format(class_name=self.__class__.__name__), pose_name)
         self.group.set_named_target(pose_name)
 
-        self.clear_octomap()
         plan = self.group.plan()
 
         if not plan.joint_trajectory.points:
@@ -77,7 +74,6 @@ class MoveitArmController:
         self.group.set_pose_reference_frame("base_footprint")
         self.group.set_position_target(goal.point)
 
-        self.clear_octomap()
         plan = self.group.plan()
 
         if not plan.joint_trajectory.points:
@@ -108,7 +104,6 @@ class MoveitArmController:
             rotation = self.shoulder_max_rot
 
         self.group.set_joint_value_target({"palbator_arm_shoulder_1_joint": rotation})
-        self.clear_octomap()
         plan = self.group.plan()
 
         if not plan.joint_trajectory.points:
@@ -161,7 +156,6 @@ class MoveitArmController:
         self.group.set_path_constraints(constraints)
 
         self.group.set_pose_target(arm_pose)
-        self.clear_octomap()
         plan = self.group.plan()
         self.group.clear_path_constraints()
 
@@ -190,7 +184,6 @@ class MoveitArmController:
 
         waypoints.pop(0)
 
-        self.clear_octomap()
         (plan, fraction) = self.group.compute_cartesian_path(waypoints, 0.01, 0.0)
 
         if not plan.joint_trajectory.points:
@@ -222,7 +215,6 @@ class MoveitArmController:
 
         waypoints.pop(0)
 
-        self.clear_octomap()
         (plan, fraction) = self.group.compute_cartesian_path(waypoints, 0.01, 0.0)
 
         if not plan.joint_trajectory.points:
@@ -278,7 +270,6 @@ class MoveitArmController:
 
         waypoints.pop(0)
 
-        self.clear_octomap()
         (plan, fraction) = self.group.compute_cartesian_path(waypoints, 0.03, 0.0)
 
         if not plan.joint_trajectory.points:
