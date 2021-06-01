@@ -8,4 +8,4 @@ moveit_setup_assistant_config:
   CONFIG:
     author_name: gripper
     author_email: cedric.mathou@cpe.fr
-    generated_timestamp: 1622467996
+    generated_timestamp: 1622549075
