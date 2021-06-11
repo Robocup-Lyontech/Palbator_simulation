@@ -19,7 +19,7 @@ class GraspFilter:
         #TODO add wait for action
 
 
-        self._collisionCheck = True
+        self._IKCheck = True
         self._preGraspCheck = True
         self._planCheck = True
 
@@ -27,9 +27,9 @@ class GraspFilter:
         rospy.loginfo("{class_name} : Filtering grasps".format(class_name=self.__class__.__name__))
         self.filteredGrasps = copy.deepcopy(grasp_candidates)
 
-        if self._collisionCheck:
-            nbrRemoved = self.removeCollision(graspParam)
-            rospy.loginfo("{class_name} : Grasp filtered by collision: %d".format(class_name=self.__class__.__name__), nbrRemoved)
+        if self._IKCheck:
+            nbrRemoved = self.removeIK(graspParam)
+            rospy.loginfo("{class_name} : Grasp filtered by ik: %d".format(class_name=self.__class__.__name__), nbrRemoved)
 
         if self._preGraspCheck:
             nbrRemoved = self.removePreGrasp(graspParam)
@@ -47,16 +47,16 @@ class GraspFilter:
         for index in reversed(to_remove):
             del self.filteredGrasps[index]
 
-    def removeCollision(self, graspParam):
+    def removeIK(self, graspParam):
         idsToRemove = []
         for grasp_candidate in self.filteredGrasps:
-            if not self.filterCollision(grasp_candidate, graspParam):
+            if not self.filterIK(grasp_candidate, graspParam):
                 idsToRemove.append(grasp_candidate.id)
         self.removeGraspsWithId(idsToRemove)
         return len(idsToRemove)
         
 
-    def filterCollision(self, grasp_candidate, graspParam):
+    def filterIK(self, grasp_candidate, graspParam):
         positionIKRequest = PositionIKRequest()
         positionIKRequest.group_name = graspParam["arm_group"]
         joint_state = JointState()

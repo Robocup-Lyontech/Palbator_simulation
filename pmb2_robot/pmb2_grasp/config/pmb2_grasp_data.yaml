@@ -1,6 +1,6 @@
-base_link: 'base_footprint'
-
 pmb2_gripper:
+    base_link: 'base_footprint'
+
     arm_group: "pmb2_arm"                   # arm group name
     eef_group: "pmb2_gripper"               # ee group name
     end_effector_name: 'end_effector_link'  # ee name
@@ -11,7 +11,7 @@ pmb2_gripper:
 
     # IK solver values
     IK_solver_timeout: 0.05
-    IK_solver_attempts: 0.005
+    IK_solver_attempts: 1
 
     # timeout for full grasp plan
     full_plan_timeout: 2.0

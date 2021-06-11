@@ -5,14 +5,15 @@ import rospy
 import moveit_commander
 from moveit_msgs.msg import DisplayTrajectory, Constraints, OrientationConstraint, PositionConstraint
 from shape_msgs.msg import SolidPrimitive
-import geometry_msgs.msg
 from std_msgs.msg import String
 from tf import TransformListener
-from geometry_msgs.msg import Pose
+from geometry_msgs.msg import Pose, PoseStamped
 from std_msgs.msg import Float32
 import tf
 import math
 import numpy as np
+from pmb2_grasp.grasp_generator import GraspGenerator
+from pmb2_grasp.grasp_filter import GraspFilter
 
 
 class MoveitArmController:
@@ -69,10 +70,10 @@ class MoveitArmController:
         rospy.loginfo("{class_name} : Arm position reached".format(class_name=self.__class__.__name__))
 
     def move_arm(self, goal):
-        rospy.loginfo("{class_name} : Move arm request to position %s".format(class_name=self.__class__.__name__), goal.point)
+        rospy.loginfo("{class_name} : Move arm request to position %s".format(class_name=self.__class__.__name__), goal.pose)
 
         self.group.set_pose_reference_frame("base_footprint")
-        self.group.set_position_target(goal.point)
+        self.group.set_position_target(goal.pose)
 
         plan = self.group.plan()
 
@@ -86,17 +87,17 @@ class MoveitArmController:
         rospy.loginfo("{class_name} : Arm position reached".format(class_name=self.__class__.__name__))
 
     def look_at(self, goal):
-        rospy.loginfo("{class_name} : Move arm request to look at %s".format(class_name=self.__class__.__name__), goal.point)
+        rospy.loginfo("{class_name} : Move arm request to look at %s".format(class_name=self.__class__.__name__), goal.pose)
 
         jointNames = self.group.get_joints()
 
         self._tflistener.waitForTransform("/map", "/palbator_arm_shoulder_link2", rospy.Time(0), rospy.Duration(5))
-        goalTransformed = self._tflistener.transformPoint("palbator_arm_shoulder_link2", goal)
+        goalTransformed = self._tflistener.transformPose("palbator_arm_shoulder_link2", goal)
 
         jointValues = self.group.get_current_joint_values()
         jointsDict = dict(zip(jointNames, jointValues))
         
-        rotation = jointsDict["palbator_arm_shoulder_1_joint"] + np.arctan(goalTransformed.point.y/goalTransformed.point.x) - math.pi/2
+        rotation = jointsDict["palbator_arm_shoulder_1_joint"] + np.arctan(goalTransformed.pose.position.y/goalTransformed.pose.position.x) - math.pi/2
 
         if rotation < self.shoulder_min_rot:
             rotation = self.shoulder_min_rot
@@ -118,14 +119,14 @@ class MoveitArmController:
 
 
     def point_at(self, goal):
-        rospy.loginfo("{class_name} : Move arm request to point %s".format(class_name=self.__class__.__name__), goal.point)
+        rospy.loginfo("{class_name} : Move arm request to point %s".format(class_name=self.__class__.__name__), goal.pose)
 
         self.move_arm_to_pose("pointing_pose")
 
         self.group.set_pose_reference_frame("base_footprint")
 
         arm_pose = Pose()
-        alpha = np.arctan(goal.point.y/goal.point.x)
+        alpha = np.arctan(goal.pose.position.y/goal.pose.position.x)
         q = tf.transformations.quaternion_from_euler(0.0, 0.0, alpha)
         position_effector = self.group.get_current_pose("palbator_arm_column_link")
 
@@ -168,30 +169,53 @@ class MoveitArmController:
             raise Exception("Execution failed")
         rospy.loginfo("{class_name} : Arm position reached".format(class_name=self.__class__.__name__))
 
-    def grab(self, goal):
-        rospy.loginfo("{class_name} : Move arm request to grab object at position %s".format(class_name=self.__class__.__name__), goal.point)
+    def grab(self, goal, solidPrimitive, graspParam):
+        rospy.loginfo("{class_name} : Move arm request to grab object at position %s".format(class_name=self.__class__.__name__), goal.pose)
 
-        waypoints = [self.group.get_current_pose().pose]
+        target = PoseStamped()
+        target.header.frame_id = "base_footprint"
+        target.pose = copy.deepcopy(goal.pose)
+        target_name = "target"
+        if solidPrimitive.type == 0:
+            self.scene.add_box(target_name, target, size=(0.04, 0.04, 0.04))
+        else:
+            self.scene.add_box(target_name, target, size=tuple(solidPrimitive.dimensions))
+        rospy.sleep(1)  # wait for object to spawn
 
-        waypoint = copy.deepcopy(waypoints[-1])
-        waypoint.position.z = goal.point.z
-        waypoints.append(waypoint)
+        graspGenerator = GraspGenerator()
+        graspFilter = GraspFilter()
 
-        waypoint = copy.deepcopy(waypoints[-1])
-        waypoint.position.x = goal.point.x
-        waypoint.position.y = goal.point.y
-        waypoints.append(waypoint)
+        grasps = graspGenerator.generateGrasps(graspParam["base_link"], goal.pose, graspParam)
 
-        waypoints.pop(0)
+        grasps = graspFilter.filterGrasps(grasps, target_name, graspParam)
 
-        (plan, fraction) = self.group.compute_cartesian_path(waypoints, 0.01, 0.0)
-
-        if not plan.joint_trajectory.points:
+        if len(grasps) == 0:
             raise Exception("Planning failed")
 
-        self.__display_plan(plan)
-        if (not self.group.execute(plan, wait=True) or fraction != 1.0) and not self.allow_wrong_execution:
+        if 1 != self.group.pick(target_name, grasps[0]) and not self.allow_wrong_execution:
             raise Exception("Execution failed")
+
+        # waypoints = [self.group.get_current_pose().pose]
+
+        # waypoint = copy.deepcopy(waypoints[-1])
+        # waypoint.position.z = goal.point.z
+        # waypoints.append(waypoint)
+
+        # waypoint = copy.deepcopy(waypoints[-1])
+        # waypoint.position.x = goal.point.x
+        # waypoint.position.y = goal.point.y
+        # waypoints.append(waypoint)
+
+        # waypoints.pop(0)
+
+        # (plan, fraction) = self.group.compute_cartesian_path(waypoints, 0.01, 0.0)
+
+        # if not plan.joint_trajectory.points:
+        #     raise Exception("Planning failed")
+
+        # self.__display_plan(plan)
+        # if (not self.group.execute(plan, wait=True) or fraction != 1.0) and not self.allow_wrong_execution:
+        #     raise Exception("Execution failed")
 
 
     def post_grab(self, goal):
@@ -204,7 +228,7 @@ class MoveitArmController:
         waypoints.append(waypoint)
 
         waypoint = copy.deepcopy(waypoints[-1])
-        alpha = np.arctan(goal.point.y/goal.point.x)
+        alpha = np.arctan(goal.pose.position.y/goal.pose.position.x)
         waypoint.position.x = np.cos(alpha)*self.arm_hold_length
         waypoint.position.y = np.sin(alpha)*self.arm_hold_length
         waypoints.append(waypoint)
@@ -245,14 +269,14 @@ class MoveitArmController:
         self.group.clear_path_constraints()
 
     def drop(self, goal):
-        rospy.loginfo("{class_name} : Move arm request to drop object at position %s".format(class_name=self.__class__.__name__), goal.point)
+        rospy.loginfo("{class_name} : Move arm request to drop object at position %s".format(class_name=self.__class__.__name__), goal.pose)
 
         waypoints = [self.group.get_current_pose().pose]
 
         height = self.group.get_current_pose("palbator_arm_column_link").pose.position.z
-        if goal.point.z != height:
+        if goal.pose.position.z != height:
             waypoint = copy.deepcopy(waypoints[-1])
-            waypoint.position.z = goal.point.z
+            waypoint.position.z = goal.pose.position.z
             waypoints.append(waypoint)
 
         waypoint = copy.deepcopy(waypoints[-1])
@@ -260,12 +284,12 @@ class MoveitArmController:
         waypoints.append(waypoint)
 
         waypoint = copy.deepcopy(waypoints[-1])
-        waypoint.position.x = goal.point.x
-        waypoint.position.y = goal.point.y
+        waypoint.position.x = goal.pose.position.x
+        waypoint.position.y = goal.pose.position.y
         waypoints.append(waypoint)
 
         waypoint = copy.deepcopy(waypoints[-1])
-        waypoint.position.z = goal.point.z
+        waypoint.position.z = goal.pose.position.z
         waypoints.append(waypoint)
 
         waypoints.pop(0)

@@ -1,9 +1,16 @@
 #goal
+# action can be "Grasping", "GraspingXYZ", "Pointing", "PointingXYZ", "Dropping", "DroppingXYZ", "Looking", "LookingXYZ"
+# XYZ mean that object_label is ignored and pose used, without XYZ for the opposite
 string action
+
+# label of the object to look in tf
 string object_label
-float32 coord_x
-float32 coord_y
-float32 coord_z
+
+# pose of the object to grap
+geometry_msgs/Pose pose
+
+# (optional) shape of the object when grasping. if not set default is cube of 0.04. Only box is currently supported
+shape_msgs/SolidPrimitive solidPrimitive    
 ---
 #result
 string action_output
