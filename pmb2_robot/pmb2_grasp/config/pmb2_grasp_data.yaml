@@ -29,7 +29,7 @@ pmb2_gripper:
     eef_retreat_vector: [0, 0, 1.0]
 
     # Distance from the eef mount to the palm of end effector [x, y, z, r, p, y]
-    # eef_to_transform :  [0, 0, 0, 0, 0, 0] # NOTE: Imaginary point in the middle
+    eef_to_transform :  [0, 0, 0, 0, 0, 0.0] # NOTE: Imaginary point in the middle
 
     # Joint names and state values for the end effector.
     joints : ['motor1_hand_joint', 'motor2_hand_joint']
