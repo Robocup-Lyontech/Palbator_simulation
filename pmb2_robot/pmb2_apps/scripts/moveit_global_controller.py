@@ -16,6 +16,7 @@ from std_msgs.msg import Float64
 from geometry_msgs.msg import PointStamped
 import json
 import math
+from copy import deepcopy
 
 
 class MoveitGlobalController:
@@ -32,40 +33,50 @@ class MoveitGlobalController:
             column_parameters = rospy.get_param("~Palbator_column_parameters")
             self._column_controller = MoveitColumnController(column_parameters)
         else:
-            rospy.logerr("{class_name} : No parameters specified for Moveit Palbator Column controller. Can't start column controller.")
+            rospy.logerr("{class_name} : No parameters specified for Moveit Palbator Column controller. Can't start column controller.".format(
+                class_name=self.__class__.__name__))
 
         if rospy.has_param("~Palbator_arm_parameters"):
             arm_parameters = rospy.get_param("~Palbator_arm_parameters")
             self._arm_controller = MoveitArmController(arm_parameters)
         else:
-            rospy.logerr("{class_name} : No parameters specified for Moveit Palbator Arm controller. Can't start arm controller.")
+            rospy.logerr("{class_name} : No parameters specified for Moveit Palbator Arm controller. Can't start arm controller.".format(
+                class_name=self.__class__.__name__))
 
         if rospy.has_param("~Palbator_gripper_parameters"):
             gripper_parameters = rospy.get_param("~Palbator_gripper_parameters")
             self._gripper_controller = MoveitGripperController(gripper_parameters)
         else:
-            rospy.logerr("{class_name} : No parameters specified for Moveit Palbator Gripper controller. Can't start gripper controller.")
+            rospy.logerr("{class_name} : No parameters specified for Moveit Palbator Gripper controller. Can't start gripper controller.".format(
+                class_name=self.__class__.__name__))
 
         self.__setFingertip()
         self.traveling()
 
         if rospy.has_param("~Moveit_global_controller_action_name"):
             action_server_name = rospy.get_param("~Moveit_global_controller_action_name")
-            self._arm_control_server = actionlib.SimpleActionServer(action_server_name, ArmControlAction, self.executeActionServer, False)
+            self._arm_control_server = actionlib.SimpleActionServer(
+                action_server_name, ArmControlAction, self.executeActionServer, False)
             self._arm_control_server.start()
         else:
-            rospy.logerr("{class_name} : No name specified for Global Moveit Palbator controller action server. Can't start action server.")
+            rospy.logerr(
+                "{class_name} : No name specified for Global Moveit Palbator controller action server. Can't start action server.")
 
-        rospy.loginfo("{class_name} : Global Palbator Moveit Controller initialized".format(class_name=self.__class__.__name__))
+        rospy.loginfo("{class_name} : Global Palbator Moveit Controller initialized".format(
+            class_name=self.__class__.__name__))
 
     def __setFingertip(self):
-        pub = rospy.Publisher("/pmb2_arm_controller/arm_hand1_fingertip1_joint_controller/command", Float64, queue_size=10)
+        pub = rospy.Publisher("/pmb2_arm_controller/arm_hand1_fingertip1_joint_controller/command",
+                              Float64, queue_size=10)
         pub.publish(0.0)
-        pub = rospy.Publisher("/pmb2_arm_controller/arm_hand1_fingertip2_joint_controller/command", Float64, queue_size=10)
+        pub = rospy.Publisher("/pmb2_arm_controller/arm_hand1_fingertip2_joint_controller/command",
+                              Float64, queue_size=10)
         pub.publish(0.0)
-        pub = rospy.Publisher("/pmb2_arm_controller/arm_hand2_fingertip1_joint_controller/command", Float64, queue_size=10)
+        pub = rospy.Publisher("/pmb2_arm_controller/arm_hand2_fingertip1_joint_controller/command",
+                              Float64, queue_size=10)
         pub.publish(0.0)
-        pub = rospy.Publisher("/pmb2_arm_controller/arm_hand2_fingertip2_joint_controller/command", Float64, queue_size=10)
+        pub = rospy.Publisher("/pmb2_arm_controller/arm_hand2_fingertip2_joint_controller/command",
+                              Float64, queue_size=10)
         pub.publish(0.0)
 
     def __getPointStamped(self, goal):
@@ -103,12 +114,14 @@ class MoveitGlobalController:
                 pointStamped.point.y = trans[1]
                 pointStamped.point.z = trans[2]
 
-            rospy.loginfo("{class_name} : Goal coords in map : %s".format(class_name=self.__class__.__name__), str(pointStamped.point))
+            rospy.loginfo("{class_name} : Goal coords in map : %s".format(
+                class_name=self.__class__.__name__), str(pointStamped.point))
             listener.waitForTransform("/map", "/base_footprint", now, rospy.Duration(5))
             pointStampedTransformed = listener.transformPoint("base_footprint", pointStamped)
 
         except Exception as exc:
-            raise Exception("{class_name} : Error getting coord of the goal: %s".format(class_name=self.__class__.__name__), exc)
+            raise Exception("{class_name} : Error getting coord of the goal: %s".format(
+                class_name=self.__class__.__name__), exc)
 
         return pointStampedTransformed
 
@@ -143,7 +156,7 @@ class MoveitGlobalController:
         distance = math.sqrt(pointStamped.point.x**2 + pointStamped.point.y**2)
         rospy.logwarn("{class_name} : DISTANCE TO GOAL %.3f Meter".format(
             class_name=self.__class__.__name__), distance)
-        
+
         if distance >= self._arm_controller.arm_max_length or distance <= self._arm_controller.arm_min_length:
             distanceNeeded = distance - self._arm_controller.arm_max_length
         else:
@@ -152,6 +165,10 @@ class MoveitGlobalController:
         return rotationNeeded, distanceNeeded
 
     def grasping(self, goal):
+        # box = PoseStamped()
+        # box.header.frame_id = "base_footprint"
+        # box.pose.position = deepcopy(goal.point)
+        # self.scene.add_box("goal", box, size=(0.1, 0.1, 0.1))
         # put the arm in base pose before grab
         self._arm_controller.point_at(goal)
 
@@ -208,10 +225,12 @@ class MoveitGlobalController:
         action_result = ArmControlResult()
         try:
             if goal.action in ["Grasping", "GraspingXYZ", "Pointing", "PointingXYZ", "Dropping", "DroppingXYZ", "Looking", "LookingXYZ"]:
-                rospy.loginfo("{class_name} : Received %s action goal".format(class_name=self.__class__.__name__), goal.action)
+                rospy.loginfo("{class_name} : Received %s action goal".format(
+                    class_name=self.__class__.__name__), goal.action)
 
                 goalPointStamped = self.__getPointStamped(goal)
-                rospy.loginfo("{class_name} : Goal coords in base_footprint : %s".format(class_name=self.__class__.__name__), goalPointStamped)
+                rospy.loginfo("{class_name} : Goal coords in base_footprint : %s".format(
+                    class_name=self.__class__.__name__), goalPointStamped)
 
                 (rotation_needed, distance_needed) = self.__getPlacement(goalPointStamped, goal.action)
                 fct = None
@@ -222,7 +241,7 @@ class MoveitGlobalController:
                             class_name=self.__class__.__name__), rotation_needed)
                         JSONRequest["rotation"] = rotation_needed
 
-                    if distance_needed !=0:
+                    if distance_needed != 0:
                         rospy.logwarn("{class_name} : DISTANCE OF %.3f METER NEEDED".format(
                             class_name=self.__class__.__name__), distance_needed)
                         JSONRequest["distance"] = distance_needed
@@ -241,25 +260,26 @@ class MoveitGlobalController:
                             class_name=self.__class__.__name__), rotation_needed)
                         JSONRequest["rotation"] = rotation_needed
 
-                    if distance_needed !=0:
+                    if distance_needed != 0:
                         rospy.logwarn("{class_name} : DISTANCE OF %.3f METER NEEDED".format(
                             class_name=self.__class__.__name__), distance_needed)
                         JSONRequest["distance"] = distance_needed
                     fct = self.dropping
-                
+
                 elif "Looking" in goal.action:
                     if rotation_needed != 0:
                         rospy.logwarn("{class_name} : ROTATION OF %.2f RADIAN NEEDED".format(
                             class_name=self.__class__.__name__), rotation_needed)
                         JSONRequest["rotation"] = rotation_needed
                     fct = self.looking
-                
+
                 if len(JSONRequest) == 0:
                     fct(goalPointStamped)
                     isActionSucceed = True
 
             elif goal.action == 'Travelling':
-                rospy.loginfo("{class_name} : Received travelling action goal".format(class_name=self.__class__.__name__))
+                rospy.loginfo("{class_name} : Received travelling action goal".format(
+                    class_name=self.__class__.__name__))
                 self.traveling()
                 isActionSucceed = True
 
@@ -279,9 +299,10 @@ class MoveitGlobalController:
                 self._arm_control_server.set_succeeded(action_result)
             else:
                 self._arm_control_server.set_aborted(action_result)
-            
+
         except Exception as exc:
-            rospy.logerr("{class_name} : Action %s aborted because of: %s".format(class_name=self.__class__.__name__), goal.action, exc)
+            rospy.logerr("{class_name} : Action %s aborted because of: %s".format(
+                class_name=self.__class__.__name__), goal.action, exc)
             rospy.logerr(traceback.format_exc())
             self._arm_control_server.set_aborted()
 

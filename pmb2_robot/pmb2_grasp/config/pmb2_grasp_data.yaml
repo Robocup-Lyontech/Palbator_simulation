@@ -1,0 +1,42 @@
+base_link: 'base_footprint'
+
+pmb2_gripper:
+    arm_group: "pmb2_arm"                   # arm group name
+    eef_group: "pmb2_gripper"               # ee group name
+    end_effector_name: 'end_effector_link'  # ee name
+
+    # x/y translation and angle orientation grasp resolution parameters used for sampling grasp candidates
+    # grasp_resolution : 0.05  # meter
+    # angle_resolution : 45    # degrees
+
+    # IK solver values
+    IK_solver_timeout: 0.05
+    IK_solver_attempts: 0.005
+
+    # timeout for full grasp plan
+    full_plan_timeout: 2.0
+
+    # A grasp motion is composed of three linear paths: approach, retreat, lift
+    # The values below define the desired distances of each path.
+    # Length of approach path (this is in addition to the grasp_max_depth)
+    approach_distance_desired: 0.115  # approach path (in addition to grasp_max_depth)
+    lift_distance_desired: 0.115      # lift path (used as MINIMUM safety distance from surface)
+    min_approach_distance: 0.05
+    min_lift_distance: 0.05
+
+    # approach and retreat vector [x, y, z]
+    eef_approach_vector: [1.0, 0, 0]
+    eef_retreat_vector: [0, 0, 1.0]
+
+    # Distance from the eef mount to the palm of end effector [x, y, z, r, p, y]
+    # eef_to_transform :  [0, 0, 0, 0, 0, 0] # NOTE: Imaginary point in the middle
+
+    # Joint names and state values for the end effector.
+    joints : ['motor1_hand_joint', 'motor2_hand_joint']
+    pregrasp_posture : [-0.6, -0.6]  # open position
+    grasp_posture : [0.3, 0.3]      # close position
+    motion_time: 5.0                 # time to open/close
+
+    # Distances between fingers matching to pregrasp_posture and grasp_posture, in meters
+    # max_finger_width: 0.085
+    # min_finger_width: 0.06
