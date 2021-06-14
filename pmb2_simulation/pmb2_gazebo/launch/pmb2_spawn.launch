@@ -1,7 +1,7 @@
 <launch>
   <arg name="robot_pos" default="-x 0 -y 0 -z 0 -Y 0" />
-  <arg name="joints_pose" default="-J palbator_arm_shoulder_1_joint 0 
-                                   -J palbator_arm_shoulder_2_joint -0.75 
+  <arg name="joints_pose" default="-J palbator_arm_shoulder_1_joint 1.22 
+                                   -J palbator_arm_shoulder_2_joint -0.35 
                                    -J palbator_arm_shoulder_3_joint 1.6
                                    -J palbator_arm_wrist_1_joint 0
                                    -J palbator_arm_wrist_2_joint 0
