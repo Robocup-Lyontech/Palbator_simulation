@@ -311,7 +311,7 @@
       <parent link="hand1_link" />
       <child link="fingertip1_1_link" />
       <axis xyz="0 0 1" />
-      <limit lower="-1" upper="1" effort="0.05" velocity="0.5" />
+      <limit lower="0" upper="0.62" effort="0.05" velocity="0.5" />
     </joint>
 
     <joint name="hand1_fingertip2_joint" type="revolute">
@@ -319,7 +319,7 @@
       <parent link="hand1_link" />
       <child link="fingertip1_2_link" />
       <axis xyz="0 0 1" />
-      <limit lower="-1" upper="1" effort="0.05" velocity="0.5" />
+      <limit lower="0" upper="0.62" effort="0.05" velocity="0.5" />
     </joint>
 
     <joint name="gripper_motor2_joint" type="fixed">
@@ -342,7 +342,7 @@
       <parent link="hand2_link" />
       <child link="fingertip2_1_link" />
       <axis xyz="0 0 1" />
-      <limit lower="-1" upper="1" effort="0.05" velocity="0.5" />
+      <limit lower="0" upper="0.62" effort="0.05" velocity="0.5" />
     </joint>
 
     <joint name="hand2_fingertip2_joint" type="revolute">
@@ -350,7 +350,7 @@
       <parent link="hand2_link" />
       <child link="fingertip2_2_link" />
       <axis xyz="0 0 1" />
-      <limit lower="-1" upper="1" effort="0.05" velocity="0.5" />
+      <limit lower="0" upper="0.62" effort="0.05" velocity="0.5" />
     </joint>
 
     <joint name="gripper_end_effector_joint" type="fixed">
