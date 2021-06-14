@@ -32,8 +32,8 @@ pmb2_gripper_controller:
     goal_time: 0.6
     # vel_tolerance is 0 for due to the movegroup/follow_joint_trajectory/goal tolerance is empty
     stopped_velocity_tolerance: 0.05
-    motor1_hand_joint: {trajectory: 0.1, goal: 0.1}
-    motor2_hand_joint: {trajectory: 0.1, goal: 0.1}
+    motor1_hand_joint: {trajectory: 1.0, goal: 1.0}
+    motor2_hand_joint: {trajectory: 1.0, goal: 1.0}
 
   gains: # Required because we're controlling an effort interface
     motor1_hand_joint: {p: 10,  d: 0.0, i: 0.0, i_clamp: 1}
