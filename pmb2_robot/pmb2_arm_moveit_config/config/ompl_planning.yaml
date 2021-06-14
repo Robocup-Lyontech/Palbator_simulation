@@ -145,7 +145,7 @@ pmb2_gripper:
     - LazyPRMstar
     - SPARS
     - SPARStwo
-  projection_evaluator: joints(motor1_hand_joint,motor2_hand_joint)
+  projection_evaluator: joints(motor1_hand_joint,hand1_fingertip1_joint)
   longest_valid_segment_fraction: 0.005
 pmb2_arm:
   default_planner_config: None

@@ -110,7 +110,7 @@
           izz="6.7071E-06" />
       </inertial>
       <visual>
-        <origin xyz="0 0 0" rpy="1.5708 0 3.141592" />
+        <origin xyz="0 0 0" rpy="-1.5708 0 3.141592" />
         <geometry>
           <mesh filename="package://pmb2_description/meshes/gripper/fingertip1_1_link.STL" />
         </geometry>
@@ -119,7 +119,7 @@
         </material>
       </visual>
       <collision>
-        <origin xyz="0 0 0" rpy="1.5708 0 3.141592" />
+        <origin xyz="0 0 0" rpy="-1.5708 0 3.141592" />
         <geometry>
           <mesh filename="package://pmb2_description/meshes/gripper/fingertip1_1_link.STL" />
         </geometry>
@@ -230,7 +230,7 @@
           izz="6.7071E-06" />
       </inertial>
       <visual>
-        <origin xyz="0 0 0" rpy="1.5708 0 3.141592" />
+        <origin xyz="0 0 0" rpy="-1.5708 0 3.141592" />
         <geometry>
           <mesh filename="package://pmb2_description/meshes/gripper/fingertip2_1_link.STL" />
         </geometry>
@@ -239,7 +239,7 @@
         </material>
       </visual>
       <collision>
-        <origin xyz="0 0 0" rpy="1.5708 0 3.141592" />
+        <origin xyz="0 0 0" rpy="-1.5708 0 3.141592" />
         <geometry>
           <mesh filename="package://pmb2_description/meshes/gripper/fingertip2_1_link.STL" />
         </geometry>
@@ -307,7 +307,7 @@
     </joint>
 
     <joint name="hand1_fingertip1_joint" type="revolute">
-      <origin xyz="-0.0056 0.0877 0.0055" rpy="0 0 0" />
+      <origin xyz="-0.0056 0.0877 0.016" rpy="0 0 0" />
       <parent link="hand1_link" />
       <child link="fingertip1_1_link" />
       <axis xyz="0 0 1" />
@@ -315,7 +315,7 @@
     </joint>
 
     <joint name="hand1_fingertip2_joint" type="revolute">
-      <origin xyz="-0.0056 0.0877 -0.0055" rpy="0 0 0" />
+      <origin xyz="-0.0056 0.0877 -0.006" rpy="0 0 0" />
       <parent link="hand1_link" />
       <child link="fingertip1_2_link" />
       <axis xyz="0 0 1" />
@@ -338,7 +338,7 @@
     </joint>
 
     <joint name="hand2_fingertip1_joint" type="revolute">
-      <origin xyz="-0.0056 0.0877 0.0055" rpy="0 0 0" />
+      <origin xyz="-0.0056 0.0877 0.016" rpy="0 0 0" />
       <parent link="hand2_link" />
       <child link="fingertip2_1_link" />
       <axis xyz="0 0 1" />
@@ -346,7 +346,7 @@
     </joint>
 
     <joint name="hand2_fingertip2_joint" type="revolute">
-      <origin xyz="-0.0056 0.0877 -0.0055" rpy="0 0 0" />
+      <origin xyz="-0.0056 0.0877 -0.006" rpy="0 0 0" />
       <parent link="hand2_link" />
       <child link="fingertip2_2_link" />
       <axis xyz="0 0 1" />
