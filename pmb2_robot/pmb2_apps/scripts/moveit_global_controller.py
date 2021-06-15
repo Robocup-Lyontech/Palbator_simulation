@@ -173,10 +173,13 @@ class MoveitGlobalController:
 
     def grasping(self, goal):
         # put the arm in base pose before grab
-        self._arm_controller.move_arm_to_pose("pointing_pose")
+        # self._arm_controller.move_arm_to_pose("pointing_pose")
+        lookingGoal = deepcopy(goal)
+        lookingGoal.pose.position.z += 0.1
+        self.looking(lookingGoal)
 
         # align end effector and object to grab
-        self._column_controller.move_column(goal.pose.position.z + 0.05)
+        self._column_controller.move_column(goal.pose.position.z + 0.1)
 
         # move end effector to the object
         self._arm_controller.grab(goal, self.solidPrimitive, self.grasp_parameters)
@@ -205,7 +208,8 @@ class MoveitGlobalController:
         self._arm_controller.move_arm_to_pose("looking_pose")
 
         # align camera with goal
-        self._column_controller.move_column(goal.pose.position.z)
+        zGoal = max(goal.pose.position.z, 0.62)
+        self._column_controller.move_column(zGoal)
         self._arm_controller.look_at(goal)
 
     def traveling(self):

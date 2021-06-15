@@ -89,22 +89,19 @@ class MoveitArmController:
     def look_at(self, goal):
         rospy.loginfo("{class_name} : Move arm request to look at %s".format(class_name=self.__class__.__name__), goal.pose)
 
+        self._tflistener.waitForTransform("/map", "/palbator_arm_shoulder_link3", rospy.Time(0), rospy.Duration(5))
+        goalTransformed = self._tflistener.transformPose("palbator_arm_shoulder_link3", goal)
+
         jointNames = self.group.get_joints()
-
-        self._tflistener.waitForTransform("/map", "/palbator_arm_shoulder_link2", rospy.Time(0), rospy.Duration(5))
-        goalTransformed = self._tflistener.transformPose("palbator_arm_shoulder_link2", goal)
-
         jointValues = self.group.get_current_joint_values()
         jointsDict = dict(zip(jointNames, jointValues))
+
+        rotation = -np.arctan(goalTransformed.pose.position.x/goalTransformed.pose.position.y)
+
+        jointsDict["palbator_arm_shoulder_2_joint"] -= rotation
+        jointsDict["palbator_arm_wrist_1_joint"] += rotation
         
-        rotation = jointsDict["palbator_arm_shoulder_1_joint"] + np.arctan(goalTransformed.pose.position.y/goalTransformed.pose.position.x) - math.pi/2
-
-        if rotation < self.shoulder_min_rot:
-            rotation = self.shoulder_min_rot
-        elif rotation > self.shoulder_max_rot:
-            rotation = self.shoulder_max_rot
-
-        self.group.set_joint_value_target({"palbator_arm_shoulder_1_joint": rotation})
+        self.group.set_joint_value_target(jointsDict)
         plan = self.group.plan()
 
         if not plan.joint_trajectory.points:
