@@ -308,7 +308,13 @@ class MoveitGlobalController:
             rospy.logerr("{class_name} : Action %s aborted because of: %s".format(
                 class_name=self.__class__.__name__), goal.action, exc)
             rospy.logerr(traceback.format_exc())
-            self._arm_control_server.set_aborted()
+            json_result={
+                "action": goal.action,
+                "request": "",
+                "status": 'Aborted'
+            }
+            action_result.action_output=json.dumps(json_result)
+            self._arm_control_server.set_aborted(action_result)
 
 
 if __name__ == "__main__":
