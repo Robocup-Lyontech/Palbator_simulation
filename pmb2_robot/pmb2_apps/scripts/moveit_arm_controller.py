@@ -89,8 +89,8 @@ class MoveitArmController:
     def look_at(self, goal):
         rospy.loginfo("{class_name} : Move arm request to look at %s".format(class_name=self.__class__.__name__), goal.pose)
 
-        self._tflistener.waitForTransform("/map", "/palbator_arm_shoulder_link3", rospy.Time(0), rospy.Duration(5))
-        goalTransformed = self._tflistener.transformPose("palbator_arm_shoulder_link3", goal)
+        self._tflistener.waitForTransform("/map", "/palbator_arm_shoulder_link2", rospy.Time(0), rospy.Duration(5))
+        goalTransformed = self._tflistener.transformPose("palbator_arm_shoulder_link2", goal)
 
         jointNames = self.group.get_joints()
         jointValues = self.group.get_current_joint_values()
