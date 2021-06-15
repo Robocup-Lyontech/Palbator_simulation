@@ -19,21 +19,32 @@ class GraspFilter:
         #TODO add wait for action
 
 
-        self._IKCheck = True
-        self._preGraspCheck = True
-        self._planCheck = True
+        self._IKGraspCheck = True       # Filter grasp by IK
+        self._IKPreGraspCheck = True    # Filter pre-grasp by IK
+        self._planCheck = True          # Filter full plan feasibility
 
     def filterGrasps(self, grasp_candidates, objectName, graspParam):
+        """Check if grasp feasibility and return possible one
+
+        :param grasp_candidates: List of grasp candidate to filter
+        :type grasp_candidates: moveit_msgs/Grasp[]
+        :param objectName: Name of the object to grasp
+        :type objectName: String
+        :param graspParam: Parameter of the grasp
+        :type graspParam: Dict
+        :return: List of grasp after filter
+        :rtype: moveit_msgs/Grasp[]
+        """
         rospy.loginfo("{class_name} : Filtering grasps".format(class_name=self.__class__.__name__))
         self.filteredGrasps = copy.deepcopy(grasp_candidates)
 
-        if self._IKCheck:
-            nbrRemoved = self.removeIK(graspParam)
+        if self._IKGraspCheck:
+            nbrRemoved = self.removeIKGrasp(graspParam)
             rospy.loginfo("{class_name} : Grasp filtered by ik: %d".format(class_name=self.__class__.__name__), nbrRemoved)
 
-        if self._preGraspCheck:
-            nbrRemoved = self.removePreGrasp(graspParam)
-            rospy.loginfo("{class_name} : Grasp filtered by pre-grasp: %d".format(class_name=self.__class__.__name__), nbrRemoved)
+        if self._IKPreGraspCheck:
+            nbrRemoved = self.removeIKPreGrasp(graspParam)
+            rospy.loginfo("{class_name} : Grasp filtered by ik pre-grasp: %d".format(class_name=self.__class__.__name__), nbrRemoved)
 
         if self._planCheck:
             nbrRemoved = self.removePlan(objectName, graspParam)
@@ -43,20 +54,32 @@ class GraspFilter:
         return self.filteredGrasps
 
     def removeGraspsWithId(self, ids):
+        """Remove grasp with ids matching from filtered grasp list
+
+        :param ids: List of id to remove
+        :type ids: Int[]
+        """
         to_remove = [i for i, val in enumerate(self.filteredGrasps) if val.id in ids]
         for index in reversed(to_remove):
             del self.filteredGrasps[index]
 
-    def removeIK(self, graspParam):
+    def removeIKGrasp(self, graspParam):
+        """Remove grasp where no IK were found during grasp step
+
+        :param graspParam: Parameter of the grasp
+        :type graspParam: Dict
+        :return: Number of grasp removed
+        :rtype: Int
+        """
         idsToRemove = []
         for grasp_candidate in self.filteredGrasps:
-            if not self.filterIK(grasp_candidate, graspParam):
+            if not self.filterIKGrasp(grasp_candidate, graspParam):
                 idsToRemove.append(grasp_candidate.id)
         self.removeGraspsWithId(idsToRemove)
         return len(idsToRemove)
         
 
-    def filterIK(self, grasp_candidate, graspParam):
+    def filterIKGrasp(self, grasp_candidate, graspParam):
         positionIKRequest = PositionIKRequest()
         positionIKRequest.group_name = graspParam["arm_group"]
         joint_state = JointState()
@@ -75,15 +98,15 @@ class GraspFilter:
             return True
         return False
 
-    def removePreGrasp(self, graspParam):
+    def removeIKPreGrasp(self, graspParam):
         idsToRemove = []
         for grasp_candidate in self.filteredGrasps:
-            if not self.filterPreGrasp(grasp_candidate, graspParam):
+            if not self.filterIKPreGrasp(grasp_candidate, graspParam):
                 idsToRemove.append(grasp_candidate.id)
         self.removeGraspsWithId(idsToRemove)
         return len(idsToRemove)
 
-    def filterPreGrasp(self, grasp_candidate, graspParam):
+    def filterIKPreGrasp(self, grasp_candidate, graspParam):
         positionIKRequest = PositionIKRequest()
         positionIKRequest.group_name = graspParam["arm_group"]
         joint_state = JointState()
@@ -130,3 +153,17 @@ class GraspFilter:
         if resp.error_code.val == 1:
             return True
         return False
+
+    def setParameter(self, IKGraspCheck, IKPreGraspCheck, planCheck):
+        """Set filter to use
+
+        :param IKGraspCheck: Check collision on grasp position
+        :type IKGraspCheck: Bool
+        :param IKPreGraspCheck: Check collision in pre grasp position (target object included)
+        :type IKPreGraspCheck: Bool
+        :param planCheck: Check all path
+        :type planCheck: Bool
+        """
+        self._IKGraspCheck = IKGraspCheck
+        self._IKPreGraspCheck = IKPreGraspCheck
+        self._planCheck = planCheck

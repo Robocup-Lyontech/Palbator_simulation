@@ -14,13 +14,24 @@ class GraspGenerator:
     Z_AXIS = 2
 
     def __init__(self):
-        self._graspXFace = True
-        self._graspYFace = True
-        self._graspZFace = True
-        self._graspEdge = True
-        self._planCorner = True
+        self._graspXFace = True     # allow grasp on face x or -x
+        self._graspYFace = True     # allow grasp on face y or -y
+        self._graspZFace = True     # allow grasp on face z or -z
+        self._graspEdge = True      # allow grasp on edge
+        self._planCorner = True     # allow grasp on corner
 
     def generateGrasps(self, baseLink, objectPose, graspParam):
+        """Generate Grasp data
+
+        :param baseLink: Base link name
+        :type baseLink: String
+        :param objectPose: Pose of the object to grasp
+        :type objectPose: geometry_msgs/Pose
+        :param graspParam: Parameter of the grasp
+        :type graspParam: Dict
+        :return: List of possible grasp (not taking feasibility into account)
+        :rtype: moveit_msgs/Grasp[]
+        """
         self.grasps = []
 
         self._gripperJoints = graspParam["joints"]
@@ -53,6 +64,15 @@ class GraspGenerator:
         return self.grasps
 
     def addFaceGrasps(self, baseLink, objectPose, axis):
+        """Generate face oriented grasps
+
+        :param baseLink: Base link name
+        :type baseLink: String
+        :param objectPose: Pose of the object to grasp
+        :type objectPose: geometry_msgs/Pose
+        :param axis: Axis corresponding to the face to add grasp to
+        :type axis: Int
+        """
         graspPose = Pose()
 
         if axis == self.X_AXIS:
@@ -103,6 +123,13 @@ class GraspGenerator:
                     self.addGrasp(baseLink, graspPose)
 
     def addEdgeGrasps(self, baseLink, objectPose):
+        """Generate edge oriented grasps
+
+        :param baseLink: Base link name
+        :type baseLink: String
+        :param objectPose: Pose of the object to grasp
+        :type objectPose: geometry_msgs/Pose
+        """
         graspPose = Pose()
 
         # select corner connected to x and y faces
@@ -157,6 +184,13 @@ class GraspGenerator:
                 self.addGrasp(baseLink, graspPose)
 
     def addGrasp(self, baseLink, graspPose):
+        """[summary]
+
+        :param baseLink: Base link name
+        :type baseLink: String
+        :param graspPose: pose of the grasp to add
+        :type graspPose: geometry_msgs/Pose
+        """
         grasp = Grasp()
 
         grasp.id = str(len(self.grasps))
@@ -203,3 +237,23 @@ class GraspGenerator:
         grasp.grasp_posture.points = [copy.deepcopy(points)]
 
         self.grasps.append(grasp)
+
+    def setParameter(self, graspXFace, graspYFace, graspZFace, graspEdge, planCorner):
+        """Set grasp generation possibility
+
+        :param graspXFace: Generate face oriented grasps on X and -X faces
+        :type graspXFace: Bool
+        :param graspYFace: Generate face oriented grasps on Y and -Y faces
+        :type graspYFace: Bool
+        :param graspZFace: Generate face oriented grasps on Z and -Z faces
+        :type graspZFace: Bool
+        :param graspEdge: Generate edge grasping
+        :type graspEdge: Bool
+        :param planCorner: Generate corner grasping
+        :type planCorner: Bool
+        """
+        self._graspXFace = graspXFace
+        self._graspYFace = graspYFace
+        self._graspZFace = graspZFace
+        self._graspEdge = graspEdge
+        self._planCorner = planCorner
