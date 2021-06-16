@@ -26,6 +26,7 @@ class MoveitArmController:
         # rospy.init_node('move_group_python_interface_tutorial', anonymous=True)
 
         self._parameters = arm_parameters
+        self.target_name = "target"
 
         self.robot = moveit_commander.RobotCommander()
         self.scene = moveit_commander.PlanningSceneInterface()
@@ -172,11 +173,10 @@ class MoveitArmController:
         target = PoseStamped()
         target.header.frame_id = "base_footprint"
         target.pose = copy.deepcopy(goal.pose)
-        target_name = "target"
         if solidPrimitive.type == 0:
-            self.scene.add_box(target_name, target, size=(0.04, 0.04, 0.04))
+            self.scene.add_box(self.target_name, target, size=(0.04, 0.04, 0.04))
         else:
-            self.scene.add_box(target_name, target, size=tuple(solidPrimitive.dimensions))
+            self.scene.add_box(self.target_name, target, size=tuple(solidPrimitive.dimensions))
         rospy.sleep(1)  # wait for object to spawn
 
         graspGenerator = GraspGenerator()
@@ -184,36 +184,13 @@ class MoveitArmController:
 
         grasps = graspGenerator.generateGrasps(graspParam["base_link"], goal.pose, graspParam)
 
-        grasps = graspFilter.filterGrasps(grasps, target_name, graspParam)
+        grasps = graspFilter.filterGrasps(grasps, self.target_name, graspParam)
 
         if len(grasps) == 0:
             raise Exception("Planning failed")
 
-        if 1 != self.group.pick(target_name, grasps[0]) and not self.allow_wrong_execution:
+        if 1 != self.group.pick(self.target_name, grasps[0]) and not self.allow_wrong_execution:
             raise Exception("Execution failed")
-
-        # waypoints = [self.group.get_current_pose().pose]
-
-        # waypoint = copy.deepcopy(waypoints[-1])
-        # waypoint.position.z = goal.point.z
-        # waypoints.append(waypoint)
-
-        # waypoint = copy.deepcopy(waypoints[-1])
-        # waypoint.position.x = goal.point.x
-        # waypoint.position.y = goal.point.y
-        # waypoints.append(waypoint)
-
-        # waypoints.pop(0)
-
-        # (plan, fraction) = self.group.compute_cartesian_path(waypoints, 0.01, 0.0)
-
-        # if not plan.joint_trajectory.points:
-        #     raise Exception("Planning failed")
-
-        # self.__display_plan(plan)
-        # if (not self.group.execute(plan, wait=True) or fraction != 1.0) and not self.allow_wrong_execution:
-        #     raise Exception("Execution failed")
-
 
     def post_grab(self, goal):
         rospy.loginfo("{class_name} : Move arm request to standby position".format(class_name=self.__class__.__name__))
@@ -299,3 +276,6 @@ class MoveitArmController:
         self.__display_plan(plan)
         if (not self.group.execute(plan, wait=True) or fraction != 1.0) and not self.allow_wrong_execution:
             raise Exception("Execution failed")
+
+    def removeAttachedObject(self):
+        self.group.remove_attached_object(self.target_name)

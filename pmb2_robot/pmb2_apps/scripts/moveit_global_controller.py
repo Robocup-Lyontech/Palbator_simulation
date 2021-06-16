@@ -194,12 +194,14 @@ class MoveitGlobalController:
     def dropping(self, goal):
         # align end effector and position to drop
         self._arm_controller.point_at(goal)
-        self._column_controller.move_column(goal.pose.position.z)
+        self._column_controller.move_column(goal.pose.position.z + 0.1)
 
         # move end effector to the position to drop
         self._arm_controller.drop(goal)
         # drop
         self._gripper_controller.move_gripper(1.0)
+        self._arm_controller.removeAttachedObject()
+
         # move arm to standby
         self._arm_controller.move_arm_to_pose("pointing_pose")
 
