@@ -18,6 +18,8 @@ from pmb2_grasp.grasp_filter import GraspFilter
 
 class MoveitArmController:
 
+    MAX_RETRY = 3
+
     def __init__(self, arm_parameters):
         """
         Initializes the Palbator Moveit arm controller.
@@ -30,10 +32,12 @@ class MoveitArmController:
 
         self.robot = moveit_commander.RobotCommander()
         self.scene = moveit_commander.PlanningSceneInterface()
-        self.group = moveit_commander.MoveGroupCommander(self._parameters['Palbator_arm_move_group'])
+        self.group = moveit_commander.MoveGroupCommander("pmb2_arm_column")
 
         self.display_trajectory_publisher = rospy.Publisher(
             self._parameters['display_arm_planned_path_topic'], DisplayTrajectory, queue_size=10)
+        self.display_trajectory_publisher = rospy.Publisher(
+            "/move_group_arm/display_planned_path", DisplayTrajectory, queue_size=10)
         self._tflistener = TransformListener()
         self.arm_hold_length = self._parameters['Palbator_hold_length']
         self.arm_min_length = self._parameters['Palbator_min_length']
@@ -56,7 +60,8 @@ class MoveitArmController:
         :param pose_name: name of the position to reach
         :type pose_name: string
         """
-        rospy.loginfo("{class_name} : Move arm request to position %s".format(class_name=self.__class__.__name__), pose_name)
+        rospy.loginfo("{class_name} : Move arm request to position %s".format(
+            class_name=self.__class__.__name__), pose_name)
         self.group.set_named_target(pose_name)
 
         plan = self.group.plan()
@@ -66,12 +71,13 @@ class MoveitArmController:
 
         self.__display_plan(plan)
         rospy.loginfo("{class_name} : Moving arm ...".format(class_name=self.__class__.__name__))
-        if not self.group.go(wait=True) and not self.allow_wrong_execution:
+        if not self.group.execute(plan, wait=True) and not self.allow_wrong_execution:
             raise Exception("Execution failed")
         rospy.loginfo("{class_name} : Arm position reached".format(class_name=self.__class__.__name__))
 
     def move_arm(self, goal):
-        rospy.loginfo("{class_name} : Move arm request to position %s".format(class_name=self.__class__.__name__), goal.pose)
+        rospy.loginfo("{class_name} : Move arm request to position %s".format(
+            class_name=self.__class__.__name__), goal.pose)
 
         self.group.set_pose_reference_frame("base_footprint")
         self.group.set_position_target(goal.pose)
@@ -83,12 +89,13 @@ class MoveitArmController:
 
         self.__display_plan(plan)
         rospy.loginfo("{class_name} : Moving arm ...".format(class_name=self.__class__.__name__))
-        if not self.group.go(wait=True) and not self.allow_wrong_execution:
+        if not self.group.execute(plan, wait=True) and not self.allow_wrong_execution:
             raise Exception("Execution failed")
         rospy.loginfo("{class_name} : Arm position reached".format(class_name=self.__class__.__name__))
 
     def look_at(self, goal):
-        rospy.loginfo("{class_name} : Move arm request to look at %s".format(class_name=self.__class__.__name__), goal.pose)
+        rospy.loginfo("{class_name} : Move arm request to look at %s".format(
+            class_name=self.__class__.__name__), goal.pose)
 
         self._tflistener.waitForTransform("/map", "/palbator_arm_shoulder_link2", rospy.Time(0), rospy.Duration(5))
         goalTransformed = self._tflistener.transformPose("palbator_arm_shoulder_link2", goal)
@@ -101,7 +108,7 @@ class MoveitArmController:
 
         jointsDict["palbator_arm_shoulder_2_joint"] -= rotation
         jointsDict["palbator_arm_wrist_1_joint"] += rotation
-        
+
         self.group.set_joint_value_target(jointsDict)
         plan = self.group.plan()
 
@@ -115,9 +122,9 @@ class MoveitArmController:
 
         rospy.loginfo("{class_name} : Arm position reached".format(class_name=self.__class__.__name__))
 
-
     def point_at(self, goal):
-        rospy.loginfo("{class_name} : Move arm request to point %s".format(class_name=self.__class__.__name__), goal.pose)
+        rospy.loginfo("{class_name} : Move arm request to point %s".format(
+            class_name=self.__class__.__name__), goal.pose)
 
         self.move_arm_to_pose("pointing_pose")
 
@@ -148,7 +155,7 @@ class MoveitArmController:
         orientation_constraint.orientation.w = 1.0
         orientation_constraint.absolute_x_axis_tolerance = 0.4
         orientation_constraint.absolute_y_axis_tolerance = 0.4
-        orientation_constraint.absolute_z_axis_tolerance = 3.14 #ignore this axis
+        orientation_constraint.absolute_z_axis_tolerance = 3.14  # ignore this axis
         orientation_constraint.weight = 1
         constraints.orientation_constraints.append(orientation_constraint)
 
@@ -168,16 +175,25 @@ class MoveitArmController:
         rospy.loginfo("{class_name} : Arm position reached".format(class_name=self.__class__.__name__))
 
     def grab(self, goal, solidPrimitive, graspParam):
-        rospy.loginfo("{class_name} : Move arm request to grab object at position %s".format(class_name=self.__class__.__name__), goal.pose)
+        rospy.loginfo("{class_name} : Move arm request to grab object at position %s".format(
+            class_name=self.__class__.__name__), goal.pose)
 
         target = PoseStamped()
         target.header.frame_id = "base_footprint"
         target.pose = copy.deepcopy(goal.pose)
         if solidPrimitive.type == 0:
-            self.scene.add_box(self.target_name, target, size=(0.04, 0.04, 0.04))
-        else:
-            self.scene.add_box(self.target_name, target, size=tuple(solidPrimitive.dimensions))
-        rospy.sleep(1)  # wait for object to spawn
+            solidPrimitive.type = 1
+            solidPrimitive.dimensions = [0.04, 0.04, 0.04]
+
+        floor = PoseStamped()
+        floor.header.frame_id = "base_footprint"
+        floor.pose = copy.deepcopy(goal.pose)
+        floor.pose.position.z -= solidPrimitive.dimensions[2]/2 + 0.015
+
+        self.scene.add_box("floor", floor, size=(solidPrimitive.dimensions[0], solidPrimitive.dimensions[1], 0.02))
+        rospy.sleep(2.0)  # wait for object to spawn
+        self.scene.add_box(self.target_name, target, size=tuple(solidPrimitive.dimensions))
+        rospy.sleep(5.0)  # wait for object to spawn
 
         graspGenerator = GraspGenerator()
         graspFilter = GraspFilter()
@@ -187,95 +203,112 @@ class MoveitArmController:
         grasps = graspFilter.filterGrasps(grasps, self.target_name, graspParam)
 
         if len(grasps) == 0:
+            self.scene.remove_world_object("floor")
+            self.scene.remove_world_object(self.target_name)
             raise Exception("Planning failed")
 
+        self.group.set_support_surface_name("floor")
         if 1 != self.group.pick(self.target_name, grasps[0]) and not self.allow_wrong_execution:
+            self.scene.remove_world_object("floor")
+            self.scene.remove_world_object(self.target_name)
             raise Exception("Execution failed")
 
-    def post_grab(self, goal):
-        rospy.loginfo("{class_name} : Move arm request to standby position".format(class_name=self.__class__.__name__))
+        self.group.set_named_target("hold_object")
 
-        waypoints = [self.group.get_current_pose().pose]
+        plan = self.group.plan()
+        execution = self.group.execute(plan, wait=True)
+        
+        nbrRetry = 0
+        while (not plan.joint_trajectory.points or not execution) and self.MAX_RETRY > nbrRetry:
+            self.group.set_named_target("hold_object")
 
-        waypoint = copy.deepcopy(waypoints[-1])
-        waypoint.position.z += 0.05
-        waypoints.append(waypoint)
-
-        waypoint = copy.deepcopy(waypoints[-1])
-        alpha = np.arctan(goal.pose.position.y/goal.pose.position.x)
-        waypoint.position.x = np.cos(alpha)*self.arm_hold_length
-        waypoint.position.y = np.sin(alpha)*self.arm_hold_length
-        waypoints.append(waypoint)
-
-        waypoint = copy.deepcopy(waypoints[-1])
-        waypoint.position.z = self.group.get_current_pose("palbator_arm_column_link").pose.position.z
-        waypoints.append(waypoint)
-
-        waypoints.pop(0)
-
-        (plan, fraction) = self.group.compute_cartesian_path(waypoints, 0.01, 0.0)
-
-        if not plan.joint_trajectory.points:
-            raise Exception("Planning failed")
-
-        self.__display_plan(plan)
-        if (not self.group.execute(plan, wait=True) or fraction != 1.0) and not self.allow_wrong_execution:
+            plan = self.group.plan()
+            execution = self.group.execute(plan, wait=True)
+            nbrRetry += 1
+        
+        self.scene.remove_world_object("floor")
+        if self.MAX_RETRY <= nbrRetry:
             raise Exception("Execution failed")
-            
 
-        constraints = Constraints()
-        constraints.name = "keepLevel"
-        orientation_constraint = OrientationConstraint()
-        orientation_constraint.header.frame_id = "base_footprint"
-        orientation_constraint.link_name = self.group.get_end_effector_link()
-        orientation_constraint.orientation.x = 0.0
-        orientation_constraint.orientation.y = 0.0
-        orientation_constraint.orientation.z = 0.0
-        orientation_constraint.orientation.w = 1.0
-        orientation_constraint.absolute_x_axis_tolerance = 0.4
-        orientation_constraint.absolute_y_axis_tolerance = 0.4
-        orientation_constraint.absolute_z_axis_tolerance = 3.14 #ignore this axis
-        orientation_constraint.weight = 1
-        constraints.orientation_constraints.append(orientation_constraint)
-
-        self.group.set_path_constraints(constraints)
-        self.move_arm_to_pose("pointing_pose")
-        self.group.clear_path_constraints()
 
     def drop(self, goal):
-        rospy.loginfo("{class_name} : Move arm request to drop object at position %s".format(class_name=self.__class__.__name__), goal.pose)
+        rospy.loginfo("{class_name} : Move arm request to drop object at position %s".format(
+            class_name=self.__class__.__name__), goal.pose)
 
-        waypoints = [self.group.get_current_pose().pose]
+        self.group.set_pose_reference_frame("base_footprint")
+        arm_pose = Pose()
+        alpha = np.arctan(goal.pose.position.y/goal.pose.position.x)
+        q = tf.transformations.quaternion_from_euler(0.0, 0.0, alpha)
 
-        height = self.group.get_current_pose("palbator_arm_column_link").pose.position.z
-        if goal.pose.position.z != height:
-            waypoint = copy.deepcopy(waypoints[-1])
-            waypoint.position.z = goal.pose.position.z
-            waypoints.append(waypoint)
+        arm_pose.position.x = goal.pose.position.x
+        arm_pose.position.y = goal.pose.position.y
+        arm_pose.position.z = goal.pose.position.z
 
-        waypoint = copy.deepcopy(waypoints[-1])
-        waypoint.position.z += 0.05
-        waypoints.append(waypoint)
+        arm_pose.orientation.x = q[0]
+        arm_pose.orientation.y = q[1]
+        arm_pose.orientation.z = q[2]
+        arm_pose.orientation.w = q[3]
 
-        waypoint = copy.deepcopy(waypoints[-1])
-        waypoint.position.x = goal.pose.position.x
-        waypoint.position.y = goal.pose.position.y
-        waypoints.append(waypoint)
+        self.group.set_pose_target(arm_pose)
 
-        waypoint = copy.deepcopy(waypoints[-1])
-        waypoint.position.z = goal.pose.position.z
-        waypoints.append(waypoint)
+        plan= self.group.plan()
 
-        waypoints.pop(0)
+        if not plan.joint_trajectory.points:
+            raise Exception("Planning failed")
 
-        (plan, fraction) = self.group.compute_cartesian_path(waypoints, 0.03, 0.0)
+        if not self.group.execute(plan, wait=True) and not self.allow_wrong_execution:
+            raise Exception("Execution failed")
+
+    def removeAttachedObject(self, goal):
+        self.group.detach_object(self.target_name)
+        self.scene.remove_world_object(self.target_name)
+        arm_pose = Pose()
+        alpha = np.arctan(goal.pose.position.y/goal.pose.position.x)
+        q = tf.transformations.quaternion_from_euler(0.0, 0.0, alpha)
+
+        arm_pose.position.x = goal.pose.position.x - 0.05
+        arm_pose.position.y = goal.pose.position.y
+        arm_pose.position.z = goal.pose.position.z
+
+        arm_pose.orientation.x = q[0]
+        arm_pose.orientation.y = q[1]
+        arm_pose.orientation.z = q[2]
+        arm_pose.orientation.w = q[3]
+
+        self.group.set_pose_target(arm_pose)
+
+        plan= self.group.plan()
+
+        if not plan.joint_trajectory.points:
+            raise Exception("Planning failed")
+
+        if not self.group.execute(plan, wait=True) and not self.allow_wrong_execution:
+            raise Exception("Execution failed")
+
+    def move_column(self, goal):
+        rospy.loginfo("{class_name} : Move column to %s".format(
+            class_name=self.__class__.__name__), goal)
+
+        self._tflistener.waitForTransform("/map", "/palbator_arm_column_link", rospy.Time(0), rospy.Duration(5))
+        (trans,rot) = self._tflistener.lookupTransform("map", "palbator_arm_column_link", rospy.Time(0))
+        rospy.loginfo("{class_name} : Move column to %s".format(
+            class_name=self.__class__.__name__), trans)
+
+        jointNames = self.group.get_joints()
+        jointValues = self.group.get_current_joint_values()
+        jointsDict = dict(zip(jointNames, jointValues))
+
+        jointsDict["palbator_arm_column_joint"] += goal - trans[2]
+
+        self.group.set_joint_value_target(jointsDict)
+        plan = self.group.plan()
 
         if not plan.joint_trajectory.points:
             raise Exception("Planning failed")
 
         self.__display_plan(plan)
-        if (not self.group.execute(plan, wait=True) or fraction != 1.0) and not self.allow_wrong_execution:
+
+        if not self.group.execute(plan, wait=True) and not self.allow_wrong_execution:
             raise Exception("Execution failed")
 
-    def removeAttachedObject(self):
-        self.group.remove_attached_object(self.target_name)
+        rospy.loginfo("{class_name} : Arm position reached".format(class_name=self.__class__.__name__))

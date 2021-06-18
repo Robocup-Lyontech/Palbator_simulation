@@ -145,10 +145,7 @@ pmb2_gripper:
     - LazyPRMstar
     - SPARS
     - SPARStwo
-  projection_evaluator: joints(motor1_hand_joint,hand1_fingertip1_joint)
-  longest_valid_segment_fraction: 0.005
-pmb2_arm:
-  default_planner_config: None
+pmb2_arm_column:
   planner_configs:
     - SBL
     - EST
@@ -173,31 +170,5 @@ pmb2_arm:
     - LazyPRMstar
     - SPARS
     - SPARStwo
-  projection_evaluator: joints(palbator_arm_shoulder_1_joint,palbator_arm_shoulder_2_joint)
+  projection_evaluator: joints(palbator_arm_column_joint,palbator_arm_shoulder_1_joint)
   longest_valid_segment_fraction: 0.005
-pmb2_column:
-  default_planner_config: None
-  planner_configs:
-    - SBL
-    - EST
-    - LBKPIECE
-    - BKPIECE
-    - KPIECE
-    - RRT
-    - RRTConnect
-    - RRTstar
-    - TRRT
-    - PRM
-    - PRMstar
-    - FMT
-    - BFMT
-    - PDST
-    - STRIDE
-    - BiTRRT
-    - LBTRRT
-    - BiEST
-    - ProjEST
-    - LazyPRM
-    - LazyPRMstar
-    - SPARS
-    - SPARStwo

@@ -1,6 +1,6 @@
 # Simulation settings for using moveit_sim_controllers
 moveit_sim_hw_interface:
-  joint_model_group: pmb2_arm
+  joint_model_group: pmb2_arm_column
   joint_model_group_pose: travelling_pose
 # Settings for ros_control_boilerplate control loop
 generic_hw_control_loop:
@@ -38,23 +38,6 @@ joint_state_controller:
   type: joint_state_controller/JointStateController
   publish_rate: 50
 controller_list:
-  - name: pmb2_arm_controller
-    action_ns: follow_joint_trajectory
-    default: True
-    type: FollowJointTrajectory
-    joints:
-      - palbator_arm_shoulder_1_joint
-      - palbator_arm_shoulder_2_joint
-      - palbator_arm_shoulder_3_joint
-      - palbator_arm_wrist_1_joint
-      - palbator_arm_wrist_2_joint
-      - palbator_arm_wrist_3_joint
-  - name: pmb2_column_controller
-    action_ns: follow_joint_trajectory
-    default: True
-    type: FollowJointTrajectory
-    joints:
-      - palbator_arm_column_joint
   - name: pmb2_gripper_controller
     action_ns: follow_joint_trajectory
     default: True
@@ -62,3 +45,15 @@ controller_list:
     joints:
       - motor1_hand_joint
       - motor2_hand_joint
+  - name: pmb2_arm_column_controller
+    action_ns: follow_joint_trajectory
+    default: True
+    type: FollowJointTrajectory
+    joints:
+      - palbator_arm_column_joint
+      - palbator_arm_shoulder_1_joint
+      - palbator_arm_shoulder_2_joint
+      - palbator_arm_shoulder_3_joint
+      - palbator_arm_wrist_1_joint
+      - palbator_arm_wrist_2_joint
+      - palbator_arm_wrist_3_joint

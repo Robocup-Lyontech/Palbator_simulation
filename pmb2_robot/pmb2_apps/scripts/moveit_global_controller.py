@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import traceback
 import rospy
-from moveit_column_controller import MoveitColumnController
 from moveit_arm_controller import MoveitArmController
 from moveit_gripper_controller import MoveitGripperController
 from geometry_msgs.msg import PoseStamped
@@ -27,13 +26,6 @@ class MoveitGlobalController:
         moveit_commander.roscpp_initialize(sys.argv)
         rospy.init_node('moveit_global_controller', anonymous=True)
         self.scene = moveit_commander.PlanningSceneInterface()
-
-        if rospy.has_param("~Palbator_column_parameters"):
-            column_parameters = rospy.get_param("~Palbator_column_parameters")
-            self._column_controller = MoveitColumnController(column_parameters)
-        else:
-            rospy.logerr("{class_name} : No parameters specified for Moveit Palbator Column controller. Can't start column controller.".format(
-                class_name=self.__class__.__name__))
 
         if rospy.has_param("~Palbator_arm_parameters"):
             arm_parameters = rospy.get_param("~Palbator_arm_parameters")
@@ -172,38 +164,20 @@ class MoveitGlobalController:
         return rotationNeeded, distanceNeeded
 
     def grasping(self, goal):
-        # put the arm in base pose before grab
-        # self._arm_controller.move_arm_to_pose("pointing_pose")
         lookingGoal = deepcopy(goal)
         lookingGoal.pose.position.z += 0.1
         self.looking(lookingGoal)
 
-        # align end effector and object to grab
-        self._column_controller.move_column(goal.pose.position.z + 0.1)
-
-        # move end effector to the object
         self._arm_controller.grab(goal, self.solidPrimitive, self.grasp_parameters)
-
-        self._arm_controller.move_arm_to_pose("pointing_pose")
-        # self._arm_controller.post_grab(goal)
 
     def pointing(self, goal):
         self._arm_controller.point_at(goal)
-        self._column_controller.move_column(goal.pose.position.z)
+        self._arm_controller.move_column(goal.pose.position.z)
 
     def dropping(self, goal):
-        # align end effector and position to drop
-        self._arm_controller.point_at(goal)
-        self._column_controller.move_column(goal.pose.position.z + 0.1)
-
-        # move end effector to the position to drop
         self._arm_controller.drop(goal)
-        # drop
-        self._gripper_controller.move_gripper(1.0)
-        self._arm_controller.removeAttachedObject()
-
-        # move arm to standby
-        self._arm_controller.move_arm_to_pose("pointing_pose")
+        self._gripper_controller.move_gripper_to_pose("open_gripper")
+        self._arm_controller.removeAttachedObject(goal)
 
     def looking(self, goal):
         # set initial pose
@@ -211,11 +185,10 @@ class MoveitGlobalController:
 
         # align camera with goal
         zGoal = max(goal.pose.position.z, 0.62)
-        self._column_controller.move_column(zGoal)
+        self._arm_controller.move_column(zGoal)
         self._arm_controller.look_at(goal)
 
     def traveling(self):
-        self._column_controller.move_column_to_pose("travelling_pose")
         self._arm_controller.move_arm_to_pose("travelling_pose")
         self._gripper_controller.move_gripper_to_pose("close_gripper")
 

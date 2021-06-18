@@ -3,21 +3,17 @@ controller_list:
     joints:
       - motor1_hand_joint
       - motor2_hand_joint
-  - name: fake_pmb2_arm_controller
+  - name: fake_pmb2_arm_column_controller
     joints:
+      - palbator_arm_column_joint
       - palbator_arm_shoulder_1_joint
       - palbator_arm_shoulder_2_joint
       - palbator_arm_shoulder_3_joint
       - palbator_arm_wrist_1_joint
       - palbator_arm_wrist_2_joint
       - palbator_arm_wrist_3_joint
-  - name: fake_pmb2_column_controller
-    joints:
-      - palbator_arm_column_joint
 initial:  # Define initial robot poses.
   - group: pmb2_gripper
     pose: close_gripper
-  - group: pmb2_arm
-    pose: travelling_pose
-  - group: pmb2_column
+  - group: pmb2_arm_column
     pose: travelling_pose

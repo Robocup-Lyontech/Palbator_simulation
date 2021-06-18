@@ -1,7 +1,7 @@
 pmb2_gripper:
     base_link: 'base_footprint'
 
-    arm_group: "pmb2_arm"                   # arm group name
+    arm_group: "pmb2_arm_column"                   # arm group name
     eef_group: "pmb2_gripper"               # ee group name
     end_effector_name: 'end_effector_link'  # ee name
 
@@ -11,18 +11,18 @@ pmb2_gripper:
 
     # IK solver values
     IK_solver_timeout: 0.05
-    IK_solver_attempts: 1
+    IK_solver_attempts: 2
 
     # timeout for full grasp plan
-    full_plan_timeout: 2.0
+    full_plan_timeout: 3.0
 
     # A grasp motion is composed of three linear paths: approach, retreat, lift
     # The values below define the desired distances of each path.
     # Length of approach path (this is in addition to the grasp_max_depth)
     approach_distance_desired: 0.115  # approach path (in addition to grasp_max_depth)
-    lift_distance_desired: 0.115      # lift path (used as MINIMUM safety distance from surface)
+    lift_distance_desired: 0.05      # lift path (used as MINIMUM safety distance from surface)
     min_approach_distance: 0.05
-    min_lift_distance: 0.05
+    min_lift_distance: 0.01
 
     # approach and retreat vector [x, y, z]
     eef_approach_vector: [1.0, 0, 0]

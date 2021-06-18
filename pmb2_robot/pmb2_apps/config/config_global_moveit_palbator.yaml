@@ -5,8 +5,8 @@ Moveit_global_controller_action_name: "Moveit_Palbator_global_action"
 Palbator_arm_parameters: {
   "Palbator_arm_move_group": "pmb2_arm",
   "Palbator_hold_length": 0.45,   #length of the arm when pointing at
-  "Palbator_min_length": 0.55,    #min lenght to interact with object
-  "Palbator_max_length": 0.80,    #max lenght to interact with object
+  "Palbator_min_length": 0.45,    #min lenght to interact with object
+  "Palbator_max_length": 0.90,    #max lenght to interact with object
   "Shoulder_min_rot": -1.22,      #min shoulder1 orientation
   "Shoulder_max_rot": 1.22,       #max shoulder1 orientation
   "Allow_wrong_execution": True,  #continue action after movement failed
