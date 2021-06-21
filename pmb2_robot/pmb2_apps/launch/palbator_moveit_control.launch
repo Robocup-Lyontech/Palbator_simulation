@@ -1,4 +1,7 @@
 <launch>    
+
+    <node name="moveit_sensor_switcher" type="mux" pkg="topic_tools" args="moveit_sensor camera/depth/points camera_base/depth/points mux:=mux_cam_depth" />
+
     <include file="$(find pmb2_arm_moveit_config)/launch/moveit_planning_gazebo.launch" />
 
     <arg name="config" default="$(find pmb2_apps)/config/config_global_moveit_palbator.yaml" doc="Path to parameter config file"/>

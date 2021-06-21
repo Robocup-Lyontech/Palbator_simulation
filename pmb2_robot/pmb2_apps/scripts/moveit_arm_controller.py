@@ -188,9 +188,9 @@ class MoveitArmController:
         floor = PoseStamped()
         floor.header.frame_id = "base_footprint"
         floor.pose = copy.deepcopy(goal.pose)
-        floor.pose.position.z -= solidPrimitive.dimensions[2]/2 + 0.015
+        floor.pose.position.z -= solidPrimitive.dimensions[2]/2 + 0.02
 
-        self.scene.add_box("floor", floor, size=(solidPrimitive.dimensions[0], solidPrimitive.dimensions[1], 0.02))
+        self.scene.add_box("floor", floor, size=(solidPrimitive.dimensions[0] + 0.05, solidPrimitive.dimensions[1] + 0.05, 0.01))
         rospy.sleep(2.0)  # wait for object to spawn
         self.scene.add_box(self.target_name, target, size=tuple(solidPrimitive.dimensions))
         rospy.sleep(5.0)  # wait for object to spawn
@@ -312,3 +312,62 @@ class MoveitArmController:
             raise Exception("Execution failed")
 
         rospy.loginfo("{class_name} : Arm position reached".format(class_name=self.__class__.__name__))
+
+    def namo(self, goal):
+        rospy.loginfo("{class_name} : Move arm request to move object at position %s".format(
+            class_name=self.__class__.__name__), goal.pose)
+
+        self.group.set_pose_reference_frame("base_footprint")
+        namoArea = PoseStamped()
+        namoArea.header.frame_id = "base_footprint"
+        namoArea.pose.position.z = -0.005
+        namoArea.pose.orientation.w = 1.0
+        self.scene.add_box("namoArea", namoArea, size=(1, 1, 0.01))
+
+        arm_pose = Pose()
+        alpha = np.arctan(goal.pose.position.y/goal.pose.position.x)
+        q = tf.transformations.quaternion_from_euler(0.0, 0.0, alpha)
+
+        arm_pose.position.x = goal.pose.position.x
+        arm_pose.position.y = goal.pose.position.y
+        arm_pose.position.z = 0.044
+
+        arm_pose.orientation.x = q[0]
+        arm_pose.orientation.y = q[1]
+        arm_pose.orientation.z = q[2]
+        arm_pose.orientation.w = q[3]
+
+        self.group.set_pose_target(arm_pose)
+
+        plan = self.group.plan()
+
+        if not plan.joint_trajectory.points:
+            self.scene.remove_world_object("namoArea")
+            raise Exception("Planning failed")
+
+        if not self.group.execute(plan, wait=True) and not self.allow_wrong_execution:
+            self.scene.remove_world_object("namoArea")
+            raise Exception("Execution failed")
+
+        jointNames = self.group.get_joints()
+        jointValues = self.group.get_current_joint_values()
+        jointsDict = dict(zip(jointNames, jointValues))
+
+        jointsDict["palbator_arm_shoulder_1_joint"] -= 0.785398
+
+        self.group.set_joint_value_target(jointsDict)
+        plan = self.group.plan()
+
+        if not plan.joint_trajectory.points:
+            self.scene.remove_world_object("namoArea")
+            raise Exception("Planning failed")
+
+        self.__display_plan(plan)
+
+        if not self.group.execute(plan, wait=True) and not self.allow_wrong_execution:
+            self.scene.remove_world_object("namoArea")
+            raise Exception("Execution failed")
+
+        rospy.loginfo("{class_name} : Namo done".format(class_name=self.__class__.__name__))
+
+        self.scene.remove_world_object("namoArea")
