@@ -7,7 +7,7 @@
     <arg name="config" default="$(find pmb2_apps)/config/config_global_moveit_palbator.yaml" doc="Path to parameter config file"/>
     <arg name="grasp_config" default="$(find pmb2_grasp)/config/pmb2_grasp_data.yaml" doc="Path to grasp parameter config file"/>
 
-    <node name="add_floors" type="add_floors" pkg="pmb2_apps" />
+    <node name="add_floors" type="add_floors.py" pkg="pmb2_apps" />
     <node name="moveit_global_controller" pkg="pmb2_apps" type="moveit_global_controller.py" output="screen">
         <rosparam file="$(arg config)"/>
         <rosparam file="$(arg grasp_config)"/>
