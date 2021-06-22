@@ -185,13 +185,13 @@ class MoveitArmController:
             solidPrimitive.type = 1
             solidPrimitive.dimensions = [0.04, 0.04, 0.04]
 
-        floor = PoseStamped()
-        floor.header.frame_id = "base_footprint"
-        floor.pose = copy.deepcopy(goal.pose)
-        floor.pose.position.z -= solidPrimitive.dimensions[2]/2 + 0.02
+        # floor = PoseStamped()
+        # floor.header.frame_id = "base_footprint"
+        # floor.pose = copy.deepcopy(goal.pose)
+        # floor.pose.position.z -= solidPrimitive.dimensions[2]/2 + 0.02
 
-        self.scene.add_box("floor", floor, size=(solidPrimitive.dimensions[0] + 0.05, solidPrimitive.dimensions[1] + 0.05, 0.01))
-        rospy.sleep(2.0)  # wait for object to spawn
+        # self.scene.add_box("floor", floor, size=(solidPrimitive.dimensions[0] + 0.05, solidPrimitive.dimensions[1] + 0.05, 0.01))
+        # rospy.sleep(2.0)  # wait for object to spawn
         self.scene.add_box(self.target_name, target, size=tuple(solidPrimitive.dimensions))
         rospy.sleep(5.0)  # wait for object to spawn
 
@@ -203,13 +203,13 @@ class MoveitArmController:
         grasps = graspFilter.filterGrasps(grasps, self.target_name, graspParam)
 
         if len(grasps) == 0:
-            self.scene.remove_world_object("floor")
+            # self.scene.remove_world_object("floor")
             self.scene.remove_world_object(self.target_name)
             raise Exception("Planning failed")
 
-        self.group.set_support_surface_name("floor")
+        # self.group.set_support_surface_name("floor")
         if 1 != self.group.pick(self.target_name, grasps[0]) and not self.allow_wrong_execution:
-            self.scene.remove_world_object("floor")
+            # self.scene.remove_world_object("floor")
             self.scene.remove_world_object(self.target_name)
             raise Exception("Execution failed")
 
@@ -226,7 +226,7 @@ class MoveitArmController:
             execution = self.group.execute(plan, wait=True)
             nbrRetry += 1
         
-        self.scene.remove_world_object("floor")
+        # self.scene.remove_world_object("floor")
         if self.MAX_RETRY <= nbrRetry:
             raise Exception("Execution failed")
 
