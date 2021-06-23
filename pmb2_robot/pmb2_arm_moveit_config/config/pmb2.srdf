@@ -76,7 +76,7 @@
         <joint name="palbator_arm_wrist_3_joint" value="0" />
     </group_state>
     <group_state name="namo" group="pmb2_arm_column">
-        <joint name="palbator_arm_column_joint" value="0.0331" />
+        <joint name="palbator_arm_column_joint" value="0" />
         <joint name="palbator_arm_shoulder_1_joint" value="1.22" />
         <joint name="palbator_arm_shoulder_2_joint" value="0" />
         <joint name="palbator_arm_shoulder_3_joint" value="1.49" />
