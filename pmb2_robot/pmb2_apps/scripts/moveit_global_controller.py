@@ -192,12 +192,14 @@ class MoveitGlobalController:
         self._arm_controller.look_at(goal)
     
     def namo(self, goal):
-        self._cam_mux("/camera_base/depth/points")
-        # set initial pose
+        # self._cam_mux("/camera_base/depth/points")
+        # # set initial pose
+        # self._gripper_controller.move_gripper_to_pose("open_gripper")
+        # self._arm_controller.namo(goal)
+        # self._cam_mux("/camera/depth/points")
         self._gripper_controller.move_gripper_to_pose("open_gripper")
+        self._arm_controller.move_arm_to_pose("namo")
         self._arm_controller.namo(goal)
-        self._cam_mux("/camera/depth/points")
-
         self.traveling()
 
     def traveling(self):
