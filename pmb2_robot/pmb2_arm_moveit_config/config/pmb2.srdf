@@ -79,10 +79,10 @@
         <joint name="palbator_arm_column_joint" value="0" />
         <joint name="palbator_arm_shoulder_1_joint" value="1.22" />
         <joint name="palbator_arm_shoulder_2_joint" value="0" />
-        <joint name="palbator_arm_shoulder_3_joint" value="1.49" />
-        <joint name="palbator_arm_wrist_1_joint" value="0" />
-        <joint name="palbator_arm_wrist_2_joint" value="-1.49" />
-        <joint name="palbator_arm_wrist_3_joint" value="0" />
+        <joint name="palbator_arm_shoulder_3_joint" value="1.2021" />
+        <joint name="palbator_arm_wrist_1_joint" value="1.5093" />
+        <joint name="palbator_arm_wrist_2_joint" value="-1.5" />
+        <joint name="palbator_arm_wrist_3_joint" value="-0.399" />
     </group_state>
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
     <end_effector name="gripper" parent_link="end_effector_link" group="pmb2_gripper" parent_group="pmb2_arm_column" />
