@@ -267,21 +267,21 @@ class MoveitGlobalController:
                     fct = self.looking
 
                 elif "Namo" in goal.action:
-                    if rotation_needed != 0:
-                        rospy.logwarn("{class_name} : ROTATION OF %.2f RADIAN NEEDED".format(
-                            class_name=self.__class__.__name__), rotation_needed)
-                        JSONRequest["rotation"] = rotation_needed
+                    # if rotation_needed != 0:
+                    #     rospy.logwarn("{class_name} : ROTATION OF %.2f RADIAN NEEDED".format(
+                    #         class_name=self.__class__.__name__), rotation_needed)
+                    #     JSONRequest["rotation"] = rotation_needed
 
-                    if distance >= 0.53:
-                        distance_needed = distance - 0.53
-                    elif distance <= 0.48:
-                        distance_needed = distance - 0.48
-                    else:
-                        distance_needed = 0
-                    if distance_needed != 0:
-                        rospy.logwarn("{class_name} : DISTANCE OF %.3f METER NEEDED".format(
-                            class_name=self.__class__.__name__), distance_needed)
-                        JSONRequest["distance"] = distance_needed
+                    # if distance >= 0.53:
+                    #     distance_needed = distance - 0.53
+                    # elif distance <= 0.48:
+                    #     distance_needed = distance - 0.48
+                    # else:
+                    #     distance_needed = 0
+                    # if distance_needed != 0:
+                    #     rospy.logwarn("{class_name} : DISTANCE OF %.3f METER NEEDED".format(
+                    #         class_name=self.__class__.__name__), distance_needed)
+                    #     JSONRequest["distance"] = distance_needed
                     fct = self.namo
 
                 if len(JSONRequest) == 0:
