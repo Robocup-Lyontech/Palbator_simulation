@@ -25,6 +25,9 @@ class MoveitGripperController:
         self.scene = moveit_commander.PlanningSceneInterface()
         self.group = moveit_commander.MoveGroupCommander(self._parameters['Palbator_gripper_move_group'])
 
+        self.group.set_max_acceleration_scaling_factor(1.0)
+        self.group.set_max_velocity_scaling_factor(1.0)
+
         self.display_trajectory_publisher = rospy.Publisher(
             self._parameters['display_gripper_planned_path_topic'], moveit_msgs.msg.DisplayTrajectory, queue_size=10)
 

@@ -34,6 +34,9 @@ class MoveitArmController:
         self.scene = moveit_commander.PlanningSceneInterface()
         self.group = moveit_commander.MoveGroupCommander("pmb2_arm_column")
 
+        self.group.set_max_acceleration_scaling_factor(1.0)
+        self.group.set_max_velocity_scaling_factor(1.0)
+
         self.display_trajectory_publisher = rospy.Publisher(
             self._parameters['display_arm_planned_path_topic'], DisplayTrajectory, queue_size=10)
         self.display_trajectory_publisher = rospy.Publisher(
