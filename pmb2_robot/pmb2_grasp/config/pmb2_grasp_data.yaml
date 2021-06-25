@@ -20,7 +20,7 @@ pmb2_gripper:
     # The values below define the desired distances of each path.
     # Length of approach path (this is in addition to the grasp_max_depth)
     approach_distance_desired: 0.115  # approach path (in addition to grasp_max_depth)
-    lift_distance_desired: 0.05      # lift path (used as MINIMUM safety distance from surface)
+    lift_distance_desired: 0.02      # lift path (used as MINIMUM safety distance from surface)
     min_approach_distance: 0.05
     min_lift_distance: 0.01
 
@@ -29,7 +29,7 @@ pmb2_gripper:
     eef_retreat_vector: [0, 0, 1.0]
 
     # Distance from the eef mount to the palm of end effector [x, y, z, r, p, y]
-    eef_to_transform :  [0, 0, 0, 0, 0, 0.0] # NOTE: Imaginary point in the middle
+    eef_to_transform :  [-0.02, 0, 0, 0, 0, 0.0] # NOTE: Imaginary point in the middle
 
     # Joint names and state values for the end effector.
     joints : ['motor1_hand_joint', 'motor2_hand_joint']
